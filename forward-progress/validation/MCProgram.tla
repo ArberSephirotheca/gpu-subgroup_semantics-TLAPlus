@@ -294,6 +294,8 @@ DynamicNode(currentThreadSet, executeSet, notExecuteSet, unknownSet, labelIdx, i
 EntryLabel == Min({idx \in 1..Len(ThreadInstructions[1]) : ThreadInstructions[1][idx] = "OpLabel"})
 (* CFG *)
 
+
+Synchronization == "Lockstep"
 INSTANCE ProgramConf
 
 (* Inovactions within a tangle are required to execute tangled instruction concurrently, examples or opGroup operations and opControlBarrier  *)
@@ -676,9 +678,9 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
             \* remove current thread from all set as it is not partcipating in the construct anymore
             IF DB.labelIdx \in constructUpdate /\ SameMergeStack(DB.mergeStack, currentMergeStack) THEN
                 DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ {t}],
-                    DB.executeSet,
-                    DB.notExecuteSet,
-                    [DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ {t}],
+                    [ DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \ {t}],
+                    [ DB.notExecuteSet EXCEPT ![wgid] = DB.notExecuteSet[wgid] \ {t}],
+                    [ DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ {t}],
                     DB.labelIdx,
                     DB.id,
                     IF DB.labelIdx = currentDB.labelIdx /\ DB.id = currentDB.id THEN 
@@ -826,8 +828,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
                     {
                         DynamicNode([wg \in 1..NumWorkGroups |-> IF wg = wgid THEN {t} ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN {t} ELSE {}],
+                                    \* [wg \in 1..NumWorkGroups |-> DB.notExecuteSet[wg]],
                                     [wg \in 1..NumWorkGroups |-> {}],
-                                    \* [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN ThreadsWithinWorkGroupNonTerminated(wgid-1) \ {t}  ELSE ThreadsWithinWorkGroupNonTerminated(wg-1)],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN unionSet[wgid] \ {t}  ELSE unionSet[wg]],
                                     chosenBranchIdx,
                                     LET child == CHOOSE child \in updatedChildren: child.blockIdx = chosenBranchIdx

@@ -1,0 +1,32 @@
+#version 460
+#pragma scheduler(OBE)
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+layout(local_size_x = 3) in;
+layout(tla_subgroup_size = 3) in;
+layout(tla_num_workgroups = 1) in;
+
+shared uint shared_flag; 
+
+// this one only works under full synchronization (lockstep) and branch synchronization, as all threads see shared_flag = 0, then one t set shared_flag = 1, then all threads see shared_flag = 1
+void main() {
+    // 3 
+    if (gl_LocalInvocationID.x == 0) {
+        // 8
+        shared_flag = 0;
+    }
+    // 11
+
+    if (gl_LocalInvocationID.x % 2 == 0) { // 16
+        // 19
+        shared_flag = 1;
+        // do some works..
+    } else {
+        while (shared_flag == 0) {// 21
+            int i = 0;
+            // spin..
+        }
+    }
+    // 34
+}

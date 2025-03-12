@@ -1,0 +1,30 @@
+#version 460
+#pragma scheduler(OBE)
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+layout(local_size_x = 3) in;
+layout(tla_subgroup_size = 3) in;
+layout(tla_num_workgroups = 1) in;
+
+shared uint msg; 
+
+
+// lockstep execution (1, 2) would guarantee no hang as all threads see the pattern msg = 0, then enter true branch, then msg = 1, then set msg = 0
+// if synchronize before a branch, it also passes as all threads see msg = 0, then enter true branch, subgroup barrier at the end ensures all threads see msg = 1 before any thread sets msg = 0
+// if do not synchronize before a branch, then thread 0 may see msg = 0 and then set msg = 1, then wait at subgroup operation. 
+// Then thread 1 will see msg = 1 and enter the brnach that has loop and loop forever.
+void main() {
+    msg = 0;
+    barrier();
+    uint wg_size = gl_WorkGroupSize.x;
+    if (gl_LocalInvocationID.x == 0) {
+        while (msg < wg_size - 1) {
+            //spin...
+            int i = 0;
+        }
+        msg += 1;
+    } else{
+        msg += 1;
+    }
+}

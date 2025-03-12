@@ -89,7 +89,7 @@ StateUpdate(wgid, t, newDBSet) ==
             /\ state[thread] # "terminated"
             /\ state[thread] # "ready"
             /\ thread \in DB.currentThreadSet[wgid]
-            /\ \A tid \in DB.currentThreadSet[wgid] : pc[tid] = pc[thread] /\ ThreadInstructions[1][pc[tid]] \in TangledInstructionSet /\ state[tid] = state[thread]
+            /\ \A tid \in DB.currentThreadSet[wgid] : pc[tid] = pc[thread] (* /\ ThreadInstructions[1][pc[tid]] \in TangledInstructionSet *) /\ state[tid] = state[thread]
             /\ DB.unknownSet[wgid] = {}
         THEN 
             "ready"
@@ -644,6 +644,79 @@ GetGlobalId(t, result) ==
         /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
         /\  UNCHANGED <<state>>
 
+OpAtomicLoadSync(t, result, pointer) ==
+    LET mangledResult == Mangle(t, result)
+        mangledPointer == Mangle(t, pointer)
+    IN
+        /\
+            \/  
+                /\  IsVariable(mangledResult)
+                \* /\  VarExists(WorkGroupId(t)+1, mangledResult)
+            \/  IsIntermediate(mangledResult)
+        /\  IsVariable(mangledPointer)
+        /\  VarExists(WorkGroupId(t)+1, mangledPointer)
+        /\  IF IsIntermediate(mangledResult) THEN 
+                LET workGroupId == WorkGroupId(t) + 1
+                    sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+                    currentDB == CurrentDynamicNode(workGroupId, t)
+                    active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+                    unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+                    pointerVar == GetVar(WorkGroupId(t)+1, mangledPointer)
+                    evaluatedIndex == EvalExpr(t, WorkGroupId(t)+1, pointer.index)
+                IN 
+                    /\
+                        IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
+                            /\  state' = [state EXCEPT ![t] = "subgroup"]
+                            /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+                        ELSE
+                            /\  Assignment(t, {Var(result.scope, Mangle(sthread, result).name, pointerVar.value, Index(-1)): sthread \in active_subgroup_threads })
+                            /\  state' = [\* release all barrier in the subgroup, marking barrier as ready
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            "ready" 
+                                        ELSE 
+                                            state[tid]
+                                ]
+                            /\  pc' = [
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            pc[tid] + 1
+                                        ELSE 
+                                            pc[tid]
+                                ]
+                            /\ UNCHANGED <<globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+            ELSE
+                LET workGroupId == WorkGroupId(t) + 1
+                    sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+                    currentDB == CurrentDynamicNode(workGroupId, t)
+                    active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+                    unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+                    pointerVar == GetVar(WorkGroupId(t)+1, mangledPointer)
+                    \* evaluatedPointerIndex == EvalExpr(t, WorkGroupId(t)+1, pointer.index)
+                    \* evaluatedResultIndex == EvalExpr(t, WorkGroupId(t)+1, result.index)
+                IN
+                    /\
+                        IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
+                            /\  state' = [state EXCEPT ![t] = "subgroup"]
+                            /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+                        ELSE
+                            /\  Assignment(t, {Var(result.scope, Mangle(sthread, result).name, pointerVar.value, Index(-1)): sthread \in active_subgroup_threads })
+                            /\  state' = [\* release all barrier in the subgroup, marking barrier as ready
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            "ready" 
+                                        ELSE 
+                                            state[tid]
+                                ]
+                            /\  pc' = [
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            pc[tid] + 1
+                                        ELSE 
+                                            pc[tid]
+                                ]
+                            /\ UNCHANGED <<globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+
 
 \* It does not handle the situation where result is an index to array
 OpAtomicLoad(t, result, pointer) ==
@@ -684,6 +757,42 @@ OpAtomicLoad(t, result, pointer) ==
                             Assignment(t, {Var(resultVar.scope, resultVar.name, pointerVar.value, Index(-1))})  
         /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
         /\  UNCHANGED <<state, DynamicNodeSet, globalCounter, snapShotMap>>
+
+OpAtomicStoreSync(t, pointer, value) == 
+    LET mangledPointer == Mangle(t, pointer)
+    IN
+        /\  IsVariable(mangledPointer)
+        /\  VarExists(WorkGroupId(t)+1, mangledPointer)
+        /\  LET pointerVar == GetVar(WorkGroupId(t)+1, mangledPointer)
+                evaluatedPointerIndex == EvalExpr(t, WorkGroupId(t)+1, pointer.index)
+                workGroupId == WorkGroupId(t) + 1
+                sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+                currentDB == CurrentDynamicNode(workGroupId, t)
+                active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+                unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+                evaluatedIndex == EvalExpr(t, WorkGroupId(t)+1, pointer.index)
+            IN 
+                IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
+                    /\  state' = [state EXCEPT ![t] = "subgroup"]
+                    /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+                ELSE
+                    /\  Assignment(t, {Var(pointerVar.scope, Mangle(sthread, pointer).name, EvalExpr(t, WorkGroupId(t)+1, value), pointerVar.index): sthread \in active_subgroup_threads })
+                            /\  state' = [\* release all barrier in the subgroup, marking barrier as ready
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            "ready" 
+                                        ELSE 
+                                            state[tid]
+                                ]
+                            /\  pc' = [
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            pc[tid] + 1
+                                        ELSE 
+                                            pc[tid]
+                                ]
+        /\  UNCHANGED <<DynamicNodeSet, globalCounter, snapShotMap>>
+
 
 OpAtomicStore(t, pointer, value) == 
     LET mangledPointer == Mangle(t, pointer)
@@ -1272,6 +1381,51 @@ OpAtomicCompareExchange(t, result, pointer, value, comparator) ==
 \*     /\ pc' = [pc EXCEPT ![t] = GetVal(-1, label)]
 \*     /\  UNCHANGED <<threadLocals, globalVars>>
 
+OpBranchSync(t, label) == 
+/\  LET workGroupId == WorkGroupId(t) + 1
+        sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+        currentDB == CurrentDynamicNode(workGroupId, t)
+        active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+        unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+    IN
+        \* if there are threads in tangle not reaching the instruction point,
+        \* or there are threads in unknown set, make current thread waiting
+        IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
+            /\  state' = [state EXCEPT ![t] = "subgroup"]
+            /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+        ELSE 
+            /\  LET labelVal == GetVal(-1, label)
+                    newPc == [
+                                tid \in Threads |->
+                                IF tid \in active_subgroup_threads THEN 
+                                    GetVal(-1, label)
+                                ELSE 
+                                    pc[tid]
+                            ]
+                        \* [pc EXCEPT ![t] = GetVal(-1, label)]
+                IN
+                    LET counterNewDBSet == BranchUpdate(workGroupId, t, pc[t], {labelVal}, labelVal, {labelVal})
+                        newCounter == counterNewDBSet[1]
+                        newDBSet == counterNewDBSet[2]
+                        newState == StateUpdate(workGroupId, t, newDBSet)
+                        newSnapShotMap == SnapShotUpdate(newDBSet, newState, t, newPc, newCounter)
+                        matchedSnapShot == MeaningfulUpdate(newPc, newState, snapShotMap, newDBSet)
+                    IN 
+                        IF matchedSnapShot = {} THEN
+                            /\  snapShotMap' = newSnapShotMap
+                            /\  state' = newState
+                            /\  DynamicNodeSet' = newDBSet 
+                            /\  pc' = newPc
+                            /\  globalCounter' = newCounter
+                        ELSE
+                            LET previousState == CHOOSE db \in matchedSnapShot: TRUE
+                            IN
+                                /\ state' = previousState.state
+                                /\ DynamicNodeSet' = previousState.dynamicNodeSet
+                                /\ globalCounter' = previousState.globalCounter
+                                /\ pc' = previousState.pc
+                                /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
+            /\  UNCHANGED <<threadLocals, globalVars>>
 
 OpBranch(t, label) ==
     /\  LET labelVal == GetVal(-1, label)
@@ -1300,6 +1454,74 @@ OpBranch(t, label) ==
                         /\ pc' = previousState.pc
                         /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
     /\  UNCHANGED <<threadLocals, globalVars>>
+
+
+OpBranchConditionalSync(t, condition, trueLabel, falseLabel) == 
+    /\  IsLiteral(trueLabel)
+    /\  IsLiteral(falseLabel)
+    /\  LET workGroupId == WorkGroupId(t) + 1
+                        sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+                        currentDB == CurrentDynamicNode(workGroupId, t)
+                        active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+                        unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+        IN
+            \* if there are threads in tangle not reaching the instruction point,
+            \* or there are threads in unknown set, make current thread waiting
+            IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
+                /\  state' = [state EXCEPT ![t] = "subgroup"]
+                /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+            ELSE 
+                /\  LET trueLabelVal == GetVal(-1, trueLabel)
+                        falseLabelVal == GetVal(-1, falseLabel)
+                    IN
+                        IF EvalExpr(t, WorkGroupId(t)+1, condition) = TRUE THEN
+                            LET counterNewDBSet == BranchUpdate(workGroupId, t, pc[t], {trueLabelVal, falseLabelVal}, trueLabelVal, {trueLabelVal, falseLabelVal})
+                                newCounter == counterNewDBSet[1]
+                                newDBSet == counterNewDBSet[2]
+                                newState == StateUpdate(workGroupId, t, newDBSet)
+                                newPc == [pc EXCEPT ![t] = trueLabelVal]
+                                newSnapShotMap == SnapShotUpdate(newDBSet, newState, t, newPc, newCounter)
+                                matchedSnapShot == MeaningfulUpdate(newPc, newState, snapShotMap, newDBSet)
+                            IN
+                                IF matchedSnapShot = {} THEN
+                                    /\  snapShotMap' = newSnapShotMap
+                                    /\  state' = newState   
+                                    /\  DynamicNodeSet' = newDBSet
+                                    /\  pc' = newPc
+                                    /\  globalCounter' = newCounter
+                                ELSE 
+                                    LET previousState == CHOOSE db \in matchedSnapShot: TRUE
+                                    IN
+                                        /\ state' = previousState.state
+                                        /\ DynamicNodeSet' = previousState.dynamicNodeSet
+                                        /\ globalCounter' = previousState.globalCounter
+                                        /\ pc' = previousState.pc
+                                        /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
+                        ELSE
+                            LET counterNewDBSet == BranchUpdate(workGroupId, t, pc[t], {trueLabelVal, falseLabelVal}, falseLabelVal, {trueLabelVal, falseLabelVal})
+                                newCounter == counterNewDBSet[1]
+                                newDBSet == counterNewDBSet[2]
+                                newState == StateUpdate(workGroupId, t, newDBSet)
+                                newPc == [pc EXCEPT ![t] = falseLabelVal]
+                                newSnapShotMap == SnapShotUpdate(newDBSet, newState, t, newPc, newCounter)
+                                matchedSnapShot == MeaningfulUpdate(newPc, newState, snapShotMap, newDBSet)
+
+                            IN
+                                IF matchedSnapShot = {} THEN
+                                    /\  snapShotMap' = newSnapShotMap
+                                    /\  state' = newState
+                                    /\  DynamicNodeSet' = newDBSet
+                                    /\  pc' = newPc
+                                    /\  globalCounter' = newCounter
+                                ELSE 
+                                    LET previousState == CHOOSE db \in matchedSnapShot: TRUE
+                                    IN
+                                        /\ state' = previousState.state
+                                        /\ DynamicNodeSet' = previousState.dynamicNodeSet
+                                        /\ globalCounter' = previousState.globalCounter
+                                        /\ pc' = previousState.pc
+                                        /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
+                /\  UNCHANGED <<threadLocals, globalVars>>
 
 
 (* condition is an expression, trueLabel and falseLabel are integer representing pc *)
@@ -1361,6 +1583,80 @@ OpBranchConditional(t, condition, trueLabel, falseLabel) ==
     /\  UNCHANGED <<threadLocals, globalVars>>
 
     
+
+OpSwitchSync(t, selector, default, literals, ids) == 
+/\  LET workGroupId == WorkGroupId(t) + 1
+        sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+        currentDB == CurrentDynamicNode(workGroupId, t)
+        active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+        unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+    IN
+        \* if there are threads in tangle not reaching the instruction point,
+        \* or there are threads in unknown set, make current thread waiting
+        IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
+            /\  state' = [state EXCEPT ![t] = "subgroup"]
+            /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+        ELSE 
+            /\  LET defaultVal == GetVal(-1, default)
+                    literalsVal == [idx \in 1..Len(literals) |-> GetVal(-1, literals[idx])]
+                    idsVal == [idx \in 1..Len(ids) |-> GetVal(-1, ids[idx])]
+                IN
+                    IF EvalExpr(t, WorkGroupId(t)+1, selector) \in SeqToSet(literalsVal) THEN
+                        LET val == EvalExpr(t, WorkGroupId(t)+1, selector)
+                            index == CHOOSE i \in 1..Len(literalsVal): literalsVal[i] = val 
+                        IN
+                            LET labelSet == SeqToSet(idsVal) \union {defaultVal}
+                                falseLabelSet == (CHOOSE postDom \in PostDominated: postDom.node = idsVal[index]).postDominated \intersect labelSet
+                                counterNewDBSet == BranchUpdate(workGroupId, t, pc[t], labelSet, idsVal[index], falseLabelSet)
+                                newCounter == counterNewDBSet[1]
+                                newDBSet == counterNewDBSet[2]
+                                newState == StateUpdate(workGroupId, t, newDBSet)
+                                newPc == [pc EXCEPT ![t] = idsVal[index]]
+                                newSnapShotMap == SnapShotUpdate(newDBSet, newState, t, newPc, newCounter)
+                                matchedSnapShot == MeaningfulUpdate(newPc, newState, snapShotMap, newDBSet)
+                            IN
+                                IF matchedSnapShot = {} THEN
+                                    /\  snapShotMap' = newSnapShotMap
+                                    /\  state' = newState
+                                    /\  DynamicNodeSet' = newDBSet
+                                    /\  pc' = newPc
+                                    /\  globalCounter' = newCounter
+                                ELSE 
+                                    LET previousState == CHOOSE db \in matchedSnapShot: TRUE
+                                    IN
+                                        /\ state' = previousState.state
+                                        /\ DynamicNodeSet' = previousState.dynamicNodeSet
+                                        /\ globalCounter' = previousState.globalCounter
+                                        /\ pc' = previousState.pc
+                                        /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
+                    ELSE
+                        LET labelSet == SeqToSet(idsVal) \union {defaultVal}
+                            falseLabelSet == (CHOOSE postDom \in PostDominated: postDom.node = defaultVal).postDominated \intersect (SeqToSet(idsVal) \union {defaultVal})
+                            counterNewDBSet == BranchUpdate(workGroupId, t, pc[t], labelSet, defaultVal, falseLabelSet)
+                            newCounter == counterNewDBSet[1]
+                            newDBSet == counterNewDBSet[2]
+                            newState == StateUpdate(workGroupId, t, newDBSet)
+                            newPc == [pc EXCEPT ![t] = defaultVal]
+                            newSnapShotMap == SnapShotUpdate(newDBSet, newState, t, newPc, newCounter)
+                            matchedSnapShot == MeaningfulUpdate(newPc, newState, snapShotMap, newDBSet)
+                        IN
+                            IF matchedSnapShot = {} THEN
+                                /\  snapShotMap' = newSnapShotMap
+                                /\  state' = newState
+                                /\  DynamicNodeSet' = newDBSet
+                                /\  pc' = newPc
+                                /\  globalCounter' = newCounter
+                            ELSE 
+                                LET previousState == CHOOSE db \in matchedSnapShot: TRUE
+                                IN
+                                    /\ state' = previousState.state
+                                    /\ DynamicNodeSet' = previousState.dynamicNodeSet
+                                    /\ globalCounter' = previousState.globalCounter
+                                    /\ pc' = previousState.pc
+                                    /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
+            /\  UNCHANGED <<threadLocals, globalVars>>
+
+
 \* zheyuan: need more tests
 \* need to update it
 \* make the false label sets to be the block that is post domianted by the choosen label
@@ -1522,15 +1818,30 @@ ExecuteInstruction(t) ==
             ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicCompareExchange" THEN
                 OpAtomicCompareExchange(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicLoad" THEN
-                OpAtomicLoad(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
+                IF Synchronization = "Lockstep" THEN 
+                    OpAtomicLoadSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
+                ELSE
+                    OpAtomicLoad(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicStore" THEN
-                OpAtomicStore(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
+                IF Synchronization = "Lockstep" THEN 
+                    OpAtomicStoreSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
+                ELSE
+                    OpAtomicStore(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpBranch" THEN
-                OpBranch(t, ThreadArguments[t][pc[t]][1])
+                IF Synchronization = "Branch" THEN 
+                    OpBranchSync(t, ThreadArguments[t][pc[t]][1])
+                ELSE
+                    OpBranch(t, ThreadArguments[t][pc[t]][1])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpBranchConditional" THEN
-                OpBranchConditional(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
+                IF Synchronization = "Branch" THEN 
+                    OpBranchConditionalSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
+                ELSE
+                    OpBranchConditional(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpSwitch" THEN
-                OpSwitch(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
+                IF Synchronization = "Branch" THEN 
+                    OpSwitchSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
+                ELSE
+                    OpSwitch(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpControlBarrier" THEN
                 OpControlBarrier(t, ThreadArguments[t][pc[t]][1])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpGroupAll" THEN

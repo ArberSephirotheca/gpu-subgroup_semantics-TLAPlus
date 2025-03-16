@@ -116,6 +116,8 @@ pub(super) fn stmt(p: &mut Parser) -> Option<CompletedMarker> {
         Some(op_group_any_expr(p))
     } else if p.at(TokenKind::OpGroupNonUniformAll) {
         Some(op_group_nonuniform_all_expr(p))
+    } else if p.at(TokenKind::OpGroupNonUniformAllEqual) {
+        Some(op_group_nonuniform_all_equal_expr(p))
     } else if p.at(TokenKind::OpGroupNonUniformAny) {
         Some(op_group_nonuniform_any_expr(p))
     } else if p.at(TokenKind::OpGroupNonUniformBroadcast) {
@@ -132,7 +134,7 @@ pub(super) fn stmt(p: &mut Parser) -> Option<CompletedMarker> {
         Some(op_loop_merge_statement(p))
     } else if p.at(TokenKind::OpSelectionMerge) {
         Some(op_selection_merge_statement(p))
-    } else if p.at(TokenKind::OpBitwiseOr){
+    } else if p.at(TokenKind::OpBitwiseOr) {
         Some(op_bitwise_or_expr(p))
     } else if p.at(TokenKind::OpBitwiseAnd) {
         Some(op_bitwise_and_expr(p))
@@ -228,33 +230,37 @@ fn op_decorate_string_stmt(p: &mut Parser) -> Option<CompletedMarker> {
     p.increment_line();
     // skip OpDecorateString token
     p.bump();
-    if p.at(TokenKind::Scheduler)
-        || p.at(TokenKind::TlaNumWorkgroups)
-        || p.at(TokenKind::TlaSubgroupSize)
-    {
-        p.bump();
-    } else {
-        while !p.at(TokenKind::Newline) {
-            p.bump();
-        }
-        p.expect(TokenKind::Newline);
-        m.complete(p, TokenKind::IgnoredOp, line);
-        return None;
-    }
+    // if p.at(TokenKind::Scheduler)
+    //     || p.at(TokenKind::TlaNumWorkgroups)
+    //     || p.at(TokenKind::TlaSubgroupSize)
+    // {
+    //     ignored = false;
+    // }
+    // p.bump();
+    // // else {
+    // //     while !p.at(TokenKind::Newline) {
+    // //         p.bump();
+    // //     }
+    // //     p.expect(TokenKind::Newline);
+    // //     m.complete(p, TokenKind::IgnoredOp, line);
+    // //     return None;
+    // // }
 
-    // we only care UserSemantic decoration
-    if p.at(TokenKind::UserSemantic) {
+    // p.bump();
+    // // if p.at(TokenKind::UserSemantic) {
+    // //     p.bump();
+    // // } else {
+    // //     while !p.at(TokenKind::Newline) {
+    // //         p.bump();
+    // //     }
+    // //     p.expect(TokenKind::Newline);
+    // //     m.complete(p, TokenKind::IgnoredOp, line);
+    // //     return None;
+    // // }
+    while !p.at(TokenKind::Newline) {
         p.bump();
-    } else {
-        while !p.at(TokenKind::Newline) {
-            p.bump();
-        }
-        p.expect(TokenKind::Newline);
-        m.complete(p, TokenKind::IgnoredOp, line);
-        return None;
     }
-
-    p.expect(TokenKind::String);
+    // p.expect(TokenKind::String);
     p.expect(TokenKind::Newline);
     Some(m.complete(p, TokenKind::DecorateStringStatement, line))
 }
@@ -1036,7 +1042,7 @@ fn op_atomic_compare_exchange_expr(p: &mut Parser) -> CompletedMarker {
 
     p.expect(TokenKind::Newline);
 
-    m.complete(p, TokenKind::AtomicCompareExchangeExpr,line)
+    m.complete(p, TokenKind::AtomicCompareExchangeExpr, line)
 }
 
 /// example: OpGroupAll %bool %uint_0 %value
@@ -1079,6 +1085,20 @@ fn op_group_nonuniform_all_expr(p: &mut Parser) -> CompletedMarker {
     p.expect(TokenKind::Ident);
     p.expect(TokenKind::Newline);
     m.complete(p, TokenKind::GroupNonUniformAllExpr, line)
+}
+
+/// example: OpGroupNonUniformAllEqual %bool %uint_0 %value
+fn op_group_nonuniform_all_equal_expr(p: &mut Parser) -> CompletedMarker {
+    let m = p.start();
+    let line = p.get_line();
+    p.increment_line();
+    // skip OpGroupNonUniformAllEqual token
+    p.bump();
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Newline);
+    m.complete(p, TokenKind::GroupNonUniformAllEqualExpr, line)
 }
 
 /// example: OpGroupNonUniformAny %bool %uint_0 %value
@@ -1150,7 +1170,6 @@ fn op_bitcast_expr(p: &mut Parser) -> CompletedMarker {
     p.expect(TokenKind::Newline);
     m.complete(p, TokenKind::BitcastExpr, line)
 }
-
 
 fn variable_def(p: &mut Parser) -> Option<CompletedMarker> {
     let m = p.start();

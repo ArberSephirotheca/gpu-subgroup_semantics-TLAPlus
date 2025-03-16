@@ -57,7 +57,13 @@ impl<'t> Iterator for Lexer<'t> {
             self.line += 1;
         }
         self.cursor += 1;
-        Some(Self::Item { kind, text, range, line: self.line, pos: self.cursor})
+        Some(Self::Item {
+            kind,
+            text,
+            range,
+            line: self.line,
+            pos: self.cursor,
+        })
     }
 
     // /// this function is called when we call next() on Lexer

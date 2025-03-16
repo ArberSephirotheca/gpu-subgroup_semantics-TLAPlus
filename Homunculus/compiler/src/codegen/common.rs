@@ -35,6 +35,7 @@ pub enum BinaryExpr {
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum InstructionName {
+    Assert,
     Assignment,
     Return,
     Load,
@@ -75,6 +76,7 @@ pub enum InstructionName {
     GroupAll,
     GroupAny,
     GroupNonUniformAll,
+    GroupNonUniformAllEqual,
     GroupNonUniformAny,
     GroupNonUniformBroadcast,
 }
@@ -104,6 +106,7 @@ pub(crate) static MERGE_INSTRUCTIONS: [InstructionName; 2] =
 impl Display for InstructionName {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            InstructionName::Assert => write!(f, "Assert"),
             InstructionName::Assignment => write!(f, "Assignment"),
             InstructionName::Return => write!(f, "Terminate"),
             // InstructionName::Load => write!(f, "OpLoad"),
@@ -144,6 +147,7 @@ impl Display for InstructionName {
             InstructionName::GroupAll => write!(f, "OpGroupAll"),
             InstructionName::GroupAny => write!(f, "OpGroupAny"),
             InstructionName::GroupNonUniformAll => write!(f, "OpGroupNonUniformAll"),
+            InstructionName::GroupNonUniformAllEqual => write!(f, "OpGroupNonUniformAllEqual"),
             InstructionName::GroupNonUniformAny => write!(f, "OpGroupNonUniformAny"),
             InstructionName::GroupNonUniformBroadcast => write!(f, "OpGroupNonUniformBroadcast"),
         }
@@ -453,12 +457,11 @@ impl Program {
                     writeln!(
                         writer,
                         "[labelIdx |-> {}, id |-> 1]{}",
-                        ins.position,
-                        separator
+                        ins.position, separator
                     )
                     .unwrap();
                 });
-            
+
             if idx != self.num_threads - 1 {
                 writeln!(writer, "}},")?;
             } else {

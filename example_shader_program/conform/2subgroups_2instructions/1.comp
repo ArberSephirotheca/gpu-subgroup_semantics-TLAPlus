@@ -4,8 +4,8 @@
 #extension GL_KHR_memory_scope_semantics : enable
 #extension GL_KHR_shader_subgroup_vote : enable
 #extension GL_KHR_shader_subgroup_ballot : enable
-layout(local_size_x = 1) in;
-layout(tla_subgroup_size = 1) in;
+layout(local_size_x = 2) in;
+layout(tla_subgroup_size = 2) in;
 layout(tla_num_workgroups = 2) in;
 
 layout(std430, binding = 0) buffer PickThread {

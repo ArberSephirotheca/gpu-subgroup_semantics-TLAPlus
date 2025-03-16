@@ -50,7 +50,7 @@ impl InstructionArgumentBuilder {
         self.ssa_id = Some(ssa_id);
         self
     }
-    
+
     pub fn name(mut self, name: String) -> Self {
         self.name = Some(name);
         self
@@ -309,7 +309,9 @@ impl ProgramBuilder {
                 .ok_or_else(|| eyre!("Scheduler is required"))?,
             instructions: self.instructions,
             constants: self.constants,
-            func_start_line: self.func_start_line.ok_or_else(|| eyre!("Function start line is required"))?,
+            func_start_line: self
+                .func_start_line
+                .ok_or_else(|| eyre!("Function start line is required"))?,
         })
     }
 }

@@ -1,4 +1,9 @@
-use super::{event::Event, parser::Parse, parser_error::ParseError, syntax::{AsukaLanguage, SyntaxToken}};
+use super::{
+    event::Event,
+    parser::Parse,
+    parser_error::ParseError,
+    syntax::{AsukaLanguage, SyntaxToken},
+};
 use crate::compiler::parse::lexer::Token;
 use rowan::{GreenNodeBuilder, Language};
 use std::{collections::HashMap, mem};
@@ -28,9 +33,9 @@ impl<'l, 't> Sink<'l, 't> {
     pub(super) fn finish(mut self) -> Parse {
         for idx in 0..self.events.len() {
             match mem::replace(&mut self.events[idx], Event::Placeholder) {
-                Event::AddToken {token_index} => {
+                Event::AddToken { token_index } => {
                     self.token(token_index);
-                },
+                }
                 Event::StartNode {
                     kind,
                     forward_parent,
@@ -92,7 +97,13 @@ impl<'l, 't> Sink<'l, 't> {
         }
     }
     fn token(&mut self, token_index: usize) {
-        let Token { kind, text, line, pos, .. } = self.tokens[self.cursor];
+        let Token {
+            kind,
+            text,
+            line,
+            pos,
+            ..
+        } = self.tokens[self.cursor];
         self.builder
             .token(AsukaLanguage::kind_to_raw(kind), text.into());
         self.token_index_map.push(token_index);

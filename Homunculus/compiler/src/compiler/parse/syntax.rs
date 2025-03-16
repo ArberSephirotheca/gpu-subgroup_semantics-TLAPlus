@@ -144,6 +144,7 @@ pub enum TokenKind {
     GroupAllExpr,
     GroupAnyExpr,
     GroupNonUniformAllExpr,
+    GroupNonUniformAllEqualExpr,
     GroupNonUniformAnyExpr,
     GroupNonUniformBroadcastExpr,
     BitwiseOrExpr,
@@ -354,6 +355,8 @@ pub enum TokenKind {
     OpGroupAny,
     #[regex("OpGroupNonUniformAll")]
     OpGroupNonUniformAll,
+    #[regex("OpGroupNonUniformAllEqual")]
+    OpGroupNonUniformAllEqual,
     #[regex("OpGroupNonUniformAny")]
     OpGroupNonUniformAny,
     #[regex("OpGroupNonUniformBroadcast")]

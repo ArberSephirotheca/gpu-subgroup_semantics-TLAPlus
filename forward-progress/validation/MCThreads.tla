@@ -1189,6 +1189,63 @@ OpGroupNonUniformAll(t, result, scope, predicate) ==
             ELSE
                 /\  FALSE
 
+OpGroupNonUniformAllEqual(t, result, scope, value) ==
+    LET mangledResult == Mangle(t, result)
+    IN
+        /\  
+            \/  /\  IsVariable(result)
+            \/  IsIntermediate(result)
+        /\  scope.value \in ScopeOperand
+        /\  IF scope.value = "subgroup" THEN
+                /\  LET workGroupId == WorkGroupId(t) + 1
+                        sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+                        currentDB == CurrentDynamicNode(workGroupId, t)
+                        active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+                        unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+                        equalVal == EvalExpr(t, workGroupId, value)
+                    IN
+                        \* if there are threads in tangle not reaching the instruction point,
+                        \* or there are threads in unknown set, make current thread waiting
+                        IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
+                            /\  state' = [state EXCEPT ![t] = "subgroup"]
+                            /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+                        ELSE IF \A sthread \in active_subgroup_threads: EvalExpr(sthread, workGroupId, value) = equalVal THEN 
+                            /\  Assignment(t, {Var(result.scope, Mangle(sthread, result).name, TRUE, Index(-1)): sthread \in active_subgroup_threads})
+                            /\  state' = [\* release all barrier in the subgroup, marking barrier as ready
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            "ready" 
+                                        ELSE 
+                                            state[tid]
+                                ]
+                            /\  pc' = [
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            pc[tid] + 1
+                                        ELSE 
+                                            pc[tid]
+                                ]
+                            /\ UNCHANGED <<globalVars, globalCounter, DynamicNodeSet, snapShotMap>>
+                        ELSE 
+                            /\  Assignment(t, {Var(result.scope, Mangle(sthread, result).name, FALSE, Index(-1)): sthread \in active_subgroup_threads })
+                            /\  state' = [\* release all barrier in the subgroup, marking barrier as ready
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            "ready" 
+                                        ELSE 
+                                            state[tid]
+                                ]
+                            /\  pc' = [
+                                    tid \in Threads |->
+                                        IF tid \in active_subgroup_threads THEN 
+                                            pc[tid] + 1
+                                        ELSE 
+                                            pc[tid]
+                                ]
+                            /\ UNCHANGED <<globalVars, globalCounter, DynamicNodeSet, snapShotMap>>
+            ELSE
+                /\  FALSE
+
 OpGroupNonUniformAny(t, result, scope, predicate) ==
     LET mangledResult == Mangle(t, result)
     IN
@@ -1395,14 +1452,7 @@ OpBranchSync(t, label) ==
             /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
         ELSE 
             /\  LET labelVal == GetVal(-1, label)
-                    newPc == [
-                                tid \in Threads |->
-                                IF tid \in active_subgroup_threads THEN 
-                                    GetVal(-1, label)
-                                ELSE 
-                                    pc[tid]
-                            ]
-                        \* [pc EXCEPT ![t] = GetVal(-1, label)]
+                    newPc == [pc EXCEPT ![t] = GetVal(-1, label)]
                 IN
                     LET counterNewDBSet == BranchUpdate(workGroupId, t, pc[t], {labelVal}, labelVal, {labelVal})
                         newCounter == counterNewDBSet[1]
@@ -1742,7 +1792,6 @@ OpSelectionMerge(t, mergeLabel) ==
     /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
     /\  UNCHANGED <<state, threadLocals, globalVars, DynamicNodeSet, globalCounter, snapShotMap>>
 
-\* zheyuan chen: update tangle
 Terminate(t) ==
     LET workGroupId == WorkGroupId(t)+1
     IN
@@ -1752,6 +1801,15 @@ Terminate(t) ==
             /\  DynamicNodeSet' = newDBSet
             /\  state' = [newState EXCEPT ![t] = "terminated"]
             /\  UNCHANGED <<pc, threadLocals, globalVars, globalCounter, snapShotMap>>
+
+OpAssert(t, predicate) ==
+    LET workGroupId == WorkGroupId(t)+1
+    IN
+        IF EvalExpr(t, workGroupId, predicate) = FALSE THEN
+            /\  Print("Assert failed", FALSE)
+        ELSE
+            /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
+            /\  UNCHANGED <<state, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
 
 ExecuteInstruction(t) ==
     LET workGroupId == WorkGroupId(t)+1
@@ -1850,6 +1908,8 @@ ExecuteInstruction(t) ==
                 OpGroupAny(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpGroupNonUniformAll" THEN
                 OpGroupNonUniformAll(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
+            ELSE IF ThreadInstructions[t][pc[t]] = "OpGroupNonUniformAllEqual" THEN
+                OpGroupNonUniformAllEqual(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpGroupNonUniformAny" THEN
                 OpGroupNonUniformAny(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpGroupNonUniformBroadcast" THEN
@@ -1860,6 +1920,8 @@ ExecuteInstruction(t) ==
                 OpSelectionMerge(t, ThreadArguments[t][pc[t]][1])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpLabel" THEN
                 OpLabel(t, ThreadArguments[t][pc[t]][1])
+            ELSE IF ThreadInstructions[t][pc[t]] = "Assert" THEN
+                OpAssert(t, ThreadArguments[t][pc[t]][1])
             ELSE
                 FALSE
         ELSE 

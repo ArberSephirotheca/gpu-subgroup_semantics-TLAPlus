@@ -1,0 +1,56 @@
+#version 460
+#pragma scheduler(OBE)
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+layout(local_size_x = 3) in;
+layout(tla_subgroup_size = 3) in;
+layout(tla_num_workgroups = 1) in;
+
+layout(std430, binding = 0) buffer Msg { uint msg; };
+
+shared uint sharedMsg;
+
+// Assume under 1 workgroup, 3 threads per workgroup, and subgroup size of 3
+// for lockstep: the program guarantee to termiante.
+// for branch synchronization: it may hangs because thread does not execute in
+// lockstep for memory operations, hence some thread may loop forever waiting
+// for another thread to finish its memory operation.
+void main() {
+  // 3
+  bool first_wg_cond = gl_WorkGroupID.x == 0;
+  bool first_subgroup_cond = gl_SubgroupID == 0;
+  bool second_wg_cond = gl_WorkGroupID.x == 1;
+  bool second_subgroup_cond = gl_SubgroupID == 0;
+  uint round_robin = 0;
+  uint picked_subgroup = 0;
+
+  if (first_wg_cond) {
+    if (gl_LocalInvocationID.x == 0) {
+      // 9
+      sharedMsg = 0;
+    }
+    // 12
+    barrier();
+    if (gl_LocalInvocationID.x == 0) {
+      // 17
+      sharedMsg = 1;
+      // do some works..
+    } else {
+      // 20
+      uint localMsg = sharedMsg;
+      // 23
+      while (!subgroupAllEqual(localMsg)) { // 26 // 33
+        // 30
+        int i = 0;
+        // spin..
+      }
+      // 35
+    }
+  }
+  // 37
+
+  if (second_wg_cond) {
+
+  }
+}

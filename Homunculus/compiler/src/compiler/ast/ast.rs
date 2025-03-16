@@ -113,6 +113,8 @@ pub struct GroupAnyExpr(SyntaxNode);
 #[derive(Debug, ResultType)]
 pub struct GroupNonUniformAllExpr(SyntaxNode);
 #[derive(Debug, ResultType)]
+pub struct GroupNonUniformAllEqualExpr(SyntaxNode);
+#[derive(Debug, ResultType)]
 pub struct GroupNonUniformAnyExpr(SyntaxNode);
 #[derive(Debug, ResultType)]
 pub struct GroupNonUniformBroadcastExpr(SyntaxNode);
@@ -170,6 +172,7 @@ pub enum Expr {
     GroupAllExpr(GroupAllExpr),
     GroupAnyExpr(GroupAnyExpr),
     GroupNonUniformAllExpr(GroupNonUniformAllExpr),
+    GroupNonUniformAllEqualExpr(GroupNonUniformAllEqualExpr),
     GroupNonUniformAnyExpr(GroupNonUniformAnyExpr),
     GroupNonUniformBroadcastExpr(GroupNonUniformBroadcastExpr),
 }
@@ -221,7 +224,9 @@ impl Expr {
             TokenKind::LogicalEqualExpr => Some(Self::LogicalEqual(LogicalEqual(node))),
             TokenKind::LogicalNotEqualExpr => Some(Self::LogicalNotEqual(LogicalNotEqual(node))),
             TokenKind::LogicalNotExpr => Some(Self::LogicalNot(LogicalNot(node))),
-            TokenKind::ShiftLeftLogicalExpr => Some(Self::ShiftLeftLogicalExpr(ShiftLeftLogicalExpr(node))),
+            TokenKind::ShiftLeftLogicalExpr => {
+                Some(Self::ShiftLeftLogicalExpr(ShiftLeftLogicalExpr(node)))
+            }
             TokenKind::AddExpr => Some(Self::AddExpr(AddExpr(node))),
             TokenKind::AtomicAddExpr => Some(Self::AtomicAddExpr(AtomicAddExpr(node))),
             TokenKind::SubExpr => Some(Self::SubExpr(SubExpr(node))),
@@ -253,12 +258,15 @@ impl Expr {
             TokenKind::GroupNonUniformAllExpr => {
                 Some(Self::GroupNonUniformAllExpr(GroupNonUniformAllExpr(node)))
             }
+            TokenKind::GroupNonUniformAllEqualExpr => Some(Self::GroupNonUniformAllEqualExpr(
+                GroupNonUniformAllEqualExpr(node),
+            )),
             TokenKind::GroupNonUniformAnyExpr => {
                 Some(Self::GroupNonUniformAnyExpr(GroupNonUniformAnyExpr(node)))
             }
-            TokenKind::GroupNonUniformBroadcastExpr => {
-                Some(Self::GroupNonUniformBroadcastExpr(GroupNonUniformBroadcastExpr(node)))
-            }
+            TokenKind::GroupNonUniformBroadcastExpr => Some(Self::GroupNonUniformBroadcastExpr(
+                GroupNonUniformBroadcastExpr(node),
+            )),
             _ => None,
         }
     }
@@ -285,7 +293,7 @@ impl Expr {
             Self::AtomicAddExpr(x) => x.0.first_token().unwrap(),
             Self::SubExpr(x) => x.0.first_token().unwrap(),
             Self::AtomicSubExpr(x) => x.0.first_token().unwrap(),
-            Self::AtomicOrExpr(x)   => x.0.first_token().unwrap(),
+            Self::AtomicOrExpr(x) => x.0.first_token().unwrap(),
             Self::MulExpr(x) => x.0.first_token().unwrap(),
             Self::ModExpr(x) => x.0.first_token().unwrap(),
             Self::EqualExpr(x) => x.0.first_token().unwrap(),
@@ -302,6 +310,7 @@ impl Expr {
             Self::GroupAllExpr(x) => x.0.first_token().unwrap(),
             Self::GroupAnyExpr(x) => x.0.first_token().unwrap(),
             Self::GroupNonUniformAllExpr(x) => x.0.first_token().unwrap(),
+            Self::GroupNonUniformAllEqualExpr(x) => x.0.first_token().unwrap(),
             Self::GroupNonUniformAnyExpr(x) => x.0.first_token().unwrap(),
             Self::GroupNonUniformBroadcastExpr(x) => x.0.first_token().unwrap(),
         }
@@ -341,7 +350,7 @@ impl Stmt {
         }
     }
 
-    pub(crate) fn token(&self) -> SyntaxToken{
+    pub(crate) fn token(&self) -> SyntaxToken {
         match self {
             Self::ExecutionMode(x) => x.0.first_token().unwrap(),
             Self::DecorateStatement(x) => x.0.first_token().unwrap(),
@@ -360,7 +369,6 @@ impl Stmt {
             Self::Expr(x) => x.token(),
         }
     }
-
 }
 
 impl Root {
@@ -963,6 +971,24 @@ impl GroupNonUniformAllExpr {
     }
 }
 
+impl GroupNonUniformAllEqualExpr {
+    pub(crate) fn execution_scope(&self) -> Option<SyntaxToken> {
+        self.0
+            .children_with_tokens()
+            .filter_map(|x| x.into_token())
+            .filter(|x| x.kind() == TokenKind::Ident)
+            .nth(1)
+    }
+
+    pub(crate) fn value(&self) -> Option<SyntaxToken> {
+        self.0
+            .children_with_tokens()
+            .filter_map(|x| x.into_token())
+            .filter(|x| x.kind() == TokenKind::Ident)
+            .nth(2)
+    }
+}
+
 impl GroupNonUniformAnyExpr {
     pub(crate) fn execution_scope(&self) -> Option<SyntaxToken> {
         self.0
@@ -1053,7 +1079,14 @@ impl DecorateStringStatement {
             .find(|x| TLA_BUILTIN_SET.contains(&x.kind()))
     }
 
-    pub(crate) fn value(&self) -> Option<SyntaxToken> {
+    pub(crate) fn id(&self) -> Option<SyntaxToken> {
+        self.0
+            .children_with_tokens()
+            .filter_map(|x| x.into_token())
+            .find(|x| x.kind() == TokenKind::Ident)
+    }
+
+    pub(crate) fn string(&self) -> Option<SyntaxToken> {
         self.0
             .children_with_tokens()
             .filter_map(|x| x.into_token())

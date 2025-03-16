@@ -9,8 +9,8 @@ use crate::compiler::parse::source::Source;
 use crate::compiler::parse::syntax::SyntaxNode;
 use crate::compiler::parse::syntax::TokenKind;
 use core::mem;
-use std::collections::HashMap;
 use rowan::{GreenNode, NodeOrToken};
+use std::collections::HashMap;
 type AsukaResult<T> = Result<T, AsukaError>;
 
 const RECOVERY_SET: [TokenKind; 1] = [TokenKind::Newline];
@@ -61,8 +61,8 @@ impl<'l, 't> Parser<'l, 't> {
         self.expected_kinds.clear();
         let token = self.source.next_token().unwrap();
 
-        self.events.push(Event::AddToken{
-            token_index: token.pos
+        self.events.push(Event::AddToken {
+            token_index: token.pos,
         });
     }
 

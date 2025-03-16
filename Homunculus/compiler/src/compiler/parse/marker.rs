@@ -13,7 +13,12 @@ impl Marker {
         }
     }
 
-    pub(super) fn complete(mut self, p: &mut Parser, kind: TokenKind, line: usize) -> CompletedMarker {
+    pub(super) fn complete(
+        mut self,
+        p: &mut Parser,
+        kind: TokenKind,
+        line: usize,
+    ) -> CompletedMarker {
         self.completed = true;
         let event_at_pos = &mut p.events[self.pos];
         assert_eq!(*event_at_pos, Event::Placeholder);
@@ -26,7 +31,10 @@ impl Marker {
 
         p.events.push(Event::FinishNode);
 
-        CompletedMarker { pos: self.pos, line }
+        CompletedMarker {
+            pos: self.pos,
+            line,
+        }
     }
 }
 
@@ -40,7 +48,7 @@ impl Drop for Marker {
 
 pub(crate) struct CompletedMarker {
     pos: usize,
-    line : usize,
+    line: usize,
 }
 
 impl CompletedMarker {

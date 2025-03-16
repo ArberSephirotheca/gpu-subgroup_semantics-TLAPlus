@@ -1,16 +1,16 @@
 use std::collections::HashMap;
 
-use crate::compiler::ast::ast::{BinaryExpr, Expr, ResultType, Root, Stmt, UnaryExpr};
-/// `CodegenCx` is a struct that holds the compilation unit of the codegen.
-use crate::compiler::parse::symbol_table::*;
-use crate::compiler::parse::syntax::{SyntaxNode, SyntaxToken, TokenKind};
-use crate::compiler::parse::lexer::Token;
 use super::builder::InstructionArgumentsBuilder;
 use super::common::{
     ExecutionScope, Instruction, InstructionArgument, InstructionArguments,
     InstructionBuiltInVariable, InstructionValue, Program, Scheduler, VariableScope,
 };
 use crate::codegen::common::{IndexKind, InstructionName};
+use crate::compiler::ast::ast::{BinaryExpr, Expr, ResultType, Root, Stmt, UnaryExpr};
+use crate::compiler::parse::lexer::Token;
+/// `CodegenCx` is a struct that holds the compilation unit of the codegen.
+use crate::compiler::parse::symbol_table::*;
+use crate::compiler::parse::syntax::{SyntaxNode, SyntaxToken, TokenKind};
 
 #[derive(Debug)]
 pub struct CodegenCx {
@@ -424,7 +424,7 @@ impl CodegenCx {
 
                 // variable expression would be a variable declaration, so its SSA form is the same as the variable name
                 let var_info = VariableInfo::new(
-                    var_name.clone(), 
+                    var_name.clone(),
                     var_name.clone(),
                     spirv_type.clone(),
                     vec![],
@@ -684,7 +684,10 @@ impl CodegenCx {
                 let var_info = VariableInfo::new(
                     var_name.clone(),
                     var_name.clone(),
-                    SpirvType::Int { width: 32, signed: true },
+                    SpirvType::Int {
+                        width: 32,
+                        signed: true,
+                    },
                     vec![],
                     StorageClass::Local,
                     None,
@@ -700,7 +703,10 @@ impl CodegenCx {
                 let var_info = VariableInfo::new(
                     var_name.clone(),
                     var_name.clone(),
-                    SpirvType::Int { width: 32, signed: true },
+                    SpirvType::Int {
+                        width: 32,
+                        signed: true,
+                    },
                     vec![],
                     StorageClass::Local,
                     None,
@@ -875,6 +881,20 @@ impl CodegenCx {
                 self.insert_variable(var_name, var_info);
                 self.increment_inst_position();
             }
+            Expr::GroupNonUniformAllEqualExpr(_) => {
+                let var_info = VariableInfo::new(
+                    var_name.clone(),
+                    var_name.clone(),
+                    SpirvType::Bool,
+                    vec![],
+                    StorageClass::Local,
+                    None,
+                    None,
+                    InstructionValue::None,
+                );
+                self.insert_variable(var_name, var_info);
+                self.increment_inst_position();
+            }
             Expr::GroupNonUniformAnyExpr(_) => {
                 let var_info = VariableInfo::new(
                     var_name.clone(),
@@ -954,13 +974,15 @@ impl CodegenCx {
             }
             // This decorate string statement is used to attach TLA+ built-in variables/metadata
             Stmt::DecorateStringStatement(decorate_string_stmt) => {
-                let tla_builtin = decorate_string_stmt.tla_builtin().expect(
-                    "DecorateStringStatement: TLA+ built-in not found in decorate string statement",
-                );
-                match tla_builtin.kind() {
-                    TokenKind::Scheduler => {
-                        let scheduler = decorate_string_stmt
-                            .value()
+                let tla_builtin = decorate_string_stmt.tla_builtin();
+                // .expect(
+                //     "DecorateStringStatement: TLA+ built-in not found in decorate string statement",
+                // );
+                if let Some(built_in) = tla_builtin {
+                    match built_in.kind() {
+                        TokenKind::Scheduler => {
+                            let scheduler = decorate_string_stmt
+                            .string()
                             .unwrap()
                             .text()
                             .trim_matches('"')
@@ -968,32 +990,37 @@ impl CodegenCx {
                             .expect(
                                 "DecorateStringStatement: TLA+ Scheduler must be a valid scheduler",
                             );
-                        self.scheduler = scheduler;
+                            self.scheduler = scheduler;
+                        }
+                        TokenKind::TlaNumWorkgroups => {
+                            let num_workgroup = decorate_string_stmt
+                                .string()
+                                .unwrap()
+                                .text()
+                                .trim_matches('"')
+                                .parse::<u32>()
+                                .expect(
+                                    "DecorateStringStatement: TLA+ NumWorkgroups must be a number",
+                                );
+                            self.num_work_group = num_workgroup;
+                        }
+                        TokenKind::TlaSubgroupSize => {
+                            let sub_group_size = decorate_string_stmt
+                                .string()
+                                .unwrap()
+                                .text()
+                                .trim_matches('"')
+                                .parse::<u32>()
+                                .expect(
+                                    "DecorateStringStatement: TLA+ SubgroupSize must be a number",
+                                );
+                            self.sub_group_size = sub_group_size;
+                        }
+                        _ => panic!(
+                            "DecorateStringStatement: Unsupported TLA+ built-in, {:?}",
+                            built_in.kind()
+                        ),
                     }
-                    TokenKind::TlaNumWorkgroups => {
-                        let num_workgroup = decorate_string_stmt
-                            .value()
-                            .unwrap()
-                            .text()
-                            .trim_matches('"')
-                            .parse::<u32>()
-                            .expect("DecorateStringStatement: TLA+ NumWorkgroups must be a number");
-                        self.num_work_group = num_workgroup;
-                    }
-                    TokenKind::TlaSubgroupSize => {
-                        let sub_group_size = decorate_string_stmt
-                            .value()
-                            .unwrap()
-                            .text()
-                            .trim_matches('"')
-                            .parse::<u32>()
-                            .expect("DecorateStringStatement: TLA+ SubgroupSize must be a number");
-                        self.sub_group_size = sub_group_size;
-                    }
-                    _ => panic!(
-                        "DecorateStringStatement: Unsupported TLA+ built-in, {:?}",
-                        tla_builtin.kind()
-                    ),
                 }
             }
             // fixme:: does not support OpAccesschain yet
@@ -1577,7 +1604,7 @@ impl CodegenCx {
                         .push_argument(value_arg),
                 )
             }
-    
+
             Expr::SubExpr(sub_expr) => {
                 let inst_args_builder = InstructionArguments::builder();
                 let result_arg_builder = InstructionArgument::builder();
@@ -2777,6 +2804,71 @@ impl CodegenCx {
 
                 Some(inst_args)
             }
+            Expr::GroupNonUniformAllEqualExpr(group_nonuniform_all_equal) => {
+                let inst_args_builder = InstructionArguments::builder();
+                let result_arg_builder = InstructionArgument::builder();
+                let value_arg_builder = InstructionArgument::builder();
+
+                let execution_scope = group_nonuniform_all_equal
+                    .execution_scope()
+                    .expect("GroupNonUniformAllEqualExpr: Scope not found");
+                let value = group_nonuniform_all_equal
+                    .value()
+                    .expect("GroupNonUniformAllEqualExpr: Value not found");
+
+                let result_info = self
+                    .lookup_variable(&var_name)
+                    .expect("GroupNonUniformAllEqualExpr: Result not found");
+                let value_info = self
+                    .lookup_variable(value.text())
+                    .expect("GroupNonUniformAllEqualExpr: Value not found");
+                let scope_info = self
+                    .lookup_variable(execution_scope.text())
+                    .expect("GroupNonUniformAllEqualExpr: Scope not found");
+                let scope = scope_info
+                    .const_value
+                    .as_ref()
+                    .expect("GroupNonUniformAllEqualExpr: Scope is not a constant")
+                    .get_int_value();
+
+                let result_arg = result_arg_builder
+                    .ssa_id(result_info.get_ssa_name())
+                    .name(result_info.get_var_name())
+                    .value(InstructionValue::None)
+                    .index(IndexKind::Literal(-1))
+                    .scope(VariableScope::cast(&result_info.get_storage_class()))
+                    .build()
+                    .unwrap();
+
+                let value_arg = value_arg_builder
+                    .ssa_id(value_info.get_ssa_name())
+                    .name(value_info.get_var_name())
+                    .value(self.construct_instruction_value(&value_info))
+                    .index(IndexKind::Literal(-1))
+                    .scope(VariableScope::cast(&value_info.get_storage_class()))
+                    .build()
+                    .unwrap();
+
+                let scope_arg = InstructionArgument::builder()
+                    .ssa_id(scope_info.get_ssa_name())
+                    .name(scope_info.get_var_name())
+                    .value(InstructionValue::String(
+                        ExecutionScope::from(scope).to_string(),
+                    ))
+                    .index(IndexKind::Literal(-1))
+                    .scope(VariableScope::Literal)
+                    .build()
+                    .unwrap();
+
+                let inst_args = inst_args_builder
+                    .name(InstructionName::GroupNonUniformAllEqual)
+                    .num_args(3)
+                    .push_argument(result_arg)
+                    .push_argument(scope_arg)
+                    .push_argument(value_arg);
+
+                Some(inst_args)
+            }
             Expr::GroupNonUniformAnyExpr(group_nonuniform_any) => {
                 let inst_args_builder = InstructionArguments::builder();
                 let result_arg_builder = InstructionArgument::builder();
@@ -2893,7 +2985,7 @@ impl CodegenCx {
                     .scope(VariableScope::cast(&value_info.get_storage_class()))
                     .build()
                     .unwrap();
-                
+
                 let id_arg = id_arg_builder
                     .ssa_id(id_info.get_ssa_name())
                     .name(id_info.get_var_name())
@@ -2988,7 +3080,41 @@ impl CodegenCx {
             // decorate statement is used to attach built-in variables/metadata to a variable
             Stmt::DecorateStatement(_decorate_stmt) => None,
             // decorate string statement is used to attach tla built-in variables/metadata to a string
-            Stmt::DecorateStringStatement(_op_decorate_string_stmt) => None,
+            Stmt::DecorateStringStatement(op_decorate_string_stmt) => {
+                let string = op_decorate_string_stmt.string().unwrap().text().trim_matches('"').to_string();
+                if op_decorate_string_stmt.tla_builtin().is_none() && string == "assert"{
+                    let inst_args_builder = InstructionArguments::builder(); 
+                    let id_builder = InstructionArgument::builder();
+                    let id_ssa = op_decorate_string_stmt.id().unwrap();
+                    let id_info = self.lookup_variable(id_ssa.text()).unwrap();
+                    let id_arg = id_builder
+                        .ssa_id(id_info.get_ssa_name())
+                        .name(id_info.get_var_name())
+                        .value(self.construct_instruction_value(&id_info))
+                        .index(IndexKind::Literal(-1))
+                        .scope(VariableScope::cast(&id_info.get_storage_class()))
+                        .build()
+                        .unwrap();
+                    let inst_args = inst_args_builder
+                        .name(InstructionName::Assert)
+                        .num_args(1)
+                        .push_argument(id_arg)
+                        .build()
+                        .unwrap();
+                    Some(
+                        Instruction::builder()
+                            .arguments(inst_args)
+                            .name(InstructionName::Assert)
+                            .scope(ExecutionScope::None)
+                            .position(self.increment_inst_position())
+                            .line(line)
+                            .build()
+                            .unwrap(),
+                    )
+                } else{
+                    None
+                }
+            },
             // fixme:: does not support OpAccesschain yet
             Stmt::StoreStatement(store_stmt) => {
                 let inst_args_builder = InstructionArguments::builder();
@@ -3421,7 +3547,12 @@ impl CodegenCx {
     //         .unwrap()
     // }
 
-    pub fn generate_code_with_origin_line_number(&mut self, root: SyntaxNode, map: &HashMap<SyntaxToken, usize>, tokens: &Vec<Token>) -> Program {
+    pub fn generate_code_with_origin_line_number(
+        &mut self,
+        root: SyntaxNode,
+        map: &HashMap<SyntaxToken, usize>,
+        tokens: &Vec<Token>,
+    ) -> Program {
         let mut program_builder = Program::builder();
         let root = Root::cast(root).unwrap();
         let mut line = 0;
@@ -3451,7 +3582,6 @@ impl CodegenCx {
             .build()
             .unwrap()
     }
-
 
     pub(crate) fn get_global_variables(&self) -> Vec<VariableInfo> {
         self.variable_table.get_global_variables()

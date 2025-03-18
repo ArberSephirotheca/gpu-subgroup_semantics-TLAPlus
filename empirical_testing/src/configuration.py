@@ -9,6 +9,8 @@ class Configuration(object):
 
     # constructor of the Configuration object
     def __init__(self, timeout, workgroups, threads_per_workgroup, saturation_level, subgroup, subgroup_size):
+        if threads_per_workgroup < subgroup_size:
+            raise ValueError("Number of threads per workgroup must be greater than or equal to subgroup size")
         # timeout represents the time (in ms) for which the Amber test will run
         self._timeout = timeout
         # number of workgroups to be used for the Amber test

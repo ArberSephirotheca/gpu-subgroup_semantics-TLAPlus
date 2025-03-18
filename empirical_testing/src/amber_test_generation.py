@@ -31,15 +31,15 @@ from configuration import Configuration
 # intra-workgroup behavior to be tested, but can mess up saturation
 # hueristics. subgroup will include the GLSL subgroup extension and
 # ensure that testing threads are in different subgroups.
-default_config = Configuration(timeout=20000, workgroups=65532, threads_per_workgroup=1, saturation_level=0, subgroup=0, subgroup_size=32)
+default_config = Configuration(timeout=20000, workgroups=65532, threads_per_workgroup=32, saturation_level=0, subgroup=0, subgroup_size=32)
 
 
 # write the necessary "boiler plate" code to generate an Amber test, along with Shader
 # Storage Buffer Object(s), workgroup size, and global variable to
 # assign thread IDs. output is the file being written to, timeout determines (in ms) when the
-# program will terminate, num_testing_threads is the number of threads being tested, and saturation_level is the
+# program will terminate, num_testing_subgroups is the number of threads being tested, and saturation_level is the
 # type of saturation (if any)
-def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num_testing_threads, saturation_level,
+def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num_testing_subgroups, saturation_level,
                          subgroup_setting, subgroup_size):
     output.write("#!amber\n")
     output.write("\n")
@@ -90,49 +90,56 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         output.write("\tuint gid_x = gl_GlobalInvocationID.x;\n")
 
     output.write("\tint pc = 0;\n")
+    output.write("\tuint round_robin = 0\n")
 
     # perform the necessary index computation to update SSBO for "round robin" saturation
     if saturation_level == 1:
         total_threads = workgroups * threads_per_workgroup
-        # zheyuan: maybe add a check to ensure that total_threads is divisible by num_testing_threads
+        # zheyuan: maybe add a check to ensure that total_threads is divisible by num_testing_subgroups
         num_subgroup_per_workgroup = threads_per_workgroup / subgroup_size
         total_subgroups = workgroups * num_subgroup_per_workgroup
         output.write("\n")
         output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
-        output.write("\tint num_testing_threads = " + str(num_testing_threads) + ";\n")
+        output.write("\tint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
         output.write("\t int num_subgroup_per_workgroup = " + str(num_subgroup_per_workgroup) + ";\n")
+        output.write("\tg_subgroup_id = workgroup_id * num_subgroup_per_workgroup + subgroup_id;\n")
         output.write("\t int total_subgroups = " + str(total_subgroups) + ";\n")
-        output.write("\tuint index = total_subgroups / num_subgroup_per_workgroup;\n")
+        output.write("\tuint index = workgroup_id / num_testing_subgroups;\n")
 
     # perform the necessary computations of "chunk" size and index to update SSBO for "chunking" saturation
     elif saturation_level == 2:
         total_threads = workgroups * threads_per_workgroup
+        num_subgroup_per_workgroup = threads_per_workgroup / subgroup_size
+        total_subgroups = workgroups * num_subgroup_per_workgroup
         output.write("\n")
         output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
-        output.write("\tint num_testing_threads = " + str(num_testing_threads) + ";\n")
-        output.write("\tint chunk_size =  total_num_threads / num_testing_threads;\n")
-        output.write("\tuint index = gid_x % chunk_size;\n")
+        output.write("\tint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
+        output.write("\t int num_subgroup_per_workgroup = " + str(num_subgroup_per_workgroup) + ";\n")
+        output.write("\t int total_subgroups = " + str(total_subgroups) + ";\n")
+        output.write("\tg_subgroup_id = workgroup_id * num_subgroup_per_workgroup + subgroup_id;\n")
+        output.write("\tint chunk_size =  total_threads / num_testing_subgroups;\n")
+        output.write("\tuint index = workgroup_id % chunk_size;\n")
 
     output.write("\n")
 
 
 # write the appropriate content to set up each thread by using the thread_instructions, the thread_number,
-# the total number of threads (number_of_testing_threads), the number_of_testing_threads, and saturation_level
-def write_amber_thread_program(output, thread_instructions, thread_number, number_of_testing_threads, saturation_level,
+# the total number of threads (number_of_testing_subgroups), the number_of_testing_subgroups, and saturation_level
+def write_amber_thread_program(output, thread_instructions, thread_number, number_of_testing_subgroups, saturation_level,
                                subgroup_set):
 
     # compose the "if" statements for each thread depending on the type of saturation requested for the Amber test
     if saturation_level == 0:
         # write conditionals based on subgroup setting
         if subgroup_set == 0:
-            output.write("\tif (gid_x == " + str(thread_number) + ") { \n")
+            output.write("\tif (workgroup_id == " + str(thread_number) + " && subgroup_id == 0" + ") { \n")
         else:
             output.write("\tif (gl_SubgroupID == " + str(thread_number) + " && gl_SubgroupInvocationID == 0 &&"
                                                                           " gl_WorkGroupID.x == 0" + ") { \n")
     elif saturation_level == 1:
-        output.write("\tif (gid_x % num_testing_threads == " + str(thread_number) + ") { \n")
+        output.write("\tif (workgroup_id % num_testing_subgroups == " + str(thread_number) + " && subgroup_id == 0" + ") { \n")
     elif saturation_level == 2:
-        output.write("\tif (gid_x / chunk_size == " + str(thread_number) + ") { \n")
+        output.write("\tif (workgroup_id / chunk_size == " + str(thread_number) + " && subgroup_id == 0" + ") { \n")
     else:
         print("Saturation level can only be 0, 1, or 2", file=sys.stderr)
         exit(1)
@@ -140,17 +147,19 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
     output.write("\t   int terminate = 0;\n")
     output.write("\n")
     output.write("\twhile (true) {\n")
-    output.write("\t   if (terminate == 1) {\n")
+    output.write("\t   if (subgroupAny(terminate == 1)) {\n")
     output.write("\t   break;\n")
     output.write("\t}\n")
-    output.write("\tswitch(pc) {\n")
+    output.write("\tpick_thread = round_robin % subgroup_size;\n")
+    output.write("\tif (pick_thread == gl_SubgroupInvocationID) {\n")
+    output.write("\t  switch(pc) {\n")
     output.write("\n")
 
     program_end = len(thread_instructions)
 
     # iterate over each instruction assigned to the specific thread and generate the test case
     for instruc_id, instruction in enumerate(thread_instructions):
-        write_amber_thread_instruction(output, instruction, instruc_id, number_of_testing_threads, saturation_level,
+        write_amber_thread_instruction(output, instruction, instruc_id, number_of_testing_subgroups, saturation_level,
                                        program_end)
 
     output.write("\t  case " + str(program_end) + ":\n")
@@ -159,6 +168,9 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
     output.write("\n")
     output.write("\t     }\n")
     output.write("\t   }\n")
+    output.write("\t   round_robin += 1;\n")
+    output.write("\t   pc = subgroupBroadcast(pc, pick_thread);\n")
+    output.write("\t}\n")
     output.write("\t}\n")
     output.write("\n")
 
@@ -345,6 +357,7 @@ def generate_amber_test(inputted_file, output_file_name, config=default_config):
     timeout = config.get_timeout()
     saturation_level = int(config.get_saturation_level())
     subgroup_set = int(config.get_subgroup_setting())
+    subgroup_size = int(config.get_subgroup_size())
 
     if output_file_name.endswith(".amber"):
         print("Script will include the .amber extension, please provide a different output file name", file=sys.stderr)
@@ -400,7 +413,7 @@ def generate_amber_test(inputted_file, output_file_name, config=default_config):
 
     # call the appropriate functions to generate the amber test
     write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num_of_testing_threads, saturation_level,
-                         subgroup_set)
+                         subgroup_set, subgroup_size)
 
     for number, each_thread in enumerate(instructions):
         write_amber_thread_program(output, each_thread, number, num_of_testing_threads, saturation_level, subgroup_set)

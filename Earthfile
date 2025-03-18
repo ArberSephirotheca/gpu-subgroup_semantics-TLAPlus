@@ -2,12 +2,20 @@ VERSION 0.6
 
 tlaplusbuild-image:
     FROM openjdk:23-slim
-    RUN apt-get update && apt-get install -y git bash sudo curl graphviz clang cmake spirv-cross
+    RUN apt-get update && apt-get install -y git bash sudo curl graphviz clang spirv-cross ninja-build wget libssl-dev build-essential python3-tabulate libwayland-client0
     RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
     ENV PATH="/root/.cargo/bin:${PATH}"
     RUN git config --global http.postBuffer 157286400
+    RUN git config --global core.compression 0
+    RUN git config --global http.version HTTP/1.1
+    RUN wget https://github.com/Kitware/CMake/releases/download/v4.0.0-rc4/cmake-4.0.0-rc4.tar.gz
+    RUN tar -xzf cmake-4.0.0-rc4.tar.gz
+    WORKDIR cmake-4.0.0-rc4
+    RUN ./bootstrap
+    RUN make -j8 
+    RUN make install
+    WORKDIR /
     RUN git clone https://github.com/pmer/tla-bin.git
-    # RUN git clone https://github.com/KhronosGroup/glslang.git
     WORKDIR /tla-bin
     RUN ./download_or_update_tla.sh
     RUN sudo ./install.sh
@@ -19,6 +27,32 @@ tlaplusbuild-image:
     WORKDIR /workdir/glslang/build
     RUN cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$(pwd)/install" ..
     RUN make -j4 install
+    WORKDIR /workdir
+    # RUN wget https://sdk.lunarg.com/sdk/download/1.4.309.0/linux/vulkansdk-linux-x86_64-1.4.309.0.tar.xz
+    # RUN tar -xf vulkansdk-linux-x86_64-1.4.309.0.tar.xz
+    # WORKDIR /workdir/1.4.309.0
+    # RUN cp -r x86_64/include/vulkan /usr/include/
+    # RUN cp -r x86_64/lib/* /usr/lib/
+    # RUN cp -r x86_64/bin/vulkaninfo /usr/bin/
+    # RUN ldconfig
+    # WORKDIR /workdir
+    # RUN rm -rf vulkansdk-linux-x86_64-1.4.309.0.tar.xz
+    # RUN vulkaninfo
+    RUN git clone https://github.com/KhronosGroup/Vulkan-Headers.git
+    WORKDIR /workdir/Vulkan-Headers
+    RUN mkdir build
+    WORKDIR /workdir/Vulkan-Headers/build
+    RUN cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+    RUN make
+    RUN make install
+    WORKDIR /workdir
+    RUN git clone --depth=1 https://github.com/google/amber.git
+    WORKDIR amber
+    RUN ./tools/git-sync-deps
+    RUN mkdir -p out/Debug
+    WORKDIR out/Debug
+    RUN cmake -GNinja ../..
+    RUN ninja
     SAVE IMAGE --push czyczy981/tlaplus:latest
 
 tlaplus-image:
@@ -27,6 +61,7 @@ tlaplus-image:
     ARG LITMUS_TESTS=FALSE
     FROM +tlaplusbuild-image
     WORKDIR /workdir
+    COPY empirical_testing empirical_testing
     COPY forward-progress forward-progress
     COPY Homunculus Homunculus
     RUN CARGO_TARGET_DIR=Homunculus/target cargo build --release --manifest-path=Homunculus/Cargo.toml
@@ -82,8 +117,26 @@ tlaplus-image:
             SAVE ARTIFACT *.txt AS LOCAL ./build/
             SAVE ARTIFACT fuzz.spv AS LOCAL ./build/
             SAVE ARTIFACT fuzz.comp AS LOCAL ./build/
+        ELSE IF [ "$OUT" = "test" ]
+            WORKDIR empirical_testing/test_amber
+            RUN rm -rf ./results/* 
+            RUN mkdir -p ../ALL_tests_tmp
+            RUN mkdir -p ../ALL_tests_tmp/2_thread_2_instruction
+            RUN mkdir -p ../ALL_tests_tmp/2_thread_3_instruction
+            RUN mkdir -p ../ALL_tests_tmp/2_thread_4_instruction
+            RUN mkdir -p ../ALL_tests_tmp/3_thread_3_instruction
+            RUN mkdir -p ../ALL_tests_tmp/3_thread_4_instruction
+            RUN cp ../ALL_tests_flat/2t_2i*/*.txt ../ALL_tests_tmp/2_thread_2_instruction/
+            RUN cp ../ALL_tests_flat/2t_3i*/*.txt ../ALL_tests_tmp/2_thread_3_instruction/
+            RUN cp ../ALL_tests_flat/2t_4i*/*.txt ../ALL_tests_tmp/2_thread_4_instruction/
+            RUN cp ../ALL_tests_flat/3t_3i*/*.txt ../ALL_tests_tmp/3_thread_3_instruction/
+            RUN cp ../ALL_tests_flat/3t_4i*/*.txt ../ALL_tests_tmp/3_thread_4_instruction/
+            RUN python3 amber_launch_tests.py
+            RUN rm -rf ../ALL_tests_tmp
+            SAVE ARTIFACT results AS LOCAL ./build/
         ELSE
             RUN echo "Invalid output format"
         END
-    END    
+    END
+    WORKDIR /workdir
     SAVE ARTIFACT forward-progress/validation/MCProgram.tla AS LOCAL ./build/

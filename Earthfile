@@ -89,6 +89,23 @@ tlaplus-image:
             RUN tlc forward-progress/validation/MCProgressModel > "litmus_tests_result/${file}.txt" 2>&1 || true
         END
         SAVE ARTIFACT litmus_tests_result/*.txt AS LOCAL ./build/litmus_tests_result/
+    ELSE IF [ "$OUT" = "test" ]
+            WORKDIR empirical_testing/test_amber
+            RUN rm -rf ./results/* 
+            RUN mkdir -p ../ALL_tests_tmp
+            RUN mkdir -p ../ALL_tests_tmp/2_thread_2_instruction
+            RUN mkdir -p ../ALL_tests_tmp/2_thread_3_instruction
+            RUN mkdir -p ../ALL_tests_tmp/2_thread_4_instruction
+            RUN mkdir -p ../ALL_tests_tmp/3_thread_3_instruction
+            RUN mkdir -p ../ALL_tests_tmp/3_thread_4_instruction
+            RUN cp ../ALL_tests_flat/2t_2i*/*.txt ../ALL_tests_tmp/2_thread_2_instruction/
+            RUN cp ../ALL_tests_flat/2t_3i*/*.txt ../ALL_tests_tmp/2_thread_3_instruction/
+            RUN cp ../ALL_tests_flat/2t_4i*/*.txt ../ALL_tests_tmp/2_thread_4_instruction/
+            RUN cp ../ALL_tests_flat/3t_3i*/*.txt ../ALL_tests_tmp/3_thread_3_instruction/
+            RUN cp ../ALL_tests_flat/3t_4i*/*.txt ../ALL_tests_tmp/3_thread_4_instruction/
+            RUN python3 amber_launch_tests.py
+            RUN rm -rf ../ALL_tests_tmp
+            SAVE ARTIFACT results AS LOCAL ./build/
     ELSE IF [ "$INPUT" = "" ]
         RUN echo "No input file provided"
     ELSE
@@ -117,23 +134,6 @@ tlaplus-image:
             SAVE ARTIFACT *.txt AS LOCAL ./build/
             SAVE ARTIFACT fuzz.spv AS LOCAL ./build/
             SAVE ARTIFACT fuzz.comp AS LOCAL ./build/
-        ELSE IF [ "$OUT" = "test" ]
-            WORKDIR empirical_testing/test_amber
-            RUN rm -rf ./results/* 
-            RUN mkdir -p ../ALL_tests_tmp
-            RUN mkdir -p ../ALL_tests_tmp/2_thread_2_instruction
-            RUN mkdir -p ../ALL_tests_tmp/2_thread_3_instruction
-            RUN mkdir -p ../ALL_tests_tmp/2_thread_4_instruction
-            RUN mkdir -p ../ALL_tests_tmp/3_thread_3_instruction
-            RUN mkdir -p ../ALL_tests_tmp/3_thread_4_instruction
-            RUN cp ../ALL_tests_flat/2t_2i*/*.txt ../ALL_tests_tmp/2_thread_2_instruction/
-            RUN cp ../ALL_tests_flat/2t_3i*/*.txt ../ALL_tests_tmp/2_thread_3_instruction/
-            RUN cp ../ALL_tests_flat/2t_4i*/*.txt ../ALL_tests_tmp/2_thread_4_instruction/
-            RUN cp ../ALL_tests_flat/3t_3i*/*.txt ../ALL_tests_tmp/3_thread_3_instruction/
-            RUN cp ../ALL_tests_flat/3t_4i*/*.txt ../ALL_tests_tmp/3_thread_4_instruction/
-            RUN python3 amber_launch_tests.py
-            RUN rm -rf ../ALL_tests_tmp
-            SAVE ARTIFACT results AS LOCAL ./build/
         ELSE
             RUN echo "Invalid output format"
         END

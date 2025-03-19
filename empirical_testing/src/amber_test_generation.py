@@ -48,13 +48,16 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
     output.write("SHADER compute test GLSL\n")
 
     # determine whether the same or different subgroups will be used for testing to update versions and extensions
-    if subgroup_setting == 0:
-        output.write("#version 460\n")
-    else:
-        output.write("#version 450 core\n")
-        output.write("#extension GL_KHR_shader_subgroup_basic : enable\n")
-        output.write("#extension GL_KHR_shader_subgroup_ballot : enable\n")
+    output.write("#version 460\n")
+    output.write("#extension GL_KHR_shader_subgroup_basic : enable\n")
+    output.write("#extension GL_KHR_shader_subgroup_ballot : enable\n")
+    output.write("#extension GL_KHR_shader_subgroup_vote : enable\n")
+    output.write("#extension GL_KHR_shader_subgroup_basic : enable\n")
 
+    output.write("\n")
+    output.write("layout(set = 0, binding = 3) volatile buffer PICKTHREAD {\n")
+    output.write("\tuint pick_thread;\n")
+    output.write("} pickthread;\n")
     output.write("\n")
     output.write("layout(set = 0, binding = 0) volatile buffer TEST {\n")
 
@@ -89,35 +92,33 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
     if subgroup_setting == 0:
         output.write("\tuint gid_x = gl_GlobalInvocationID.x;\n")
 
-    output.write("\tint pc = 0;\n")
-    output.write("\tuint round_robin = 0\n")
+    output.write("\tuint pc = 0u;\n")
+    output.write("\tuint round_robin = 0u;\n")
 
     # perform the necessary index computation to update SSBO for "round robin" saturation
     if saturation_level == 1:
         total_threads = workgroups * threads_per_workgroup
         # zheyuan: maybe add a check to ensure that total_threads is divisible by num_testing_subgroups
-        num_subgroup_per_workgroup = threads_per_workgroup / subgroup_size
+        num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         total_subgroups = workgroups * num_subgroup_per_workgroup
         output.write("\n")
         output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
         output.write("\tint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
-        output.write("\t int num_subgroup_per_workgroup = " + str(num_subgroup_per_workgroup) + ";\n")
-        output.write("\tg_subgroup_id = workgroup_id * num_subgroup_per_workgroup + subgroup_id;\n")
-        output.write("\t int total_subgroups = " + str(total_subgroups) + ";\n")
+        output.write("\tint num_subgroup_per_workgroup = " + str(num_subgroup_per_workgroup) + ";\n")
+        output.write("\tint total_subgroups = " + str(total_subgroups) + ";\n")
         output.write("\tuint index = workgroup_id / num_testing_subgroups;\n")
 
     # perform the necessary computations of "chunk" size and index to update SSBO for "chunking" saturation
     elif saturation_level == 2:
         total_threads = workgroups * threads_per_workgroup
-        num_subgroup_per_workgroup = threads_per_workgroup / subgroup_size
+        num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         total_subgroups = workgroups * num_subgroup_per_workgroup
         output.write("\n")
         output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
         output.write("\tint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
-        output.write("\t int num_subgroup_per_workgroup = " + str(num_subgroup_per_workgroup) + ";\n")
-        output.write("\t int total_subgroups = " + str(total_subgroups) + ";\n")
-        output.write("\tg_subgroup_id = workgroup_id * num_subgroup_per_workgroup + subgroup_id;\n")
-        output.write("\tint chunk_size =  total_threads / num_testing_subgroups;\n")
+        output.write("\tint num_subgroup_per_workgroup = " + str(num_subgroup_per_workgroup) + ";\n")
+        output.write("\tint total_subgroups = " + str(total_subgroups) + ";\n")
+        output.write("\tint chunk_size =  total_num_threads / num_testing_subgroups;\n")
         output.write("\tuint index = workgroup_id % chunk_size;\n")
 
     output.write("\n")
@@ -150,8 +151,8 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
     output.write("\t   if (subgroupAny(terminate == 1)) {\n")
     output.write("\t   break;\n")
     output.write("\t}\n")
-    output.write("\tpick_thread = round_robin % subgroup_size;\n")
-    output.write("\tif (pick_thread == gl_SubgroupInvocationID) {\n")
+    output.write("\tpickthread.pick_thread = uint(round_robin % subgroup_size);\n")
+    output.write("\tif (pickthread.pick_thread == gl_SubgroupInvocationID) {\n")
     output.write("\t  switch(pc) {\n")
     output.write("\n")
 
@@ -168,8 +169,8 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
     output.write("\n")
     output.write("\t     }\n")
     output.write("\t   }\n")
-    output.write("\t   round_robin += 1;\n")
-    output.write("\t   pc = subgroupBroadcast(pc, pick_thread);\n")
+    output.write("\t   round_robin += 1u;\n")
+    output.write("\t   pc = subgroupBroadcast(pc, pickthread.pick_thread);\n")
     output.write("\t}\n")
     output.write("\t}\n")
     output.write("\n")
@@ -238,16 +239,16 @@ def handle_atomic_exchange_branch(output, check_value, exchange_value, instructi
                          ") { \n")
 
     if instruction_address == "END":
-        output.write("\t\t   pc = " + str(program_end) + ";\n")
+        output.write("\t\t   pc = " + str(program_end) + "u;\n")
     elif instruction_address != "END":
-        output.write("\t\t   pc = " + instruction_address + ";\n")
+        output.write("\t\t   pc = " + instruction_address + "u;\n")
     else:
         print("Incorrect instruction_address in handle_amber_check_branch", file=sys.stderr)
         exit(1)
 
     output.write("\t\t}\n")
     output.write("\t\telse {\n")
-    output.write("\t\t   pc = pc + 1;\n")
+    output.write("\t\t   pc = pc + 1u;\n")
     output.write("\t\t}\n")
     output.write("\t\tbreak;\n")
     output.write("\n")
@@ -272,16 +273,16 @@ def handle_amber_check_branch(output, check_value, instruction_address, saturati
             output.write("\t\tif (atomicAdd(out_buf2.y[index], 0) == " + check_value + " ) { \n")
 
     if instruction_address == "END":
-        output.write("\t\t   pc = " + str(program_end) + ";\n")
+        output.write("\t\t   pc = " + str(program_end) + "u;\n")
     elif instruction_address != "END":
-        output.write("\t\t   pc = " + instruction_address + ";\n")
+        output.write("\t\t   pc = " + instruction_address + "u;\n")
     else:
         print("Incorrect instruction_address in handle_amber_check_branch", file=sys.stderr)
         exit(1)
 
     output.write("\t\t}\n")
     output.write("\t\telse {\n")
-    output.write("\t\t   pc = pc + 1;\n")
+    output.write("\t\t   pc = pc + 1u;\n")
     output.write("\t\t}\n")
     output.write("\t\tbreak;\n")
     output.write("\n")
@@ -318,6 +319,7 @@ def write_amber_epilogue(output, workgroups, threads_per_workgroup, saturation_l
     output.write("END\n")
     output.write("\n")
 
+    output.write("BUFFER pickthread DATA_TYPE uint32 SIZE 1 FILL 0\n")
     # fill the tester SSBO with 1 or 2 zeroes depending on the saturation level
     if saturation_level == 0:
         output.write("BUFFER tester DATA_TYPE uint32 SIZE 3 FILL 0\n")
@@ -332,6 +334,7 @@ def write_amber_epilogue(output, workgroups, threads_per_workgroup, saturation_l
     output.write("\n")
     output.write("PIPELINE compute test_pipe\n")
     output.write("  ATTACH test\n")
+    output.write("  BIND BUFFER pickthread AS storage DESCRIPTOR_SET 0 BINDING 3 \n")
     output.write("  BIND BUFFER tester AS storage DESCRIPTOR_SET 0 BINDING 0 \n")
 
     # if the GPU is to be saturated, then the second buffer must be binded to the SSBO

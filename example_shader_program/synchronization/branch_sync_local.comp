@@ -11,7 +11,6 @@ layout(std430, binding = 0) buffer Msg {
     uint msg;
 };
 
-shared uint sharedMsg;
 
 
 // Assume under 1 workgroup, 3 threads per workgroup, and subgroup size of 3
@@ -22,17 +21,17 @@ void main() {
     // 3 
     if (gl_LocalInvocationID.x == 0) {
         // 9
-        sharedMsg = 0;
+        msg = 0;
     }
     // 12
     barrier();
     if (gl_LocalInvocationID.x == 0) {
         // 17
-        sharedMsg = 1;
+        msg = 1;
         // do some works..
     } else {
         // 20
-        uint localMsg = sharedMsg;
+        uint localMsg = msg;
         // 23
         while (!subgroupAllEqual(localMsg)) { // 26 // 33
             // 30

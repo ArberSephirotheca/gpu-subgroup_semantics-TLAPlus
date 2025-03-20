@@ -4,3 +4,4 @@
 *.dot
 *.txt
 /amber
+/__pycache__

@@ -474,7 +474,7 @@ def main():
     if args.android:
         amber_build_path = ""  # ignored anyway
     else:
-        amber_build_path =  "/workdir/amber/out/Debug/amber "
+        amber_build_path =  "amber "
 
     # the user must provide all the possible configuration objects they want to test with, placing them in the
     # all_config_variants list below

@@ -1303,21 +1303,19 @@ OpGroupNonUniformAny(t, result, scope, predicate) ==
 OpGroupNonUniformBroadcast(t, result, scope, value, id) ==
     LET mangledResult == Mangle(t, result)
     IN
-        /\  
-            \/  /\  IsVariable(result)
-            \/  IsIntermediate(result)
         /\  scope.value \in ScopeOperand
         /\  IF scope.value = "subgroup" THEN
                 /\  LET workGroupId == WorkGroupId(t) + 1
                         sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
                         currentDB == CurrentDynamicNode(workGroupId, t)
                         tidVal == EvalExpr(t, workGroupId, id) + 1
+                        gtidVal == tidVal + SubgroupId(t) * SubgroupSize + WorkGroupId(t) * WorkGroupSize
                         active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
                         not_excecuteing_subgroup_threads == currentDB.notExecuteSet[workGroupId] \intersect sthreads
                         unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
                     IN
                         \*  resulting value is undefined if Id is not part of the scope restricted tangle, or is greater than or equal to the size of the scope.
-                        IF (tidVal > SubgroupSize) \/ (tidVal \in not_excecuteing_subgroup_threads) THEN
+                        IF (tidVal > SubgroupSize) \/ (gtidVal \in not_excecuteing_subgroup_threads) THEN
                             Print("UB: Id is not part of the scope restricted tangle, or is greater than or equal to the size of the scope.", FALSE)
                         ELSE IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
                             /\  state' = [state EXCEPT ![t] = "subgroup"]
@@ -1326,7 +1324,7 @@ OpGroupNonUniformBroadcast(t, result, scope, value, id) ==
                         ELSE IF \E sthread \in sthreads: (EvalExpr(sthread, workGroupId, id) + 1) # tidVal THEN 
                             Print("UB: Id is not dynamically uniform", FALSE)
                         ELSE 
-                            /\  Assignment(t, {Var(result.scope, Mangle(sthread, result).name, EvalExpr(tidVal, WorkGroupId(tidVal) + 1, value), Index(-1)): sthread \in active_subgroup_threads })
+                            /\  Assignment(t, {Var(result.scope, Mangle(sthread, result).name, EvalExpr(gtidVal, WorkGroupId(gtidVal) + 1, value), Index(-1)): sthread \in active_subgroup_threads })
                             /\  state' = [\* release all barrier in the subgroup, marking barrier as ready
                                     tid \in Threads |->
                                         IF tid \in active_subgroup_threads THEN 

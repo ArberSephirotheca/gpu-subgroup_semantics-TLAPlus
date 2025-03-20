@@ -122,7 +122,7 @@ Spec ==
 EventuallyAlwaysTerminated ==
     \A t \in Threads: <>[](state[t] = "terminated")
 
-CounterConstraint == globalCounter <= 50
+CounterConstraint == globalCounter <= 100
 
     
 Liveness == 

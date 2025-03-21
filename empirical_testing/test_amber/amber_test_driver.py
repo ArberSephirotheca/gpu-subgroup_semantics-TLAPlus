@@ -55,7 +55,6 @@ def run_amber_test(input_dir, output_dir, each_cfg_option, amber_build_path, amb
     else:
         output_file_name_extension = "_" + str(saturation_level) + "level_saturation"
 
-    os.system("")
     # iterate over all files in the input directory, create a .amber file for each .txt file, and run the amber file
     for file_name in os.listdir(input_dir):
         if file_name.endswith('.txt'):

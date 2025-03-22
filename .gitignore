@@ -2,5 +2,4 @@
 /build
 *.mkv
 *.dot
-/amber
 **/__pycache__

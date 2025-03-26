@@ -97,8 +97,8 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         total_subgroups = workgroups * num_subgroup_per_workgroup
         output.write("\n")
-        output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
-        output.write("\tint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
+        output.write("\tuint total_num_threads = " + str(total_threads) + ";\n")
+        output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
         output.write("\tint num_subgroup_per_workgroup = " + str(num_subgroup_per_workgroup) + ";\n")
         output.write("\tint total_subgroups = " + str(total_subgroups) + ";\n")
         output.write("\tuint index = workgroup_id / num_testing_subgroups;\n")
@@ -109,11 +109,11 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         total_subgroups = workgroups * num_subgroup_per_workgroup
         output.write("\n")
-        output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
-        output.write("\tint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
+        output.write("\tuint total_num_threads = " + str(total_threads) + ";\n")
+        output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
         output.write("\tint num_subgroup_per_workgroup = " + str(num_subgroup_per_workgroup) + ";\n")
         output.write("\tint total_subgroups = " + str(total_subgroups) + ";\n")
-        output.write("\tint chunk_size =  total_num_threads / num_testing_subgroups;\n")
+        output.write("\tuint chunk_size =  total_num_threads / num_testing_subgroups;\n")
         output.write("\tuint index = workgroup_id % chunk_size;\n")
 
     output.write("\n")

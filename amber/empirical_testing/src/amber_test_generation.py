@@ -103,7 +103,7 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
         output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
-        output.write("\tint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
+        output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
         output.write("\tuint index = workgroup_id / num_testing_subgroups;\n")
 
     # perform the necessary computations of "chunk" size and index to update SSBO for "chunking" saturation
@@ -112,8 +112,8 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
         output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
-        output.write("\tint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
-        output.write("\tint chunk_size =  num_workgroups / num_testing_subgroups;\n")
+        output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
+        output.write("\tuint chunk_size =  num_workgroups / num_testing_subgroups;\n")
         output.write("\tuint index = workgroup_id % chunk_size;\n")
 
     output.write("\n")

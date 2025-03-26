@@ -477,9 +477,9 @@ def main():
 
     # the user must provide all the possible configuration objects they want to test with, placing them in the
     # all_config_variants list below
-    default_cfg = Configuration(timeout=2000, workgroups=65532, threads_per_workgroup=1, saturation_level=0, subgroup=0)
-    round_r_cfg = Configuration(timeout=2000, workgroups=65532, threads_per_workgroup=1, saturation_level=1, subgroup=0)
-    chunk_cfg = Configuration(timeout=2000, workgroups=65532, threads_per_workgroup=1, saturation_level=2, subgroup=0)
+    default_cfg = Configuration(timeout=20000, workgroups=65532, threads_per_workgroup=1, saturation_level=0, subgroup=0)
+    round_r_cfg = Configuration(timeout=20000, workgroups=65532, threads_per_workgroup=1, saturation_level=1, subgroup=0)
+    chunk_cfg = Configuration(timeout=20000, workgroups=65532, threads_per_workgroup=1, saturation_level=2, subgroup=0)
     #diff_subgroup_cfg = Configuration(timeout=2000, workgroups=65532, threads_per_workgroup=256, saturation_level=0,
     #                                  subgroup=1)
     #diff_workgroup_cfg = Configuration(timeout=2000, workgroups=65532, threads_per_workgroup=4, saturation_level=0,

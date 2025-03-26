@@ -68,12 +68,12 @@ def run_amber_test(input_dir, output_dir, each_cfg_option, amber_build_path, amb
             output_file_name = output_file_name + ".amber"
 
             # generate command to run the amber test for a specified iteration count and append results to a temp file
-            run__test = "timeout -k 1 5 " + amber_build_path + output_file_name + amber_build_flags + ">> temp_results.txt"
+            run__test = "timeout -k 1 15 " + amber_build_path + output_file_name + amber_build_flags + ">> temp_results.txt"
             if android:
                 # push test file on the device
                 os.system("adb push " + output_file_name + " /data/local/tmp/")
                 # prepare the specific run command to run amber on-device
-                run__test = "timeout -k 1 5 adb shell 'cd /data/local/tmp ; ./amber_ndk " + amber_build_flags + " " + os.path.basename(
+                run__test = "timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk " + amber_build_flags + " " + os.path.basename(
                     output_file_name) + "' >> temp_results.txt"
             for i in range(int(num_iter)):
                 log_print("running test: " + output_file_name)
@@ -477,9 +477,9 @@ def main():
 
     # the user must provide all the possible configuration objects they want to test with, placing them in the
     # all_config_variants list below
-    default_cfg = Configuration(timeout=20000, workgroups=65532, threads_per_workgroup=128, saturation_level=0, subgroup=0, subgroup_size=32)
-    round_r_cfg = Configuration(timeout=20000, workgroups=65532, threads_per_workgroup=128, saturation_level=1, subgroup=0, subgroup_size=32)
-    chunk_cfg = Configuration(timeout=20000, workgroups=65532, threads_per_workgroup=128, saturation_level=2, subgroup=0, subgroup_size=32)
+    default_cfg = Configuration(timeout=10000, workgroups=65532, threads_per_workgroup=128, saturation_level=0, subgroup=0, subgroup_size=32)
+    round_r_cfg = Configuration(timeout=10000, workgroups=65532, threads_per_workgroup=128, saturation_level=1, subgroup=0, subgroup_size=32)
+    chunk_cfg = Configuration(timeout=10000, workgroups=65532, threads_per_workgroup=128, saturation_level=2, subgroup=0, subgroup_size=32)
     #diff_subgroup_cfg = Configuration(timeout=2000, workgroups=65532, threads_per_workgroup=256, saturation_level=0,
     #                                  subgroup=1)
     #diff_workgroup_cfg = Configuration(timeout=2000, workgroups=65532, threads_per_workgroup=4, saturation_level=0,

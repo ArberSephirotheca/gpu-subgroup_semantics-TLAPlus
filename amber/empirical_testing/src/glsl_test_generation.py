@@ -31,7 +31,7 @@ from configuration import Configuration
 # intra-workgroup behavior to be tested, but can mess up saturation
 # hueristics. subgroup will include the GLSL subgroup extension and
 # ensure that testing threads are in different subgroups.
-default_config = Configuration(timeout=20000, workgroups=65532, threads_per_workgroup=32, saturation_level=0, subgroup=0, subgroup_size=32)
+default_config = Configuration(timeout=10000, workgroups=65532, threads_per_workgroup=32, saturation_level=0, subgroup=0, subgroup_size=32)
 
 
 # write the necessary "boiler plate" code to generate an Amber test, along with Shader

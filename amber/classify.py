@@ -4,7 +4,12 @@ import shutil
 import glob
 import csv
 
-# Base directories
+try:
+    from tabulate import tabulate
+    USE_TABULATE = True
+except ImportError:
+    USE_TABULATE = False
+
 cadp_root = 'cadp'
 amber_root_base = 'empirical_testing/test_amber'
 
@@ -69,7 +74,7 @@ for cadp_subdir in os.listdir(cadp_root):
                         shutil.copy(amber_file_path, target_dir)
                         copied_files[gpu_dir]['weak_OBE'][cadp_subdir].add(test_id)
 
-# Filter and write CSVs for copied tests
+# Filter, rewrite CSVs, and produce final ASCII tables (written to file, not printed)
 for gpu_dir, variants in copied_files.items():
     for variant_name in ['weak_HSA', 'weak_OBE']:
         for cadp_subdir, test_ids in variants[variant_name].items():
@@ -79,26 +84,71 @@ for gpu_dir, variants in copied_files.items():
                 continue
 
             csv_file = csv_files[0]  # Use the first found
+            # Read CSV
             with open(csv_file, newline='') as f:
                 reader = list(csv.reader(f))
-                header = reader[0]
-                rows = reader[1:]
+            if not reader:
+                continue
 
+            header = reader[0]
+            rows = reader[1:]
+
+            # Filtered rows
             filtered_rows = [header]
             for row in rows:
                 if not row:
                     continue
+                # row[0] is the test_id presumably
                 if row[0].isdigit() and row[0] in test_ids:
                     filtered_rows.append(row)
                 elif row[0].startswith("Total failures"):
-                    break  # skip summary rows
+                    break  # skip old summary lines
 
             # Write filtered CSV next to copied .amber files
             variant_dir = os.path.join(gpu_dir, variant_name, cadp_subdir)
-            if filtered_rows:
-                output_csv_path = os.path.join(variant_dir, os.path.basename(csv_file))
-                with open(output_csv_path, 'w', newline='') as f:
-                    writer = csv.writer(f)
-                    writer.writerows(filtered_rows)
+            if not filtered_rows or len(filtered_rows) == 1:
+                continue  # no actual test rows
 
-print("✅ Done! .amber files and filtered CSVs copied to weak_HSA / weak_OBE inside each GPU directory.")
+            output_csv_path = os.path.join(variant_dir, os.path.basename(csv_file))
+            with open(output_csv_path, 'w', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerows(filtered_rows)
+
+            # Now produce the final summary row & ASCII table:
+            # We assume columns 1..N are "P"/"F" fields, ignoring column 0 (TestID).
+            table = [filtered_rows[0]]  # first row is header
+            data_only = filtered_rows[1:]  # the actual test data
+
+            num_cols = len(table[0]) - 1
+            fail_counts = [0] * num_cols
+
+            for row in data_only:
+                for i in range(num_cols):
+                    # row[i+1] is presumably "P" or "F"
+                    if len(row) > i+1 and row[i+1].strip() == 'F':
+                        fail_counts[i] += 1
+
+            total_failures_row = ["Total failures:"]
+            for fc in fail_counts:
+                total_failures_row.append(str(fc))
+
+            table.extend(data_only)
+            table.append(total_failures_row)
+
+            # Write the fancy table to a file (rather than printing).
+            table_txt_path = os.path.join(variant_dir, "final_summary_table.txt")
+            if USE_TABULATE:
+                table_str = tabulate(table, headers='firstrow', tablefmt='fancy_grid')
+            else:
+                # Fallback: simple lines
+                lines = []
+                lines.append(" | ".join(table[0]))  # header
+                for r in data_only:
+                    lines.append(" | ".join(r))
+                lines.append(" | ".join(total_failures_row))
+                table_str = "\n".join(lines)
+
+            with open(table_txt_path, 'w', encoding='utf-8') as out_f:
+                out_f.write(table_str)
+
+print("✅ Done! Copied .amber files, filtered CSVs, and wrote final ASCII tables to 'final_summary_table.txt'.")

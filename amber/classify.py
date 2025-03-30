@@ -36,8 +36,9 @@ for cadp_subdir in os.listdir(cadp_root):
 
         hsa_pass = re.search(r'HSA - Termination: PASS', content)
         obe_pass = re.search(r'OBE - Termination: PASS', content)
+        weak_fair = re.search(r'WEAK_FAIR - Termination: PASS', content)
 
-        if not (hsa_pass or obe_pass):
+        if not (hsa_pass or obe_pass or weak_fair):
             continue
 
         gpu_dirs = glob.glob(os.path.join(amber_root_base, '*'))
@@ -48,11 +49,13 @@ for cadp_subdir in os.listdir(cadp_root):
                 continue
 
             # Track test IDs per variant
-            copied_files.setdefault(gpu_dir, {'weak_HSA': {}, 'weak_OBE': {}})
+            copied_files.setdefault(gpu_dir, {'weak_HSA': {}, 'weak_OBE': {}, 'weak_fair': {}})
             if hsa_pass:
                 copied_files[gpu_dir]['weak_HSA'].setdefault(cadp_subdir, set())
             if obe_pass:
                 copied_files[gpu_dir]['weak_OBE'].setdefault(cadp_subdir, set())
+            if weak_fair:
+                copied_files[gpu_dir]['weak_fair'].setdefault(cadp_subdir, set())
 
             for amber_file in os.listdir(amber_test_dir):
                 if amber_file.startswith(f'{subdir}_txt') and amber_file.endswith('.amber'):
@@ -73,10 +76,15 @@ for cadp_subdir in os.listdir(cadp_root):
                         os.makedirs(target_dir, exist_ok=True)
                         shutil.copy(amber_file_path, target_dir)
                         copied_files[gpu_dir]['weak_OBE'][cadp_subdir].add(test_id)
+                    if weak_fair:
+                        target_dir = os.path.join(gpu_dir, 'weak_fair', cadp_subdir)
+                        os.makedirs(target_dir, exist_ok=True)
+                        shutil.copy(amber_file_path, target_dir)
+                        copied_files[gpu_dir]['weak_fair'][cadp_subdir].add(test_id)
 
 # Filter, rewrite CSVs, and produce final ASCII tables (written to file, not printed)
 for gpu_dir, variants in copied_files.items():
-    for variant_name in ['weak_HSA', 'weak_OBE']:
+    for variant_name in ['weak_HSA', 'weak_OBE', 'weak_fair']:
         for cadp_subdir, test_ids in variants[variant_name].items():
             amber_test_dir = os.path.join(gpu_dir, cadp_subdir)
             csv_files = glob.glob(os.path.join(amber_test_dir, 'simple_final_results-*.csv'))

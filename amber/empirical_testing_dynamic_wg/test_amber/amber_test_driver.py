@@ -67,48 +67,48 @@ def run_amber_test(input_dir, output_dir, each_cfg_option, amber_build_path, amb
 
             output_file_name = output_file_name + ".amber"
 
-            # generate command to run the amber test for a specified iteration count and append results to a temp file
-            run__test = "timeout -k 1 15 " + amber_build_path + output_file_name + amber_build_flags + ">> temp_results.txt"
-            if android:
-                # push test file on the device
-                os.system("adb push " + output_file_name + " /data/local/tmp/")
-                # prepare the specific run command to run amber on-device
-                run__test = "timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk " + amber_build_flags + " " + os.path.basename(
-                    output_file_name) + "' >> temp_results.txt"
-            for i in range(int(num_iter)):
-                log_print("running test: " + output_file_name)
-                log_print(run__test)
-                os.system(run__test)
+            # # generate command to run the amber test for a specified iteration count and append results to a temp file
+            # run__test = "timeout -k 1 15 " + amber_build_path + output_file_name + amber_build_flags + ">> temp_results.txt"
+            # if android:
+            #     # push test file on the device
+            #     os.system("adb push " + output_file_name + " /data/local/tmp/")
+            #     # prepare the specific run command to run amber on-device
+            #     run__test = "timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk " + amber_build_flags + " " + os.path.basename(
+            #         output_file_name) + "' >> temp_results.txt"
+            # for i in range(int(num_iter)):
+            #     log_print("running test: " + output_file_name)
+            #     log_print(run__test)
+            #     os.system(run__test)
 
-            # analyze the results of the temporary file to determine whether the test passed (P) or failed (F)
-            with open('temp_results.txt', 'r') as file:
-                results = file.read().split("\n")
-                test_iteration = file_name[:-4]
-                failure_count = 0
-                pass_count = 0
+            # # analyze the results of the temporary file to determine whether the test passed (P) or failed (F)
+            # with open('temp_results.txt', 'r') as file:
+            #     results = file.read().split("\n")
+            #     test_iteration = file_name[:-4]
+            #     failure_count = 0
+            #     pass_count = 0
 
-                # count the number of failures, if any, and update both simple and verbose results accordingly
-                for current_line in results:
-                    if "1 fail" in current_line:
-                        failure_count = failure_count + 1
-                    elif "1 pass" in current_line:
-                        pass_count = pass_count + 1
+            #     # count the number of failures, if any, and update both simple and verbose results accordingly
+            #     for current_line in results:
+            #         if "1 fail" in current_line:
+            #             failure_count = failure_count + 1
+            #         elif "1 pass" in current_line:
+            #             pass_count = pass_count + 1
 
-                # if there were no failures, indicate a "P" in both sets of tables
-                if failure_count == 0:
-                    log_print("P")
-                    temp_item = [test_iteration, "P"]
-                    simple_test_results.append(temp_item)
-                    verbose_test_results.append(temp_item)
+            #     # if there were no failures, indicate a "P" in both sets of tables
+            #     if failure_count == 0:
+            #         log_print("P")
+            #         temp_item = [test_iteration, "P"]
+            #         simple_test_results.append(temp_item)
+            #         verbose_test_results.append(temp_item)
 
-                # if there is at least one failure, update simple table with "F" and verbose table with fraction of "F"
-                else:
-                    log_print("F")
-                    fract = "F (" + str(failure_count) + "/" + str(num_iter) + ")"
-                    temp_item_verbose = [test_iteration, fract]
-                    temp_item_simple = [test_iteration, "F"]
-                    simple_test_results.append(temp_item_simple)
-                    verbose_test_results.append(temp_item_verbose)
+            #     # if there is at least one failure, update simple table with "F" and verbose table with fraction of "F"
+            #     else:
+            #         log_print("F")
+            #         fract = "F (" + str(failure_count) + "/" + str(num_iter) + ")"
+            #         temp_item_verbose = [test_iteration, fract]
+            #         temp_item_simple = [test_iteration, "F"]
+            #         simple_test_results.append(temp_item_simple)
+            #         verbose_test_results.append(temp_item_verbose)
 
             os.system("rm -f temp_results.txt")
             # create a directory of the amber test scripts generated at the specified output directory

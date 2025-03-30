@@ -11,7 +11,7 @@ except ImportError:
     USE_TABULATE = False
 
 cadp_root = 'cadp'
-amber_root_base = 'empirical_testing/test_amber'
+amber_root_base = 'empirical_testing_dynamic_wg/test_amber'
 
 # Track copied files per GPU and variant
 copied_files = {}  # { gpu_dir: { 'weak_HSA': {cadp_subdir: set(test_ids)}, 'weak_OBE': {...} } }

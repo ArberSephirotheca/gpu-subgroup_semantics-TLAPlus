@@ -11,10 +11,10 @@ except ImportError:
     USE_TABULATE = False
 
 cadp_root = 'cadp'
-amber_root_base = 'empirical_testing_dynamic_wg/test_amber'
+amber_root_base = 'empirical_testing/test_amber'
 
 # We'll store the final combined CSVs and summaries in:
-results_dir = os.path.join("empirical_testing_dynamic_wg", "results")
+results_dir = os.path.join("empirical_testing", "results")
 os.makedirs(results_dir, exist_ok=True)
 
 # Track copied files per GPU and variant: which test_ids we copied

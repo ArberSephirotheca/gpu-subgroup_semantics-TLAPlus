@@ -1,0 +1,148 @@
+Date and Time:
+31/03/2025 17:54:00
+Computer:
+waterthrush
+
+storing vulkaninfo to: results/output0/vulkaninfo.txt
+
+generating amber test for: 0.txt in results/output0
+running test: 0_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 amber 0_txt_no_saturation_same_subgroup_128_threads_per_wg.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 2.txt in results/output0
+running test: 2_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 amber 2_txt_no_saturation_same_subgroup_128_threads_per_wg.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 6.txt in results/output0
+running test: 6_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 amber 6_txt_no_saturation_same_subgroup_128_threads_per_wg.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 1.txt in results/output0
+running test: 1_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 amber 1_txt_no_saturation_same_subgroup_128_threads_per_wg.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 5.txt in results/output0
+running test: 5_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 amber 5_txt_no_saturation_same_subgroup_128_threads_per_wg.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 3.txt in results/output0
+running test: 3_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 amber 3_txt_no_saturation_same_subgroup_128_threads_per_wg.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 7.txt in results/output0
+running test: 7_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 amber 7_txt_no_saturation_same_subgroup_128_threads_per_wg.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 4.txt in results/output0
+running test: 4_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 amber 4_txt_no_saturation_same_subgroup_128_threads_per_wg.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 0.txt in results/output0
+running test: 0_txt_round_robin.amber
+timeout -k 1 15 amber 0_txt_round_robin.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 2.txt in results/output0
+running test: 2_txt_round_robin.amber
+timeout -k 1 15 amber 2_txt_round_robin.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 6.txt in results/output0
+running test: 6_txt_round_robin.amber
+timeout -k 1 15 amber 6_txt_round_robin.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 1.txt in results/output0
+running test: 1_txt_round_robin.amber
+timeout -k 1 15 amber 1_txt_round_robin.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 5.txt in results/output0
+running test: 5_txt_round_robin.amber
+timeout -k 1 15 amber 5_txt_round_robin.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 3.txt in results/output0
+running test: 3_txt_round_robin.amber
+timeout -k 1 15 amber 3_txt_round_robin.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 7.txt in results/output0
+running test: 7_txt_round_robin.amber
+timeout -k 1 15 amber 7_txt_round_robin.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 4.txt in results/output0
+running test: 4_txt_round_robin.amber
+timeout -k 1 15 amber 4_txt_round_robin.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 0.txt in results/output0
+running test: 0_txt_chunking.amber
+timeout -k 1 15 amber 0_txt_chunking.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 2.txt in results/output0
+running test: 2_txt_chunking.amber
+timeout -k 1 15 amber 2_txt_chunking.amber -d -t spv1.5 >> temp_results.txt
+F
+
+generating amber test for: 6.txt in results/output0
+running test: 6_txt_chunking.amber
+timeout -k 1 15 amber 6_txt_chunking.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 1.txt in results/output0
+running test: 1_txt_chunking.amber
+timeout -k 1 15 amber 1_txt_chunking.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 5.txt in results/output0
+running test: 5_txt_chunking.amber
+timeout -k 1 15 amber 5_txt_chunking.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 3.txt in results/output0
+running test: 3_txt_chunking.amber
+timeout -k 1 15 amber 3_txt_chunking.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: 7.txt in results/output0
+running test: 7_txt_chunking.amber
+timeout -k 1 15 amber 7_txt_chunking.amber -d -t spv1.5 >> temp_results.txt
+F
+
+generating amber test for: 4.txt in results/output0
+running test: 4_txt_chunking.amber
+timeout -k 1 15 amber 4_txt_chunking.amber -d -t spv1.5 >> temp_results.txt
+F
+
+
+Finished running tests!
+
+writing simple ascii table to:
+results/output0/simple_final_results-2025-03-31.txt
+
+writing iteration-based ascii table to:
+results/output0/iteration_based_final_results-2025-03-31.txt
+
+writing simple csv table to:
+results/output0/simple_final_results-2025-03-31.csv
+
+writing simple csv table to:
+results/output0/simple_final_results-2025-03-31.csv
+
+writing colored html table to:
+results/output0/html-colored-table2025-03-31.html
+
+
+Execution time (s):
+39.787623167037964

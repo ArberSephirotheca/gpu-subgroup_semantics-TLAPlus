@@ -1,6 +1,0 @@
-Test File Name,"No saturation (same subgroup, 128 threads per workgroup)",Round Robin,Chunked,All Passed
-3,P,P,F,F
-11,P,P,P,P
-13,P,P,F,F
-18,P,P,P,P
-20,P,P,P,P

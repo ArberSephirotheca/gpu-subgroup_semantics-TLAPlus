@@ -54,11 +54,11 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
     output.write("#extension GL_KHR_shader_subgroup_vote : enable\n")
     output.write("#extension GL_KHR_shader_subgroup_basic : enable\n")
 
-    output.write("\n")
-    output.write("layout(set = 0, binding = 3) volatile buffer PICKTHREAD {\n")
-    output.write("\tuint pick_thread;\n")
-    output.write("} pickthread;\n")
-    output.write("\n")
+    # output.write("\n")
+    # output.write("layout(set = 0, binding = 3) volatile buffer PICKTHREAD {\n")
+    # output.write("\tuint pick_thread;\n")
+    # output.write("} pickthread;\n")
+    # output.write("\n")
     output.write("layout(set = 0, binding = 0) volatile buffer TEST {\n")
 
     # if no saturation, then only one location in the SSBO is needed
@@ -82,6 +82,7 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
 
     output.write("layout(local_size_x = " + str(threads_per_workgroup) + ", local_size_y = 1, local_size_z = 1) in;\n")
     output.write("\n")
+    output.write("shared uint pick_thread;\n")
     output.write("void main()\n")
     output.write("{\n")
 
@@ -98,22 +99,21 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
 
     # perform the necessary index computation to update SSBO for "round robin" saturation
     if saturation_level == 1:
-        # total_threads = workgroups * threads_per_workgroup
+        total_threads = workgroups * threads_per_workgroup
         # zheyuan: maybe add a check to ensure that total_threads is divisible by num_testing_subgroups
+        num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
+        output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
         output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
-        output.write("\tuint chooped_workgroup_offset = num_workgroups % num_testing_subgroups;\n")
-        output.write("\t if (workgroup_id + chooped_workgroup_offset >= num_workgroups) {\n")
-        output.write("\t\t return;\n")
-        output.write("\t }\n")
         output.write("\tuint index = workgroup_id / num_testing_subgroups;\n")
 
     # perform the necessary computations of "chunk" size and index to update SSBO for "chunking" saturation
     elif saturation_level == 2:
-        # total_threads = workgroups * threads_per_workgroup
+        total_threads = workgroups * threads_per_workgroup
+        num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
+        output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
         output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
-
         output.write("\tuint chunk_size =  num_workgroups / num_testing_subgroups;\n")
         output.write("\tuint index = workgroup_id % chunk_size;\n")
 
@@ -147,8 +147,8 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
     output.write("\t   if (subgroupAny(terminate == 1)) {\n")
     output.write("\t   break;\n")
     output.write("\t}\n")
-    output.write("\tpickthread.pick_thread = uint(round_robin % subgroup_size);\n")
-    output.write("\tif (pickthread.pick_thread == gl_SubgroupInvocationID) {\n")
+    output.write("\tpick_thread = uint(round_robin % subgroup_size);\n")
+    output.write("\tif (pick_thread == gl_SubgroupInvocationID) {\n")
     output.write("\t  switch(pc) {\n")
     output.write("\n")
 
@@ -166,7 +166,7 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
     output.write("\t     }\n")
     output.write("\t   }\n")
     output.write("\t   round_robin += 1u;\n")
-    output.write("\t   pc = subgroupBroadcast(pc, pickthread.pick_thread);\n")
+    output.write("\t   pc = subgroupBroadcast(pc, pick_thread);\n")
     output.write("\t}\n")
     output.write("\t}\n")
     output.write("\n")
@@ -315,7 +315,7 @@ def write_amber_epilogue(output, workgroups, threads_per_workgroup, saturation_l
     output.write("END\n")
     output.write("\n")
 
-    output.write("BUFFER pickthread DATA_TYPE uint32 SIZE 1 FILL 0\n")
+    # output.write("BUFFER pickthread DATA_TYPE uint32 SIZE 1 FILL 0\n")
     # fill the tester SSBO with 1 or 2 zeroes depending on the saturation level
     if saturation_level == 0:
         output.write("BUFFER tester DATA_TYPE uint32 SIZE 3 FILL 0\n")
@@ -330,7 +330,7 @@ def write_amber_epilogue(output, workgroups, threads_per_workgroup, saturation_l
     output.write("\n")
     output.write("PIPELINE compute test_pipe\n")
     output.write("  ATTACH test\n")
-    output.write("  BIND BUFFER pickthread AS storage DESCRIPTOR_SET 0 BINDING 3 \n")
+    # output.write("  BIND BUFFER pickthread AS storage DESCRIPTOR_SET 0 BINDING 3 \n")
     output.write("  BIND BUFFER tester AS storage DESCRIPTOR_SET 0 BINDING 0 \n")
 
     # if the GPU is to be saturated, then the second buffer must be binded to the SSBO

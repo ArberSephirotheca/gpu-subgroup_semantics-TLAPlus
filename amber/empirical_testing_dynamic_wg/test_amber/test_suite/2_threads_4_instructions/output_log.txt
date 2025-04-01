@@ -1,5 +1,5 @@
 Date and Time:
-29/03/2025 23:48:58
+31/03/2025 23:26:42
 Computer:
 archlinux
 
@@ -1047,20 +1047,20 @@ generating amber test for: 9.txt in results/output2
 Finished running tests!
 
 writing simple ascii table to:
-results/output2/simple_final_results-2025-03-29.txt
+results/output2/simple_final_results-2025-03-31.txt
 
 writing iteration-based ascii table to:
-results/output2/iteration_based_final_results-2025-03-29.txt
+results/output2/iteration_based_final_results-2025-03-31.txt
 
 writing simple csv table to:
-results/output2/simple_final_results-2025-03-29.csv
+results/output2/simple_final_results-2025-03-31.csv
 
 writing simple csv table to:
-results/output2/simple_final_results-2025-03-29.csv
+results/output2/simple_final_results-2025-03-31.csv
 
 writing colored html table to:
-results/output2/html-colored-table2025-03-29.html
+results/output2/html-colored-table2025-03-31.html
 
 
 Execution time (s):
-2.189167022705078
+1.9834246635437012

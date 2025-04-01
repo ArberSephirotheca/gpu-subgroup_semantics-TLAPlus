@@ -463,7 +463,7 @@ VkPhysicalDeviceVulkan11Properties:
 	maxMultiviewInstanceIndex         = 268435455
 	protectedNoFault                  = false
 	maxPerSetDescriptors              = 1024
-	maxMemoryAllocationSize           = 0x3e24bc800
+	maxMemoryAllocationSize           = 0x3e21f3800
 
 VkPhysicalDeviceVulkan12Properties:
 -----------------------------------
@@ -837,8 +837,8 @@ VkPhysicalDeviceMemoryProperties:
 =================================
 memoryHeaps: count = 1
 	memoryHeaps[0]:
-		size   = 16681519104 (0x3e24bc800) (15.54 GiB)
-		budget = 15012462592 (0x37ed00000) (13.98 GiB)
+		size   = 16678598656 (0x3e21f3800) (15.53 GiB)
+		budget = 15010365440 (0x37eb00000) (13.98 GiB)
 		usage  = 0 (0x00000000) (0.00 B)
 		flags: count = 1
 			MEMORY_HEAP_DEVICE_LOCAL_BIT

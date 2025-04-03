@@ -103,7 +103,6 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         # zheyuan: maybe add a check to ensure that total_threads is divisible by num_testing_subgroups
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
-        output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
         output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
         output.write("\tuint index = workgroup_id / num_testing_subgroups;\n")
 
@@ -112,7 +111,6 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         total_threads = workgroups * threads_per_workgroup
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
-        output.write("\tint total_num_threads = " + str(total_threads) + ";\n")
         output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
         output.write("\tuint chunk_size =  num_workgroups / num_testing_subgroups;\n")
         output.write("\tuint index = workgroup_id % chunk_size;\n")

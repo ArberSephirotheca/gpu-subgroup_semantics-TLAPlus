@@ -1,0 +1,93 @@
+#version 460
+
+#ifndef REDUCER
+#define _GLF_ZERO(X, Y)                   (Y)
+#define _GLF_ONE(X, Y)                    (Y)
+#define _GLF_FALSE(X, Y)                  (Y)
+#define _GLF_TRUE(X, Y)                   (Y)
+#define _GLF_IDENTITY(X, Y)               (Y)
+#define _GLF_DEAD(X)                      (X)
+#define _GLF_FUZZED(X)                    (X)
+#define _GLF_WRAPPED_LOOP(X)              X
+#define _GLF_WRAPPED_IF_TRUE(X)           X
+#define _GLF_WRAPPED_IF_FALSE(X)          X
+#define _GLF_SWITCH(X)                    X
+#define _GLF_MAKE_IN_BOUNDS_INT(IDX, SZ)  clamp(IDX, 0, SZ - 1)
+#define _GLF_MAKE_IN_BOUNDS_UINT(IDX, SZ) clamp(IDX, 0u, SZ - 1u)
+#endif
+
+
+layout(set = 0, binding = 1) uniform buf1 {
+ vec2 injectionSwitch;
+};
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_shader_subgroup_ballot : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+layout(set = 0, binding = 0) buffer Buf {
+ uint buf[];
+};
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+void main()
+{
+ if(_GLF_DEAD(false))
+  return;
+ if(_GLF_DEAD(_GLF_FALSE(false, (injectionSwitch.x > injectionSwitch.y))))
+  return;
+ uvec4 GLF_merged4_0_1_11_1_1_13_2_1_11_3_1_12subgroup_idsubgroup_sizevirtual_gidworkgroup_id;
+ uvec4 GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup;
+ uvec2 GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_size;
+ GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup.xy = GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_size;
+ uvec4 GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid;
+ uvec4 GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id;
+ uvec3 GLF_merged3_0_1_11_1_1_14_2_1_14virtual_gidworkgroup_baseworkgroup_size;
+ uint subgroup_id = gl_SubgroupID;
+ GLF_merged4_0_1_11_1_1_13_2_1_11_3_1_12subgroup_idsubgroup_sizevirtual_gidworkgroup_id.x = subgroup_id;
+ GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.y = GLF_merged4_0_1_11_1_1_13_2_1_11_3_1_12subgroup_idsubgroup_sizevirtual_gidworkgroup_id.x;
+ GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.y = GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.y;
+ uint subgroup_size = 16;
+ GLF_merged4_0_1_11_1_1_13_2_1_11_3_1_12subgroup_idsubgroup_sizevirtual_gidworkgroup_id.y = subgroup_size;
+ GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.z = GLF_merged4_0_1_11_1_1_13_2_1_11_3_1_12subgroup_idsubgroup_sizevirtual_gidworkgroup_id.y;
+ uint subgroup_local_id = gl_SubgroupInvocationID;
+ GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.z = subgroup_local_id;
+ uint num_workgroup = gl_NumWorkGroups.x;
+ GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup.w = num_workgroup;
+ GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.x = GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup.w;
+ if(_GLF_DEAD(false))
+  return;
+ uint workgroup_size = gl_WorkGroupSize.x;
+ GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup.xy.y = workgroup_size;
+ GLF_merged3_0_1_11_1_1_14_2_1_14virtual_gidworkgroup_baseworkgroup_size.z = GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup.xy.y;
+ uint workgroup_id = gl_WorkGroupID.x;
+ GLF_merged4_0_1_11_1_1_13_2_1_11_3_1_12subgroup_idsubgroup_sizevirtual_gidworkgroup_id.w = workgroup_id;
+ GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.w = GLF_merged4_0_1_11_1_1_13_2_1_11_3_1_12subgroup_idsubgroup_sizevirtual_gidworkgroup_id.w;
+ if(_GLF_DEAD(false))
+  return;
+ uint workgroup_base = GLF_merged3_0_1_11_1_1_14_2_1_14virtual_gidworkgroup_baseworkgroup_size.z * GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.w;
+ GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup.xy.x = workgroup_base;
+ GLF_merged3_0_1_11_1_1_14_2_1_14virtual_gidworkgroup_baseworkgroup_size.y = GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup.xy.x;
+ uint virtual_gid = GLF_merged3_0_1_11_1_1_14_2_1_14virtual_gidworkgroup_baseworkgroup_size.y + GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.y * GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.z + GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.z;
+ GLF_merged4_0_1_11_1_1_13_2_1_11_3_1_12subgroup_idsubgroup_sizevirtual_gidworkgroup_id.z = virtual_gid;
+ GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.w = GLF_merged4_0_1_11_1_1_13_2_1_11_3_1_12subgroup_idsubgroup_sizevirtual_gidworkgroup_id.z;
+ GLF_merged3_0_1_11_1_1_14_2_1_14virtual_gidworkgroup_baseworkgroup_size.x = GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.w;
+ if(_GLF_DEAD(_GLF_FALSE(false, (injectionSwitch.x > injectionSwitch.y))))
+  return;
+ if(_GLF_DEAD(_GLF_FALSE(false, (injectionSwitch.x > injectionSwitch.y))))
+  return;
+ uint next_virtual_gid = GLF_merged3_0_1_11_1_1_14_2_1_14virtual_gidworkgroup_baseworkgroup_size.y + GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.y * GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.z + ((GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.z + 1) % GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.z);
+ GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup.z = next_virtual_gid;
+ GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.x = GLF_merged3_0_2_53_2_1_16_3_1_13GLF_merged2_0_1_14_1_1_14workgroup_baseworkgroup_sizenext_virtual_gidnum_workgroup.z;
+ buf[GLF_merged3_0_1_11_1_1_14_2_1_14virtual_gidworkgroup_baseworkgroup_size.x] = 1;
+ if(GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.z + 1 < GLF_merged4_0_1_13_1_1_11_2_1_13_3_1_11num_workgroupsubgroup_idsubgroup_sizevirtual_gid.z)
+  {
+   int i = 0;
+   atomicStore(buf[GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.x], uint(2), 4, 64, 4);
+  }
+ else
+  {
+   atomicStore(buf[GLF_merged4_0_1_16_1_1_11_2_1_17_3_1_12next_virtual_gidsubgroup_idsubgroup_local_idworkgroup_id.x], uint(2), 4, 64, 4);
+  }
+ if(_GLF_DEAD(_GLF_FALSE(false, (injectionSwitch.x > injectionSwitch.y))))
+  return;
+}

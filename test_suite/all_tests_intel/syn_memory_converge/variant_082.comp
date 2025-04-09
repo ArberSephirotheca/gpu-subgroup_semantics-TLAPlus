@@ -1,0 +1,75 @@
+#version 460
+
+#ifndef REDUCER
+#define _GLF_ZERO(X, Y)                   (Y)
+#define _GLF_ONE(X, Y)                    (Y)
+#define _GLF_FALSE(X, Y)                  (Y)
+#define _GLF_TRUE(X, Y)                   (Y)
+#define _GLF_IDENTITY(X, Y)               (Y)
+#define _GLF_DEAD(X)                      (X)
+#define _GLF_FUZZED(X)                    (X)
+#define _GLF_WRAPPED_LOOP(X)              X
+#define _GLF_WRAPPED_IF_TRUE(X)           X
+#define _GLF_WRAPPED_IF_FALSE(X)          X
+#define _GLF_SWITCH(X)                    X
+#define _GLF_MAKE_IN_BOUNDS_INT(IDX, SZ)  clamp(IDX, 0, SZ - 1)
+#define _GLF_MAKE_IN_BOUNDS_UINT(IDX, SZ) clamp(IDX, 0u, SZ - 1u)
+#endif
+
+
+struct _GLF_struct_2 {
+ ivec4 _f0;
+} ;
+
+struct _GLF_struct_1 {
+ uvec3 _f0;
+} ;
+
+struct _GLF_struct_3 {
+ _GLF_struct_1 _f0;
+ _GLF_struct_2 _f1;
+ vec4 _f2;
+} ;
+
+struct _GLF_struct_4 {
+ _GLF_struct_3 _f0;
+ bvec2 _f1;
+ bvec2 _f2;
+ uint workgroup_id;
+} ;
+
+struct _GLF_struct_0 {
+ ivec2 _f0;
+ uint subgroup_local_id;
+ float _f1;
+} ;
+
+layout(set = 0, binding = 1) uniform buf1 {
+ vec2 injectionSwitch;
+};
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_shader_subgroup_ballot : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+layout(set = 0, binding = 0) buffer Buf {
+ uint buf;
+};
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+void main()
+{
+ uvec2 GLF_merged2_0_1_14_1_1_12workgroup_baseworkgroup_id;
+ uint subgroup_id = gl_SubgroupID;
+ uint subgroup_size = 16;
+ _GLF_struct_0 _GLF_struct_replacement_0 = _GLF_struct_0(ivec2(1), gl_SubgroupInvocationID, 1.0);
+ uint num_workgroup = gl_NumWorkGroups.x;
+ uint workgroup_size = gl_WorkGroupSize.x;
+ _GLF_struct_4 _GLF_struct_replacement_4 = _GLF_struct_4(_GLF_struct_3(_GLF_struct_1(uvec3(1u)), _GLF_struct_2(ivec4(1)), vec4(1.0)), bvec2(true), bvec2(true), gl_WorkGroupID.x);
+ GLF_merged2_0_1_14_1_1_12workgroup_baseworkgroup_id.y = _GLF_struct_replacement_4.workgroup_id;
+ uint workgroup_base = workgroup_size * GLF_merged2_0_1_14_1_1_12workgroup_baseworkgroup_id.y;
+ GLF_merged2_0_1_14_1_1_12workgroup_baseworkgroup_id.x = workgroup_base;
+ uint virtual_gid = GLF_merged2_0_1_14_1_1_12workgroup_baseworkgroup_id.x + subgroup_id * subgroup_size + _GLF_struct_replacement_0.subgroup_local_id;
+ uint next_virtual_gid = GLF_merged2_0_1_14_1_1_12workgroup_baseworkgroup_id.x + subgroup_id * subgroup_size + _GLF_IDENTITY(((_GLF_struct_replacement_0.subgroup_local_id + 1) % subgroup_size), ~ (~ (((_GLF_struct_replacement_0.subgroup_local_id + 1) % subgroup_size))));
+ buf = virtual_gid;
+ subgroupAllEqual(buf);
+}

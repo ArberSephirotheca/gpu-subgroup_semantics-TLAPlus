@@ -1,0 +1,128 @@
+#version 460
+struct _GLF_struct_12 {
+ mat2 _f0;
+ uvec2 _f1;
+ uvec2 _f2;
+ int _f3;
+} ;
+
+struct _GLF_struct_11 {
+ vec2 _f0;
+ uvec2 _f1;
+ vec3 _f2;
+ uint _f3;
+ mat3x2 _f4;
+ vec3 _f5;
+} ;
+
+struct _GLF_struct_13 {
+ _GLF_struct_11 _f0;
+ float _f1;
+ _GLF_struct_12 _f2;
+ uvec4 _f3;
+ vec4 _f4;
+ mat4 _f5;
+} ;
+
+struct _GLF_struct_14 {
+ uint workgroup_id;
+ _GLF_struct_13 _f0;
+} ;
+
+struct _GLF_struct_8 {
+ mat2x3 _f0;
+ ivec4 _f1;
+ mat3 _f2;
+} ;
+
+struct _GLF_struct_9 {
+ _GLF_struct_8 _f0;
+} ;
+
+struct _GLF_struct_6 {
+ ivec2 _f0;
+ mat2x3 _f1;
+ mat4x2 _f2;
+ uvec3 _f3;
+ uint workgroup_base;
+ mat4 _f4;
+ mat4 _f5;
+} ;
+
+struct _GLF_struct_5 {
+ ivec3 _f0;
+ vec2 _f1;
+ vec4 _f2;
+} ;
+
+struct _GLF_struct_4 {
+ vec2 _f0;
+} ;
+
+struct _GLF_struct_3 {
+ mat3x4 _f0;
+} ;
+
+struct _GLF_struct_7 {
+ _GLF_struct_3 _f0;
+ mat3x2 _f1;
+ ivec4 _f2;
+ mat3x2 _f3;
+ _GLF_struct_4 _f4;
+ _GLF_struct_5 _f5;
+ _GLF_struct_6 _f6;
+} ;
+
+struct _GLF_struct_10 {
+ _GLF_struct_7 _f0;
+ _GLF_struct_9 _f1;
+} ;
+
+struct _GLF_struct_0 {
+ mat2x3 _f0;
+ mat3 _f1;
+ bvec2 _f2;
+ uvec2 _f3;
+ mat2x3 _f4;
+ ivec4 _f5;
+ mat2 _f6;
+} ;
+
+struct _GLF_struct_1 {
+ _GLF_struct_0 _f0;
+} ;
+
+struct _GLF_struct_2 {
+ uint subgroup_local_id;
+ mat2 _f0;
+ _GLF_struct_1 _f1;
+ mat4x3 _f2;
+ bvec2 _f3;
+} ;
+
+layout(set = 0, binding = 0) uniform buf0 {
+ vec2 injectionSwitch;
+};
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_shader_subgroup_ballot : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+layout(set = 0, binding = 0) buffer Buf {
+ uint buf[];
+};
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+void main()
+{
+ uint subgroup_id = gl_SubgroupID;
+ uint subgroup_size = 16;
+ _GLF_struct_2 _GLF_struct_replacement_2 = _GLF_struct_2(gl_SubgroupInvocationID, mat2(1.0), _GLF_struct_1(_GLF_struct_0(mat2x3(1.0), mat3(1.0), bvec2(true), uvec2(1u), mat2x3(1.0), ivec4(1), mat2(1.0))), mat4x3(1.0), bvec2(true));
+ uint num_workgroup = gl_NumWorkGroups.x;
+ uint workgroup_size = gl_WorkGroupSize.x;
+ _GLF_struct_14 _GLF_struct_replacement_14 = _GLF_struct_14(gl_WorkGroupID.x, _GLF_struct_13(_GLF_struct_11(vec2(1.0), uvec2(1u), vec3(1.0), 1u, mat3x2(1.0), vec3(1.0)), 1.0, _GLF_struct_12(mat2(1.0), uvec2(1u), uvec2(1u), 1), uvec4(1u), vec4(1.0), mat4(1.0)));
+ _GLF_struct_10 _GLF_struct_replacement_10 = _GLF_struct_10(_GLF_struct_7(_GLF_struct_3(mat3x4(1.0)), mat3x2(1.0), ivec4(1), mat3x2(1.0), _GLF_struct_4(vec2(1.0)), _GLF_struct_5(ivec3(1), vec2(1.0), vec4(1.0)), _GLF_struct_6(ivec2(1), mat2x3(1.0), mat4x2(1.0), uvec3(1u), workgroup_size * _GLF_struct_replacement_14.workgroup_id, mat4(1.0), mat4(1.0))), _GLF_struct_9(_GLF_struct_8(mat2x3(1.0), ivec4(1), mat3(1.0))));
+ uint virtual_gid = _GLF_struct_replacement_10._f0._f6.workgroup_base + subgroup_id * subgroup_size + _GLF_struct_replacement_2.subgroup_local_id;
+ uint next_virtual_gid = _GLF_struct_replacement_10._f0._f6.workgroup_base + subgroup_id * subgroup_size + ((_GLF_struct_replacement_2.subgroup_local_id + 1) % subgroup_size);
+ buf[virtual_gid] = 1;
+ atomicStore(buf[next_virtual_gid], uint(2), 4, 64, 4);
+}

@@ -12,16 +12,16 @@ def main():
         print("ERROR: No command line arguments required to run this higher level script")
         exit(1)
 
-    directory_names = ["../all_tests/syn_branch_syn",
-                       "../all_tests/syn_branch_syn_relax",
-                       "../all_tests/syn_branch_syn_release",
-                       "../all_tests/syn_lock_step",
-                       "../all_tests/syn_lock_step_relax",
-                       "../all_tests/syn_lock_step_release",
-                       "../all_tests/syn_subgroup_op",
-                       "../all_tests/syn_subgroup_op_relax",
-                       "../all_tests/syn_subgroup_op_release"
-                       "..//all_tests/syn_memory_converge",]
+    directory_names = ["../all_tests_intel/syn_branch_syn",
+                       "../all_tests_intel/syn_branch_syn_relax",
+                       "../all_tests_intel/syn_branch_syn_release",
+                       "../all_tests_intel/syn_lock_step",
+                       "../all_tests_intel/syn_lock_step_relax",
+                       "../all_tests_intel/syn_lock_step_release",
+                       "../all_tests_intel/syn_subgroup_op",
+                       "../all_tests_intel/syn_subgroup_op_relax",
+                       "../all_tests_intel/syn_subgroup_op_release",
+                       "../all_tests_intel/syn_memory_converge"]
 
     for name in directory_names:
         os.system("python3 amber_test_driver.py " + name + " 1")

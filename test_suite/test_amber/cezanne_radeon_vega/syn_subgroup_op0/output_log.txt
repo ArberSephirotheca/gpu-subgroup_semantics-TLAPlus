@@ -1,0 +1,533 @@
+Date and Time:
+09/04/2025 19:29:50
+Computer:
+waterthrush
+
+storing vulkaninfo to: results/syn_subgroup_op0/vulkaninfo.txt
+
+generating amber test for: variant_059.comp in results/syn_subgroup_op0
+running test: variant_059.amber
+timeout -k 1 15 amber variant_059.amber -d -t spv1.5 >> temp_results.txt
+F
+
+generating amber test for: variant_060.comp in results/syn_subgroup_op0
+running test: variant_060.amber
+timeout -k 1 15 amber variant_060.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_087.comp in results/syn_subgroup_op0
+running test: variant_087.amber
+timeout -k 1 15 amber variant_087.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_030.comp in results/syn_subgroup_op0
+running test: variant_030.amber
+timeout -k 1 15 amber variant_030.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_097.comp in results/syn_subgroup_op0
+running test: variant_097.amber
+timeout -k 1 15 amber variant_097.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: reference.comp in results/syn_subgroup_op0
+running test: reference.amber
+timeout -k 1 15 amber reference.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_062.comp in results/syn_subgroup_op0
+running test: variant_062.amber
+timeout -k 1 15 amber variant_062.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_077.comp in results/syn_subgroup_op0
+running test: variant_077.amber
+timeout -k 1 15 amber variant_077.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_072.comp in results/syn_subgroup_op0
+running test: variant_072.amber
+timeout -k 1 15 amber variant_072.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_024.comp in results/syn_subgroup_op0
+running test: variant_024.amber
+timeout -k 1 15 amber variant_024.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_007.comp in results/syn_subgroup_op0
+running test: variant_007.amber
+timeout -k 1 15 amber variant_007.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_025.comp in results/syn_subgroup_op0
+running test: variant_025.amber
+timeout -k 1 15 amber variant_025.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_019.comp in results/syn_subgroup_op0
+running test: variant_019.amber
+timeout -k 1 15 amber variant_019.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_045.comp in results/syn_subgroup_op0
+running test: variant_045.amber
+timeout -k 1 15 amber variant_045.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_065.comp in results/syn_subgroup_op0
+running test: variant_065.amber
+timeout -k 1 15 amber variant_065.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_066.comp in results/syn_subgroup_op0
+running test: variant_066.amber
+timeout -k 1 15 amber variant_066.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_056.comp in results/syn_subgroup_op0
+running test: variant_056.amber
+timeout -k 1 15 amber variant_056.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_053.comp in results/syn_subgroup_op0
+running test: variant_053.amber
+timeout -k 1 15 amber variant_053.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_014.comp in results/syn_subgroup_op0
+running test: variant_014.amber
+timeout -k 1 15 amber variant_014.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_034.comp in results/syn_subgroup_op0
+running test: variant_034.amber
+timeout -k 1 15 amber variant_034.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_049.comp in results/syn_subgroup_op0
+running test: variant_049.amber
+timeout -k 1 15 amber variant_049.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_081.comp in results/syn_subgroup_op0
+running test: variant_081.amber
+timeout -k 1 15 amber variant_081.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_091.comp in results/syn_subgroup_op0
+running test: variant_091.amber
+timeout -k 1 15 amber variant_091.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_031.comp in results/syn_subgroup_op0
+running test: variant_031.amber
+timeout -k 1 15 amber variant_031.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_055.comp in results/syn_subgroup_op0
+running test: variant_055.amber
+timeout -k 1 15 amber variant_055.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_089.comp in results/syn_subgroup_op0
+running test: variant_089.amber
+timeout -k 1 15 amber variant_089.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_005.comp in results/syn_subgroup_op0
+running test: variant_005.amber
+timeout -k 1 15 amber variant_005.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_090.comp in results/syn_subgroup_op0
+running test: variant_090.amber
+timeout -k 1 15 amber variant_090.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_084.comp in results/syn_subgroup_op0
+running test: variant_084.amber
+timeout -k 1 15 amber variant_084.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_037.comp in results/syn_subgroup_op0
+running test: variant_037.amber
+timeout -k 1 15 amber variant_037.amber -d -t spv1.5 >> temp_results.txt
+F
+
+generating amber test for: variant_075.comp in results/syn_subgroup_op0
+running test: variant_075.amber
+timeout -k 1 15 amber variant_075.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_041.comp in results/syn_subgroup_op0
+running test: variant_041.amber
+timeout -k 1 15 amber variant_041.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_015.comp in results/syn_subgroup_op0
+running test: variant_015.amber
+timeout -k 1 15 amber variant_015.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_027.comp in results/syn_subgroup_op0
+running test: variant_027.amber
+timeout -k 1 15 amber variant_027.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_002.comp in results/syn_subgroup_op0
+running test: variant_002.amber
+timeout -k 1 15 amber variant_002.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_039.comp in results/syn_subgroup_op0
+running test: variant_039.amber
+timeout -k 1 15 amber variant_039.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_044.comp in results/syn_subgroup_op0
+running test: variant_044.amber
+timeout -k 1 15 amber variant_044.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_008.comp in results/syn_subgroup_op0
+running test: variant_008.amber
+timeout -k 1 15 amber variant_008.amber -d -t spv1.5 >> temp_results.txt
+F
+
+generating amber test for: variant_069.comp in results/syn_subgroup_op0
+running test: variant_069.amber
+timeout -k 1 15 amber variant_069.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_021.comp in results/syn_subgroup_op0
+running test: variant_021.amber
+timeout -k 1 15 amber variant_021.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_023.comp in results/syn_subgroup_op0
+running test: variant_023.amber
+timeout -k 1 15 amber variant_023.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_048.comp in results/syn_subgroup_op0
+running test: variant_048.amber
+timeout -k 1 15 amber variant_048.amber -d -t spv1.5 >> temp_results.txt
+F
+
+generating amber test for: variant_033.comp in results/syn_subgroup_op0
+running test: variant_033.amber
+timeout -k 1 15 amber variant_033.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_082.comp in results/syn_subgroup_op0
+running test: variant_082.amber
+timeout -k 1 15 amber variant_082.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_095.comp in results/syn_subgroup_op0
+running test: variant_095.amber
+timeout -k 1 15 amber variant_095.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_001.comp in results/syn_subgroup_op0
+running test: variant_001.amber
+timeout -k 1 15 amber variant_001.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_032.comp in results/syn_subgroup_op0
+running test: variant_032.amber
+timeout -k 1 15 amber variant_032.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_074.comp in results/syn_subgroup_op0
+running test: variant_074.amber
+timeout -k 1 15 amber variant_074.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_080.comp in results/syn_subgroup_op0
+running test: variant_080.amber
+timeout -k 1 15 amber variant_080.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_009.comp in results/syn_subgroup_op0
+running test: variant_009.amber
+timeout -k 1 15 amber variant_009.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_076.comp in results/syn_subgroup_op0
+running test: variant_076.amber
+timeout -k 1 15 amber variant_076.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_026.comp in results/syn_subgroup_op0
+running test: variant_026.amber
+timeout -k 1 15 amber variant_026.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_050.comp in results/syn_subgroup_op0
+running test: variant_050.amber
+timeout -k 1 15 amber variant_050.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_006.comp in results/syn_subgroup_op0
+running test: variant_006.amber
+timeout -k 1 15 amber variant_006.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_013.comp in results/syn_subgroup_op0
+running test: variant_013.amber
+timeout -k 1 15 amber variant_013.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_035.comp in results/syn_subgroup_op0
+running test: variant_035.amber
+timeout -k 1 15 amber variant_035.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_052.comp in results/syn_subgroup_op0
+running test: variant_052.amber
+timeout -k 1 15 amber variant_052.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_093.comp in results/syn_subgroup_op0
+running test: variant_093.amber
+timeout -k 1 15 amber variant_093.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_086.comp in results/syn_subgroup_op0
+running test: variant_086.amber
+timeout -k 1 15 amber variant_086.amber -d -t spv1.5 >> temp_results.txt
+F
+
+generating amber test for: variant_068.comp in results/syn_subgroup_op0
+running test: variant_068.amber
+timeout -k 1 15 amber variant_068.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_020.comp in results/syn_subgroup_op0
+running test: variant_020.amber
+timeout -k 1 15 amber variant_020.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_042.comp in results/syn_subgroup_op0
+running test: variant_042.amber
+timeout -k 1 15 amber variant_042.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_071.comp in results/syn_subgroup_op0
+running test: variant_071.amber
+timeout -k 1 15 amber variant_071.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_058.comp in results/syn_subgroup_op0
+running test: variant_058.amber
+timeout -k 1 15 amber variant_058.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_051.comp in results/syn_subgroup_op0
+running test: variant_051.amber
+timeout -k 1 15 amber variant_051.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_057.comp in results/syn_subgroup_op0
+running test: variant_057.amber
+timeout -k 1 15 amber variant_057.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_073.comp in results/syn_subgroup_op0
+running test: variant_073.amber
+timeout -k 1 15 amber variant_073.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_083.comp in results/syn_subgroup_op0
+running test: variant_083.amber
+timeout -k 1 15 amber variant_083.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_064.comp in results/syn_subgroup_op0
+running test: variant_064.amber
+timeout -k 1 15 amber variant_064.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_010.comp in results/syn_subgroup_op0
+running test: variant_010.amber
+timeout -k 1 15 amber variant_010.amber -d -t spv1.5 >> temp_results.txt
+F
+
+generating amber test for: variant_036.comp in results/syn_subgroup_op0
+running test: variant_036.amber
+timeout -k 1 15 amber variant_036.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_029.comp in results/syn_subgroup_op0
+running test: variant_029.amber
+timeout -k 1 15 amber variant_029.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_079.comp in results/syn_subgroup_op0
+running test: variant_079.amber
+timeout -k 1 15 amber variant_079.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_011.comp in results/syn_subgroup_op0
+running test: variant_011.amber
+timeout -k 1 15 amber variant_011.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_046.comp in results/syn_subgroup_op0
+running test: variant_046.amber
+timeout -k 1 15 amber variant_046.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_018.comp in results/syn_subgroup_op0
+running test: variant_018.amber
+timeout -k 1 15 amber variant_018.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_096.comp in results/syn_subgroup_op0
+running test: variant_096.amber
+timeout -k 1 15 amber variant_096.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_004.comp in results/syn_subgroup_op0
+running test: variant_004.amber
+timeout -k 1 15 amber variant_004.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_017.comp in results/syn_subgroup_op0
+running test: variant_017.amber
+timeout -k 1 15 amber variant_017.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_022.comp in results/syn_subgroup_op0
+running test: variant_022.amber
+timeout -k 1 15 amber variant_022.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_067.comp in results/syn_subgroup_op0
+running test: variant_067.amber
+timeout -k 1 15 amber variant_067.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_063.comp in results/syn_subgroup_op0
+running test: variant_063.amber
+timeout -k 1 15 amber variant_063.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_003.comp in results/syn_subgroup_op0
+running test: variant_003.amber
+timeout -k 1 15 amber variant_003.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_040.comp in results/syn_subgroup_op0
+running test: variant_040.amber
+timeout -k 1 15 amber variant_040.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_043.comp in results/syn_subgroup_op0
+running test: variant_043.amber
+timeout -k 1 15 amber variant_043.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_028.comp in results/syn_subgroup_op0
+running test: variant_028.amber
+timeout -k 1 15 amber variant_028.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_012.comp in results/syn_subgroup_op0
+running test: variant_012.amber
+timeout -k 1 15 amber variant_012.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_070.comp in results/syn_subgroup_op0
+running test: variant_070.amber
+timeout -k 1 15 amber variant_070.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_016.comp in results/syn_subgroup_op0
+running test: variant_016.amber
+timeout -k 1 15 amber variant_016.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_038.comp in results/syn_subgroup_op0
+running test: variant_038.amber
+timeout -k 1 15 amber variant_038.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_092.comp in results/syn_subgroup_op0
+running test: variant_092.amber
+timeout -k 1 15 amber variant_092.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_047.comp in results/syn_subgroup_op0
+running test: variant_047.amber
+timeout -k 1 15 amber variant_047.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_088.comp in results/syn_subgroup_op0
+running test: variant_088.amber
+timeout -k 1 15 amber variant_088.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_078.comp in results/syn_subgroup_op0
+running test: variant_078.amber
+timeout -k 1 15 amber variant_078.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_085.comp in results/syn_subgroup_op0
+running test: variant_085.amber
+timeout -k 1 15 amber variant_085.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_061.comp in results/syn_subgroup_op0
+running test: variant_061.amber
+timeout -k 1 15 amber variant_061.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_099.comp in results/syn_subgroup_op0
+running test: variant_099.amber
+timeout -k 1 15 amber variant_099.amber -d -t spv1.5 >> temp_results.txt
+F
+
+generating amber test for: variant_094.comp in results/syn_subgroup_op0
+running test: variant_094.amber
+timeout -k 1 15 amber variant_094.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_000.comp in results/syn_subgroup_op0
+running test: variant_000.amber
+timeout -k 1 15 amber variant_000.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_098.comp in results/syn_subgroup_op0
+running test: variant_098.amber
+timeout -k 1 15 amber variant_098.amber -d -t spv1.5 >> temp_results.txt
+P
+
+generating amber test for: variant_054.comp in results/syn_subgroup_op0
+running test: variant_054.amber
+timeout -k 1 15 amber variant_054.amber -d -t spv1.5 >> temp_results.txt
+P
+
+
+Finished running tests!
+
+writing simple ascii table to:
+results/syn_subgroup_op0/simple_final_results-2025-04-09.txt
+
+writing iteration-based ascii table to:
+results/syn_subgroup_op0/iteration_based_final_results-2025-04-09.txt
+
+writing simple csv table to:
+results/syn_subgroup_op0/simple_final_results-2025-04-09.csv
+
+writing simple csv table to:
+results/syn_subgroup_op0/simple_final_results-2025-04-09.csv
+
+writing colored html table to:
+results/syn_subgroup_op0/html-colored-table2025-04-09.html
+
+
+Execution time (s):
+227.93458342552185

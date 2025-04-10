@@ -334,8 +334,8 @@ def find_amber():
 
 
 # create a directory to hold the output
-def get_new_dir_name():
-    base_name = "results/output"
+def get_new_dir_name(original_dir):
+    base_name = "results/" + original_dir
     label = 0
     while 1:
         check_name = base_name + str(label)
@@ -388,7 +388,7 @@ def main():
     num_iterations = args.num_iterations
 
     # the user must input the location of the directory where the .amber files will reside
-    output_dir_path = get_new_dir_name()
+    output_dir_path = get_new_dir_name(os.path.basename(input_dir))
 
     # the user may change the flags used to build the amber tests with (include spaces before and after the flag(s))
     amber_build_flags = " -d -t spv1.5 "

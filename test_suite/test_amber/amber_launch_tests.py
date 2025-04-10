@@ -20,7 +20,8 @@ def main():
                        "../all_tests/syn_lock_step_release",
                        "../all_tests/syn_subgroup_op",
                        "../all_tests/syn_subgroup_op_relax",
-                       "../all_tests/syn_subgroup_op_release",]
+                       "../all_tests/syn_subgroup_op_release"
+                       "..//all_tests/syn_memory_converge",]
 
     for name in directory_names:
         os.system("python3 amber_test_driver.py " + name + " 1")

@@ -34,7 +34,7 @@ def log_print(s):
 
 
 # create amber tests with provided input directory and specified configuration object and path/build details
-def run_amber_test(input_dir, output_dir, each_cfg_option, amber_build_path, amber_build_flags, num_iter, android):
+def run_amber_test(input_dir, output_dir, each_cfg_option, amber_build_path, amber_build_flags, num_iter, android, serial):
     simple_test_results = []
     verbose_test_results = []
     all_test_results = []
@@ -73,7 +73,11 @@ def run_amber_test(input_dir, output_dir, each_cfg_option, amber_build_path, amb
                 # push test file on the device
                 os.system("adb push " + output_file_name + " /data/local/tmp/")
                 # prepare the specific run command to run amber on-device
-                run__test = "timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk " + amber_build_flags + " " + os.path.basename(
+                if serial:
+                    run__test = f"timeout -k 1 15 adb -s {serial} shell 'cd /data/local/tmp ; ./amber_ndk " + amber_build_flags + " " + os.path.basename(
+                    output_file_name) + "' >> temp_results.txt"
+                else:
+                    run__test = "timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk " + amber_build_flags + " " + os.path.basename(
                     output_file_name) + "' >> temp_results.txt"
             for i in range(int(num_iter)):
                 log_print("running test: " + output_file_name)
@@ -125,14 +129,14 @@ def run_amber_test(input_dir, output_dir, each_cfg_option, amber_build_path, amb
 
 # main driver function to create amber files with the specified list of configuration objects, provided
 # input directory, and details of the build path/type
-def amber_driver(all_config_variants, input_dir, output_dir, amber_build_path, amber_build_flags, num_iter, android):
+def amber_driver(all_config_variants, input_dir, output_dir, amber_build_path, amber_build_flags, num_iter, android, serial):
     simple_results = []
     verbose_results = []
 
     # iterate over each configuration type and run directory of .txt files on each configuration using run_amber_test()
     for each_cfg_opt in all_config_variants:
         temp_results = run_amber_test(input_dir, output_dir, each_cfg_opt, amber_build_path, amber_build_flags,
-                                      num_iter, android)
+                                      num_iter, android, serial)
         if len(temp_results) != 2:
             print("An error occured during the generation of the amber tests in run_amber_test()", file=sys.stderr)
             exit(1)
@@ -403,16 +407,22 @@ def get_new_dir_name():
         label += 1
 
 
-def android_sanity_check():
+def android_sanity_check(serial):
     """Check that Android device is accessible, and amber is installed as /data/local/tmp/amber_ndk"""
     try:
-        subprocess.run(["adb", "shell", "true"], timeout=5, check=True)
+        if serial:
+            subprocess.run(["adb", "-s", serial, "shell", "true"], timeout=5, check=True)
+        else:
+            subprocess.run(["adb", "shell", "true"], timeout=5, check=True)
     except:
         print("Error: no Android device connected?")
         exit(1)
 
     try:
-        subprocess.run(["adb", "shell", "test -f /data/local/tmp/amber_ndk"], timeout=5, check=True)
+        if serial:
+            subprocess.run(["adb", "-s", serial, "shell", "test -f /data/local/tmp/amber_ndk"], timeout=5, check=True)
+        else:
+            subprocess.run(["adb", "shell", "test -f /data/local/tmp/amber_ndk"], timeout=5, check=True)
     except:
         print(
             "Error: on Android device, /data/local/tmp/amber_ndk was not found. Please install Amber at this precise location.")
@@ -427,10 +437,13 @@ def main():
     parser.add_argument('num_iterations', type=int, help='Number of iteration to run each test')
     parser.add_argument('--android', action='store_true',
                         help='Run on Android device. Assumes a single Android device is connected, accessible with adb, and with amber already installed as /data/local/tmp/amber_ndk')
+    parser.add_argument('--serial', help='Serial number of adb device (required if multiple adb devices attached)')
+    parser.add_argument('--device', help='Vulkan device ID of gpu (for selecting from multiple available gpus)')
+
     args = parser.parse_args()
 
     if args.android:
-        android_sanity_check()
+        android_sanity_check(args.serial)
 
     start = time.time()
 
@@ -448,6 +461,8 @@ def main():
 
     # the user may change the flags used to build the amber tests with (include spaces before and after the flag(s))
     amber_build_flags = " -d -t spv1.5 "
+    if args.device:
+        amber_build_flags += f"-D {args.device} "
 
     os.makedirs(output_dir_path, exist_ok=True)
 
@@ -473,7 +488,7 @@ def main():
     if args.android:
         amber_build_path = ""  # ignored anyway
     else:
-        amber_build_path =  "amber "
+        amber_build_path = "amber "
 
     # the user must provide all the possible configuration objects they want to test with, placing them in the
     # all_config_variants list below
@@ -489,7 +504,7 @@ def main():
 
     # call the main driver function
     amber_driver(all_config_variants, input_dir, output_dir_path, amber_build_path, amber_build_flags, num_iterations,
-                 args.android)
+                 args.android, args.serial)
     end = time.time()
     log_print("")
     log_print("Execution time (s):")

@@ -260,12 +260,13 @@ ApplyUnaryExpr(t, workgroupId, expr) ==
 (* Thread Configuration *)
 InstructionSet == {"Assert", "Assignment", "OpAtomicLoad", "OpAtomicStore", "OpAtomicIncrement" , "OpAtomicDecrement", "OpGroupAll", "OpGroupAny", "OpGroupNonUniformAll", "OpGroupNonUniformAllEqual",
 "OpGroupNonUniformAny", "OpGroupNonUniformBroadcast", "OpAtomicCompareExchange" ,"OpAtomicExchange", "OpBranch", "OpBranchConditional", "OpSwitch", "OpControlBarrier", "OpLoopMerge",
-"OpSelectionMerge", "OpLabel", "Terminate", "OpLogicalOr", "OpLogicalAnd", "OpLogicalEqual", "OpLogicalNotEqual", "OpLogicalNot", "OpShiftLeftLogical", "OpBitcast", "OpBitwiseOr", "OpBitwiseAnd",
+"OpSelectionMerge", "OpLabel", "Terminate", "OpLogicalOr", "OpLogicalAnd", "OpLogicalEqual", "OpLogicalNotEqual", "OpLogicalNot", "OpShiftLeftLogical", "OpShiftRightLogical", "OpBitcast", "OpBitwiseOr", "OpBitwiseAnd",
 "OpEqual", "OpNotEqual", "OpLess", "OpLessOrEqual", "OpGreater", "OpGreaterOrEqual",
-"OpAdd", "OpAtomicAdd", "OpSub", "OpAtomicSub", "OpAtomicOr", "OpMul", "OpMod"}
+"OpAdd", "OpAtomicAdd", "OpSub", "OpAtomicSub", "OpAtomicOr", "OpAtomicAnd", "OpMul", "OpMod"}
 VariableScope == {"global", "shared", "local", "literal", "intermediate"}
 ScopeOperand == {"workgroup", "subgroup", "tangle"}
-MemoryOperationSet == {"OpAtomicLoad", "OpAtomicStore", "OpAtomicIncrement" , "OpAtomicDecrement", "OpAtomicAdd" , "OpAtomicSub", "OpAtomicCompareExchange" ,"OpAtomicExchange"}
+MemoryOperationSet == {"OpAtomicLoad", "OpAtomicStore", "OpAtomicIncrement" , "OpAtomicDecrement",
+"OpAtomicAdd" , "OpAtomicSub", "OpAtomicCompareExchange" ,"OpAtomicExchange", "OpAtomicOr", "OpAtomicAnd"}
 
 IsMemoryOperation(inst) == 
     inst \in MemoryOperationSet
@@ -295,7 +296,7 @@ EntryLabel == Min({idx \in 1..Len(ThreadInstructions[1]) : ThreadInstructions[1]
 (* CFG *)
 
 
-Synchronization == "None"
+Synchronization == "Branch"
 INSTANCE ProgramConf
 
 (* Inovactions within a tangle are required to execute tangled instruction concurrently, examples or opGroup operations and opControlBarrier  *)

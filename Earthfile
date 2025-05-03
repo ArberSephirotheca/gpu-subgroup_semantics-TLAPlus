@@ -61,7 +61,7 @@ tlaplus-image:
     ARG LITMUS_TESTS=FALSE
     FROM +tlaplusbuild-image
     WORKDIR /workdir
-    COPY empirical_testing empirical_testing
+    # COPY empirical_testing empirical_testing
     COPY forward-progress forward-progress
     COPY Homunculus Homunculus
     RUN CARGO_TARGET_DIR=Homunculus/target cargo build --release --manifest-path=Homunculus/Cargo.toml

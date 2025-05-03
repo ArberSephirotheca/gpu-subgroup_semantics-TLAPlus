@@ -389,6 +389,19 @@ OpAtomicOr(t, var, pointer, value) ==
                 /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
                 /\  UNCHANGED <<state, DynamicNodeSet, globalCounter, snapShotMap>>
 
+OpAtomicAnd(t, var, pointer, value) ==
+    LET workGroupId == WorkGroupId(t)+1
+        MangleVar == Mangle(t, var)
+        mangledPointer == Mangle(t, pointer)
+        mangledValue == Mangle(t, value)
+
+    IN
+        /\  LET pointerVal == GetVal(workGroupId, mangledPointer)
+                valueVal == GetVal(workGroupId, mangledValue)
+            IN
+                Assignment(t, {Var(MangleVar.scope, MangleVar.name, pointerVal, Index(-1)), Var(mangledPointer.scope, mangledPointer.name, pointerVal & valueVal, Index(-1))})
+                /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
+                /\  UNCHANGED <<state, DynamicNodeSet, globalCounter, snapShotMap>>
 OpBitcast(t, var, operand) ==
     LET workGroupId == WorkGroupId(t)+1
         MangleVar == Mangle(t, var)
@@ -413,6 +426,20 @@ OpShiftLeftLogical(t, var, base, shift) ==
             IN
                 Assignment(t, {Var(MangleVar.scope, MangleVar.name, shiftL(baseVal, shiftVal), Index(-1))})
         /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]   
+        /\  UNCHANGED <<state, DynamicNodeSet, globalCounter, snapShotMap>>
+
+OpShiftRightLogical(t, var, base, shift) ==
+    LET workGroupId == WorkGroupId(t)+1
+        MangleVar == Mangle(t, var)
+        mangledBase == Mangle(t, base)
+        mangledShift == Mangle(t, shift)
+
+    IN
+        /\  LET baseVal == GetVal(workGroupId, mangledBase)
+                shiftVal == GetVal(workGroupId, mangledShift)
+            IN
+                Assignment(t, {Var(MangleVar.scope, MangleVar.name, shiftR(baseVal, shiftVal), Index(-1))})
+        /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
         /\  UNCHANGED <<state, DynamicNodeSet, globalCounter, snapShotMap>>
 
 OpEqual(t, var, operand1, operand2) ==
@@ -1839,6 +1866,8 @@ ExecuteInstruction(t) ==
                 OpBitcast(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpShiftLeftLogical" THEN
                 OpShiftLeftLogical(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
+            ELSE IF ThreadInstructions[t][pc[t]] = "OpShiftRightLogical" THEN
+                OpShiftRightLogical(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpEqual" THEN
                 OpEqual(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpNotEqual" THEN
@@ -1865,6 +1894,8 @@ ExecuteInstruction(t) ==
                 OpAtomicSub(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicOr" THEN
                 OpAtomicOr(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
+            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicAnd" THEN
+                OpAtomicAnd(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpMul" THEN
                 OpMul(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpMod" THEN

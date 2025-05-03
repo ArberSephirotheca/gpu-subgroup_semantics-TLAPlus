@@ -124,7 +124,9 @@ pub enum TokenKind {
     LogicalNotEqualExpr,
     LogicalNotExpr,
     ShiftLeftLogicalExpr,
+    ShiftRightLogicalExpr,
     AtomicOrExpr,
+    AtomicAndExpr,
     LoadExpr,
     AtomicLoadExpr,
     AddExpr,
@@ -305,8 +307,12 @@ pub enum TokenKind {
     OpLogicalNot,
     #[regex("OpShiftLeftLogical")]
     OpShiftLeftLogical,
+    #[regex("OpShiftRightLogical")]
+    OpShiftRightLogical,
     #[regex("OpAtomicOr")]
     OpAtomicOr,
+    #[regex("OpAtomicAnd")]
+    OpAtomicAnd,
     #[regex("OpIAdd")]
     OpIAdd,
     #[regex("OpAtomicIAdd")]

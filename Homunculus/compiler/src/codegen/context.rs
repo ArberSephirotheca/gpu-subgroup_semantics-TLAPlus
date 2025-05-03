@@ -413,6 +413,28 @@ impl CodegenCx {
                 self.insert_variable(var_name, var_info);
                 self.increment_inst_position();
             }
+            Expr::ShiftRightLogicalExpr(shift_right_logical_expr) => {
+                let result_type = shift_right_logical_expr.result_type().unwrap();
+
+                let spirv_type = match self.lookup_type(result_type.text()) {
+                    Some(ty) => ty,
+                    None => panic!("Type {} not found", result_type),
+                };
+
+                let var_info = VariableInfo::new(
+                    var_name.clone(),
+                    var_name.clone(),
+                    spirv_type.clone(),
+                    vec![],
+                    StorageClass::Local,
+                    None,
+                    None,
+                    InstructionValue::None,
+                );
+
+                self.insert_variable(var_name, var_info);
+                self.increment_inst_position();
+            }
             Expr::AddExpr(add_expr) => {
                 let result_type = add_expr.result_type().unwrap();
                 // let storage_class = add_expr.storage_class().unwrap();
@@ -514,6 +536,30 @@ impl CodegenCx {
             }
             Expr::AtomicOrExpr(atomic_or_expr) => {
                 let result_type = atomic_or_expr.result_type().unwrap();
+                // let storage_class = add_expr.storage_class().unwrap();
+                // get the actual type of the variable
+                let spirv_type = match self.lookup_type(result_type.text()) {
+                    Some(ty) => ty,
+                    None => panic!("Type {} not found", result_type),
+                };
+
+                let var_info = VariableInfo::new(
+                    var_name.clone(),
+                    var_name.clone(),
+                    spirv_type.clone(),
+                    vec![],
+                    StorageClass::Local,
+                    None,
+                    None,
+                    InstructionValue::None,
+                    // self.resolve_spirv_type_to_default_value(spirv_type).0,
+                );
+
+                self.insert_variable(var_name, var_info);
+                self.increment_inst_position();
+            }
+            Expr::AtomicAndExpr(atomic_and_expr) => {
+                let result_type = atomic_and_expr.result_type().unwrap();
                 // let storage_class = add_expr.storage_class().unwrap();
                 // get the actual type of the variable
                 let spirv_type = match self.lookup_type(result_type.text()) {
@@ -1490,6 +1536,64 @@ impl CodegenCx {
                         .push_argument(second_operand_arg),
                 )
             }
+            Expr::ShiftRightLogicalExpr(shift_right_logical_expr) => {
+                let inst_args_builder = InstructionArguments::builder();
+                let result_arg_builder = InstructionArgument::builder();
+                let inst_arg1_builder = InstructionArgument::builder();
+                let inst_arg2_builder = InstructionArgument::builder();
+
+                let first_operand = shift_right_logical_expr.first_operand().unwrap();
+                let second_operand = shift_right_logical_expr.second_operand().unwrap();
+
+                let result_info = self
+                    .lookup_variable(&var_name)
+                    .expect("ShiftRightLogicalExpr: Result variable not found");
+                let first_operand_info = self
+                    .lookup_variable(first_operand.text())
+                    .expect("ShiftRightLogicalExpr: First operand not found");
+
+                let second_operand_info = self
+                    .lookup_variable(second_operand.text())
+                    .expect("ShiftRightLogicalExpr: Second operand not found");
+
+                let result_arg = result_arg_builder
+                    .ssa_id(result_info.get_ssa_name())
+                    .name(result_info.get_var_name())
+                    .value(InstructionValue::None)
+                    .index(IndexKind::Literal(-1))
+                    .scope(VariableScope::cast(&result_info.get_storage_class()))
+                    .build()
+                    .unwrap();
+
+                let first_operand_arg = inst_arg1_builder
+                    .ssa_id(first_operand_info.get_ssa_name())
+                    .name(first_operand_info.get_var_name())
+                    .value(self.construct_instruction_value(&first_operand_info))
+                    .index(IndexKind::Literal(-1))
+                    .scope(VariableScope::cast(&first_operand_info.get_storage_class()))
+                    .build()
+                    .unwrap();
+
+                let second_operand_arg = inst_arg2_builder
+                    .ssa_id(second_operand_info.get_ssa_name())
+                    .name(second_operand_info.get_var_name())
+                    .value(self.construct_instruction_value(&second_operand_info))
+                    .index(IndexKind::Literal(-1))
+                    .scope(VariableScope::cast(
+                        &second_operand_info.get_storage_class(),
+                    ))
+                    .build()
+                    .unwrap();
+
+                Some(
+                    inst_args_builder
+                        .name(InstructionName::ShiftRightLogical)
+                        .num_args(3)
+                        .push_argument(result_arg)
+                        .push_argument(first_operand_arg)
+                        .push_argument(second_operand_arg),
+                )
+            }
             Expr::AddExpr(add_expr) => {
                 let inst_args_builder = InstructionArguments::builder();
                 let result_arg_builder = InstructionArgument::builder();
@@ -1769,6 +1873,62 @@ impl CodegenCx {
                 Some(
                     inst_args_builder
                         .name(InstructionName::AtomicOr)
+                        .num_args(3)
+                        .push_argument(result_arg)
+                        .push_argument(pointer_arg)
+                        .push_argument(value_arg),
+                )
+            }
+            Expr::AtomicAndExpr(atomic_and_expr) => {
+                let inst_args_builder = InstructionArguments::builder();
+                let result_arg_builder = InstructionArgument::builder();
+                let inst_arg1_builder = InstructionArgument::builder();
+                let inst_arg2_builder = InstructionArgument::builder();
+
+                let pointer = atomic_and_expr.pointer().unwrap();
+                let value = atomic_and_expr.value().unwrap();
+
+                let result_info = self
+                    .lookup_variable(&var_name)
+                    .expect("AtomicAndExpr: Result variable not found");
+                let pointer_info = self
+                    .lookup_variable(pointer.text())
+                    .expect("AtomicAndExpr: pointer not found");
+
+                let value_info = self
+                    .lookup_variable(value.text())
+                    .expect("AtomicAndExpr: value not found");
+
+                let result_arg = result_arg_builder
+                    .ssa_id(result_info.get_ssa_name())
+                    .name(result_info.get_var_name())
+                    .value(InstructionValue::None)
+                    .index(IndexKind::Literal(-1))
+                    .scope(VariableScope::cast(&result_info.get_storage_class()))
+                    .build()
+                    .unwrap();
+
+                let pointer_arg = inst_arg1_builder
+                    .ssa_id(pointer_info.get_ssa_name())
+                    .name(pointer_info.get_var_name())
+                    .value(self.construct_instruction_value(&pointer_info))
+                    .index(IndexKind::Literal(-1))
+                    .scope(VariableScope::cast(&pointer_info.get_storage_class()))
+                    .build()
+                    .unwrap();
+
+                let value_arg = inst_arg2_builder
+                    .ssa_id(value_info.get_ssa_name())
+                    .name(value_info.get_var_name())
+                    .value(self.construct_instruction_value(&value_info))
+                    .index(IndexKind::Literal(-1))
+                    .scope(VariableScope::cast(&value_info.get_storage_class()))
+                    .build()
+                    .unwrap();
+
+                Some(
+                    inst_args_builder
+                        .name(InstructionName::AtomicAnd)
                         .num_args(3)
                         .push_argument(result_arg)
                         .push_argument(pointer_arg)

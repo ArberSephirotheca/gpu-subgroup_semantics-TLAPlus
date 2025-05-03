@@ -70,6 +70,8 @@ pub(super) fn stmt(p: &mut Parser) -> Option<CompletedMarker> {
         Some(op_logical_not_expr(p))
     } else if p.at(TokenKind::OpShiftLeftLogical) {
         Some(op_shift_left_logical(p))
+    } else if p.at(TokenKind::OpShiftRightLogical) {
+        Some(op_shift_right_logical(p))
     } else if p.at(TokenKind::OpReturn) {
         Some(op_return_statement(p))
     } else if p.at(TokenKind::OpLoad) {
@@ -102,6 +104,8 @@ pub(super) fn stmt(p: &mut Parser) -> Option<CompletedMarker> {
         Some(op_atomic_sub_expr(p))
     } else if p.at(TokenKind::OpAtomicOr) {
         Some(op_atomic_or_expr(p))
+    } else if p.at(TokenKind::OpAtomicAnd) {
+        Some(op_atomic_and_expr(p))
     } else if p.at(TokenKind::OpIMul) {
         Some(op_mul_expr(p))
     } else if p.at(TokenKind::OpUMod) {
@@ -603,6 +607,19 @@ fn op_shift_left_logical(p: &mut Parser) -> CompletedMarker {
     m.complete(p, TokenKind::ShiftLeftLogicalExpr, line)
 }
 
+/// example: OpShiftRightLogical %uint %uint_1 %64
+fn op_shift_right_logical(p: &mut Parser) -> CompletedMarker {
+    let m = p.start();
+    let line = p.get_line();
+    p.increment_line();
+    // skip OpShiftRightLogical token
+    p.bump();
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Newline);
+    m.complete(p, TokenKind::ShiftRightLogicalExpr, line)
+}
 /// example: OpReturn
 fn op_return_statement(p: &mut Parser) -> CompletedMarker {
     let m = p.start();
@@ -849,6 +866,22 @@ fn op_atomic_or_expr(p: &mut Parser) -> CompletedMarker {
     p.expect(TokenKind::Ident);
     p.expect(TokenKind::Newline);
     m.complete(p, TokenKind::AtomicOrExpr, line)
+}
+
+/// example: OpAtomicAnd %uint  %result_ptr %uint_0 %uint_0 %value
+fn op_atomic_and_expr(p: &mut Parser) -> CompletedMarker {
+    let m = p.start();
+    let line = p.get_line();
+    p.increment_line();
+    // skip OpAtomicAnd token
+    p.bump();
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Ident);
+    p.expect(TokenKind::Newline);
+    m.complete(p, TokenKind::AtomicAndExpr, line)
 }
 
 /// example: OpISub %int %int_0 %int_1

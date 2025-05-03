@@ -71,11 +71,15 @@ pub struct LogicalNot(SyntaxNode);
 #[derive(Debug, ResultType, BinaryExpr)]
 pub struct ShiftLeftLogicalExpr(SyntaxNode);
 #[derive(Debug, ResultType, BinaryExpr)]
+pub struct ShiftRightLogicalExpr(SyntaxNode);
+#[derive(Debug, ResultType, BinaryExpr)]
 pub struct AddExpr(SyntaxNode);
 #[derive(Debug, ResultType)]
 pub struct AtomicAddExpr(SyntaxNode);
 #[derive(Debug, ResultType)]
 pub struct AtomicOrExpr(SyntaxNode);
+#[derive(Debug, ResultType)]
+pub struct AtomicAndExpr(SyntaxNode);
 #[derive(Debug, ResultType, BinaryExpr)]
 pub struct SubExpr(SyntaxNode);
 #[derive(Debug, ResultType)]
@@ -151,11 +155,13 @@ pub enum Expr {
     LogicalNotEqual(LogicalNotEqual),
     LogicalNot(LogicalNot),
     ShiftLeftLogicalExpr(ShiftLeftLogicalExpr),
+    ShiftRightLogicalExpr(ShiftRightLogicalExpr),
     AddExpr(AddExpr),
     AtomicAddExpr(AtomicAddExpr),
     SubExpr(SubExpr),
     AtomicSubExpr(AtomicAddExpr),
     AtomicOrExpr(AtomicOrExpr),
+    AtomicAndExpr(AtomicAndExpr),
     MulExpr(MulExpr),
     ModExpr(ModExpr),
     EqualExpr(EqualExpr),
@@ -227,11 +233,15 @@ impl Expr {
             TokenKind::ShiftLeftLogicalExpr => {
                 Some(Self::ShiftLeftLogicalExpr(ShiftLeftLogicalExpr(node)))
             }
+            TokenKind::ShiftRightLogicalExpr => {
+                Some(Self::ShiftRightLogicalExpr(ShiftRightLogicalExpr(node)))
+            }
             TokenKind::AddExpr => Some(Self::AddExpr(AddExpr(node))),
             TokenKind::AtomicAddExpr => Some(Self::AtomicAddExpr(AtomicAddExpr(node))),
             TokenKind::SubExpr => Some(Self::SubExpr(SubExpr(node))),
             TokenKind::AtomicSubExpr => Some(Self::AtomicAddExpr(AtomicAddExpr(node))),
             TokenKind::AtomicOrExpr => Some(Self::AtomicOrExpr(AtomicOrExpr(node))),
+            TokenKind::AtomicAndExpr => Some(Self::AtomicAndExpr(AtomicAndExpr(node))),
             TokenKind::MulExpr => Some(Self::MulExpr(MulExpr(node))),
             TokenKind::ModExpr => Some(Self::ModExpr(ModExpr(node))),
             TokenKind::EqualExpr => Some(Self::EqualExpr(EqualExpr(node))),
@@ -289,11 +299,13 @@ impl Expr {
             Self::LogicalNotEqual(x) => x.0.first_token().unwrap(),
             Self::LogicalNot(x) => x.0.first_token().unwrap(),
             Self::ShiftLeftLogicalExpr(x) => x.0.first_token().unwrap(),
+            Self::ShiftRightLogicalExpr(x) => x.0.first_token().unwrap(),
             Self::AddExpr(x) => x.0.first_token().unwrap(),
             Self::AtomicAddExpr(x) => x.0.first_token().unwrap(),
             Self::SubExpr(x) => x.0.first_token().unwrap(),
             Self::AtomicSubExpr(x) => x.0.first_token().unwrap(),
             Self::AtomicOrExpr(x) => x.0.first_token().unwrap(),
+            Self::AtomicAndExpr(x) => x.0.first_token().unwrap(),
             Self::MulExpr(x) => x.0.first_token().unwrap(),
             Self::ModExpr(x) => x.0.first_token().unwrap(),
             Self::EqualExpr(x) => x.0.first_token().unwrap(),
@@ -790,6 +802,43 @@ impl AtomicOrExpr {
     }
 }
 
+impl AtomicAndExpr {
+    pub(crate) fn pointer(&self) -> Option<SyntaxToken> {
+        self.0
+            .children_with_tokens()
+            .filter_map(|x| x.into_token())
+            .filter(|x| x.kind() == TokenKind::Ident)
+            .nth(1)
+    }
+
+    pub(crate) fn memory(&self) -> Option<SyntaxToken> {
+        self.0
+            .children_with_tokens()
+            .filter_map(|x| x.into_token())
+            .filter(|x| x.kind() == TokenKind::Ident)
+            .nth(2)
+    }
+
+    pub(crate) fn memory_semantics(&self) -> Option<SyntaxToken> {
+        self.0
+            .children_with_tokens()
+            .filter_map(|x| x.into_token())
+            .filter(|x| x.kind() == TokenKind::Ident)
+            .nth(3)
+    }
+
+    pub(crate) fn value(&self) -> Option<SyntaxToken> {
+        self.0
+            .children_with_tokens()
+            .filter_map(|x| x.into_token())
+            .filter(
+                |x: &rowan::SyntaxToken<crate::compiler::parse::syntax::AsukaLanguage>| {
+                    x.kind() == TokenKind::Ident
+                },
+            )
+            .nth(4)
+    }
+}
 impl MulExpr {
     pub(crate) fn expr(&self) -> Option<Expr> {
         self.0.children().find_map(Expr::cast)

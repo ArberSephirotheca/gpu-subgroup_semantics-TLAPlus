@@ -133,6 +133,28 @@ SnapShotUpdate(newDBSet, newState, t, localPc, newCounter) ==
         IN
             InsertMultipleSnapShots(snapShotMap, snapShots)
 
+StateUpdateSubgroup(wgid, active_subgroup_threads, newDBSet) ==
+    [thread \in Threads |-> 
+        IF \E DB \in newDBSet :
+            /\ state[thread] # "terminated"
+            /\ state[thread] # "ready"
+            /\ thread \in DB.currentThreadSet[wgid]
+            /\ \A tid \in DB.currentThreadSet[wgid] : pc[tid] = pc[thread] (* /\ ThreadInstructions[1][pc[tid]] \in TangledInstructionSet *) /\ state[tid] = state[thread]
+            /\ DB.unknownSet[wgid] = {}
+        THEN 
+            "ready"
+        ELSE
+            state[thread]
+    ]
+
+SnapShotUpdateSubgroup(newDBSet, newState, active_subgroup_threads, localPc, newCounter) ==
+        \* get set of newly created DBs
+        LET newDBs == newDBSet \ DynamicNodeSet
+            newDBIds == {db.labelIdx : db \in newDBs}
+            snapShots == {newSnapShot(localPc, newState, threadLocals, globalVars, newDBSet, newCounter)}
+        IN
+            InsertMultipleSnapShots(snapShotMap, snapShots)
+
 \* MeaningfulUpdate(newSnapShotMap, oldSnapShotMap) ==
 \*     /\ \E blockIdx \in DOMAIN newSnapShotMap : oldSnapShotMap[blockIdx] /= newSnapShotMap[blockIdx]
 
@@ -1477,13 +1499,18 @@ OpBranchSync(t, label) ==
             /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
         ELSE 
             /\  LET labelVal == GetVal(-1, label)
-                    newPc == [pc EXCEPT ![t] = GetVal(-1, label)]
+                    \* Update program counter for all active subgroup threads instead of just thread t
+                    newPc == [thread \in Threads |-> 
+                        IF thread \in active_subgroup_threads THEN 
+                            GetVal(-1, label) 
+                        ELSE 
+                            pc[thread]]
                 IN
-                    LET counterNewDBSet == BranchUpdate(workGroupId, t, pc[t], {labelVal}, labelVal, {labelVal})
+                    LET counterNewDBSet == BranchConditionalUpdateSubgroup(workGroupId, active_subgroup_threads, pc[t], {labelVal}, active_subgroup_threads, {}, labelVal, labelVal)
                         newCounter == counterNewDBSet[1]
                         newDBSet == counterNewDBSet[2]
-                        newState == StateUpdate(workGroupId, t, newDBSet)
-                        newSnapShotMap == SnapShotUpdate(newDBSet, newState, t, newPc, newCounter)
+                        newState == StateUpdateSubgroup(workGroupId, active_subgroup_threads, newDBSet)
+                        newSnapShotMap == SnapShotUpdateSubgroup(newDBSet, newState, active_subgroup_threads, newPc, newCounter)
                         matchedSnapShot == MeaningfulUpdate(newPc, newState, snapShotMap, newDBSet)
                     IN 
                         IF matchedSnapShot = {} THEN
@@ -1548,54 +1575,39 @@ OpBranchConditionalSync(t, condition, trueLabel, falseLabel) ==
             ELSE 
                 /\  LET trueLabelVal == GetVal(-1, trueLabel)
                         falseLabelVal == GetVal(-1, falseLabel)
+                        \* Evaluate condition for each thread in the active subgroup
+                        trueThreads == {thread \in active_subgroup_threads : EvalExpr(thread, WorkGroupId(thread)+1, condition) = TRUE}
+                        falseThreads == active_subgroup_threads \ trueThreads
+                        \* Update program counter for all threads based on their condition evaluation
+                        newPc == [thread \in Threads |-> 
+                            IF thread \in trueThreads THEN 
+                                trueLabelVal
+                            ELSE IF thread \in falseThreads THEN 
+                                falseLabelVal
+                            ELSE 
+                                pc[thread]]
                     IN
-                        IF EvalExpr(t, WorkGroupId(t)+1, condition) = TRUE THEN
-                            LET counterNewDBSet == BranchUpdate(workGroupId, t, pc[t], {trueLabelVal, falseLabelVal}, trueLabelVal, {trueLabelVal, falseLabelVal})
-                                newCounter == counterNewDBSet[1]
-                                newDBSet == counterNewDBSet[2]
-                                newState == StateUpdate(workGroupId, t, newDBSet)
-                                newPc == [pc EXCEPT ![t] = trueLabelVal]
-                                newSnapShotMap == SnapShotUpdate(newDBSet, newState, t, newPc, newCounter)
-                                matchedSnapShot == MeaningfulUpdate(newPc, newState, snapShotMap, newDBSet)
-                            IN
-                                IF matchedSnapShot = {} THEN
-                                    /\  snapShotMap' = newSnapShotMap
-                                    /\  state' = newState   
-                                    /\  DynamicNodeSet' = newDBSet
-                                    /\  pc' = newPc
-                                    /\  globalCounter' = newCounter
-                                ELSE 
-                                    LET previousState == CHOOSE db \in matchedSnapShot: TRUE
-                                    IN
-                                        /\ state' = previousState.state
-                                        /\ DynamicNodeSet' = previousState.dynamicNodeSet
-                                        /\ globalCounter' = previousState.globalCounter
-                                        /\ pc' = previousState.pc
-                                        /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
-                        ELSE
-                            LET counterNewDBSet == BranchUpdate(workGroupId, t, pc[t], {trueLabelVal, falseLabelVal}, falseLabelVal, {trueLabelVal, falseLabelVal})
-                                newCounter == counterNewDBSet[1]
-                                newDBSet == counterNewDBSet[2]
-                                newState == StateUpdate(workGroupId, t, newDBSet)
-                                newPc == [pc EXCEPT ![t] = falseLabelVal]
-                                newSnapShotMap == SnapShotUpdate(newDBSet, newState, t, newPc, newCounter)
-                                matchedSnapShot == MeaningfulUpdate(newPc, newState, snapShotMap, newDBSet)
-
-                            IN
-                                IF matchedSnapShot = {} THEN
-                                    /\  snapShotMap' = newSnapShotMap
-                                    /\  state' = newState
-                                    /\  DynamicNodeSet' = newDBSet
-                                    /\  pc' = newPc
-                                    /\  globalCounter' = newCounter
-                                ELSE 
-                                    LET previousState == CHOOSE db \in matchedSnapShot: TRUE
-                                    IN
-                                        /\ state' = previousState.state
-                                        /\ DynamicNodeSet' = previousState.dynamicNodeSet
-                                        /\ globalCounter' = previousState.globalCounter
-                                        /\ pc' = previousState.pc
-                                        /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
+                        LET counterNewDBSet == BranchConditionalUpdateSubgroup(workGroupId, active_subgroup_threads, pc[t], {trueLabelVal, falseLabelVal}, trueThreads, falseThreads, trueLabelVal, falseLabelVal)
+                            newCounter == counterNewDBSet[1]
+                            newDBSet == counterNewDBSet[2]
+                            newState == StateUpdateSubgroup(workGroupId, active_subgroup_threads, newDBSet)
+                            newSnapShotMap == SnapShotUpdateSubgroup(newDBSet, newState, active_subgroup_threads, newPc, newCounter)
+                            matchedSnapShot == MeaningfulUpdate(newPc, newState, snapShotMap, newDBSet)
+                        IN
+                            IF matchedSnapShot = {} THEN
+                                /\  snapShotMap' = newSnapShotMap
+                                /\  state' = newState   
+                                /\  DynamicNodeSet' = newDBSet
+                                /\  pc' = newPc
+                                /\  globalCounter' = newCounter
+                            ELSE 
+                                LET previousState == CHOOSE db \in matchedSnapShot: TRUE
+                                IN
+                                    /\ state' = previousState.state
+                                    /\ DynamicNodeSet' = previousState.dynamicNodeSet
+                                    /\ globalCounter' = previousState.globalCounter
+                                    /\ pc' = previousState.pc
+                                    /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
                 /\  UNCHANGED <<threadLocals, globalVars>>
 
 

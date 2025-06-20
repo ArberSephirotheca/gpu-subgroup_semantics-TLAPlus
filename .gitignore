@@ -3,3 +3,6 @@
 *.mkv
 *.dot
 **/__pycache__
+*.tex
+*.pdf
+CLAUDE.md

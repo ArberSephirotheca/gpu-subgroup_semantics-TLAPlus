@@ -1,0 +1,216 @@
+#!amber
+
+SET ENGINE_DATA fence_timeout_ms 10000
+
+SHADER compute test GLSL
+#version 460
+struct _GLF_struct_20 {
+ mat4x2 _f0;
+ ivec2 _f1;
+} ;
+
+struct _GLF_struct_19 {
+ mat4x3 _f0;
+ mat4x3 _f1;
+ int _f2;
+ mat3x4 _f3;
+ vec2 _f4;
+} ;
+
+struct _GLF_struct_21 {
+ _GLF_struct_19 _f0;
+ _GLF_struct_20 _f1;
+} ;
+
+struct _GLF_struct_17 {
+ vec2 _f0;
+} ;
+
+struct _GLF_struct_16 {
+ ivec3 _f0;
+ mat3x2 _f1;
+ int _f2;
+ vec2 _f3;
+ mat4 _f4;
+ mat4 _f5;
+ mat2 _f6;
+} ;
+
+struct _GLF_struct_18 {
+ _GLF_struct_16 _f0;
+ _GLF_struct_17 _f1;
+} ;
+
+struct _GLF_struct_14 {
+ mat4 _f0;
+ mat4x2 _f1;
+ int _f2;
+ mat4x2 _f3;
+ bvec2 _f4;
+ vec3 _f5;
+ bvec3 _f6;
+} ;
+
+struct _GLF_struct_15 {
+ _GLF_struct_14 _f0;
+ uvec2 _f1;
+ bvec3 _f2;
+ ivec3 _f3;
+} ;
+
+struct _GLF_struct_12 {
+ bvec4 _f0;
+ mat4 _f1;
+ float _f2;
+ bvec3 _f3;
+ uint _f4;
+ mat3 _f5;
+ mat2 _f6;
+} ;
+
+struct _GLF_struct_11 {
+ uint subgroup_size;
+ ivec4 _f0;
+ ivec2 _f1;
+ ivec3 _f2;
+ bvec2 _f3;
+ uvec2 _f4;
+ mat4x2 _f5;
+ mat4x3 _f6;
+} ;
+
+struct _GLF_struct_10 {
+ uvec2 _f0;
+ uvec4 _f1;
+ bool _f2;
+ mat3x4 _f3;
+ mat2x4 _f4;
+} ;
+
+struct _GLF_struct_13 {
+ _GLF_struct_10 _f0;
+ float _f1;
+ float _f2;
+ _GLF_struct_11 _f3;
+ _GLF_struct_12 _f4;
+ ivec2 _f5;
+} ;
+
+struct _GLF_struct_8 {
+ ivec4 _f0;
+ mat3x4 _f1;
+ mat3x4 _f2;
+} ;
+
+struct _GLF_struct_7 {
+ ivec4 _f0;
+ mat3 _f1;
+ vec2 _f2;
+} ;
+
+struct _GLF_struct_9 {
+ mat4x3 _f0;
+ _GLF_struct_7 _f1;
+ vec2 _f2;
+ vec2 _f3;
+ _GLF_struct_8 _f4;
+ vec4 _f5;
+} ;
+
+struct _GLF_struct_22 {
+ _GLF_struct_9 _f0;
+ _GLF_struct_13 _f1;
+ _GLF_struct_15 _f2;
+ _GLF_struct_18 _f3;
+ _GLF_struct_21 _f4;
+ uvec4 _f5;
+} ;
+
+struct _GLF_struct_4 {
+ vec4 _f0;
+ bvec4 _f1;
+ mat2x3 _f2;
+ float _f3;
+} ;
+
+struct _GLF_struct_3 {
+ mat3 _f0;
+ int _f1;
+ uvec3 _f2;
+} ;
+
+struct _GLF_struct_5 {
+ _GLF_struct_3 _f0;
+ ivec3 _f1;
+ _GLF_struct_4 _f2;
+} ;
+
+struct _GLF_struct_1 {
+ ivec2 _f0;
+ mat3x4 _f1;
+ mat2 _f2;
+ ivec2 _f3;
+} ;
+
+struct _GLF_struct_0 {
+ mat3x2 _f0;
+} ;
+
+struct _GLF_struct_2 {
+ _GLF_struct_0 _f0;
+ _GLF_struct_1 _f1;
+ uint workgroup_base;
+ bvec3 _f2;
+} ;
+
+struct _GLF_struct_6 {
+ _GLF_struct_2 _f0;
+ _GLF_struct_5 _f1;
+} ;
+
+layout(set = 0, binding = 0) uniform buf0 {
+ vec2 injectionSwitch;
+};
+#extension GL_KHR_shader_subgroup_ballot : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+layout(set = 0, binding = 0) buffer Buf {
+ uint buf;
+};
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+void main()
+{
+ uvec2 GLF_merged2_0_1_11_1_1_14virtual_gidworkgroup_size;
+ uint subgroup_id = gl_SubgroupID;
+ _GLF_struct_22 _GLF_struct_replacement_22 = _GLF_struct_22(_GLF_struct_9(mat4x3(1.0), _GLF_struct_7(ivec4(1), mat3(1.0), vec2(1.0)), vec2(1.0), vec2(1.0), _GLF_struct_8(ivec4(1), mat3x4(1.0), mat3x4(1.0)), vec4(1.0)), _GLF_struct_13(_GLF_struct_10(uvec2(1u), uvec4(1u), true, mat3x4(1.0), mat2x4(1.0)), 1.0, 1.0, _GLF_struct_11(gl_SubgroupSize, ivec4(1), ivec2(1), ivec3(1), bvec2(true), uvec2(1u), mat4x2(1.0), mat4x3(1.0)), _GLF_struct_12(bvec4(true), mat4(1.0), 1.0, bvec3(true), 1u, mat3(1.0), mat2(1.0)), ivec2(1)), _GLF_struct_15(_GLF_struct_14(mat4(1.0), mat4x2(1.0), 1, mat4x2(1.0), bvec2(true), vec3(1.0), bvec3(true)), uvec2(1u), bvec3(true), ivec3(1)), _GLF_struct_18(_GLF_struct_16(ivec3(1), mat3x2(1.0), 1, vec2(1.0), mat4(1.0), mat4(1.0), mat2(1.0)), _GLF_struct_17(vec2(1.0))), _GLF_struct_21(_GLF_struct_19(mat4x3(1.0), mat4x3(1.0), 1, mat3x4(1.0), vec2(1.0)), _GLF_struct_20(mat4x2(1.0), ivec2(1))), uvec4(1u));
+ uint subgroup_local_id = gl_SubgroupInvocationID;
+ uint num_workgroup = gl_NumWorkGroups.x;
+ uint workgroup_size = gl_WorkGroupSize.x;
+ GLF_merged2_0_1_11_1_1_14virtual_gidworkgroup_size.y = workgroup_size;
+ uint workgroup_id = gl_WorkGroupID.x;
+ _GLF_struct_6 _GLF_struct_replacement_6 = _GLF_struct_6(_GLF_struct_2(_GLF_struct_0(mat3x2(1.0)), _GLF_struct_1(ivec2(1), mat3x4(1.0), mat2(1.0), ivec2(1)), GLF_merged2_0_1_11_1_1_14virtual_gidworkgroup_size.y * workgroup_id, bvec3(true)), _GLF_struct_5(_GLF_struct_3(mat3(1.0), 1, uvec3(1u)), ivec3(1), _GLF_struct_4(vec4(1.0), bvec4(true), mat2x3(1.0), 1.0)));
+ uint virtual_gid = _GLF_struct_replacement_6._f0.workgroup_base + subgroup_id * _GLF_struct_replacement_22._f1._f3.subgroup_size + subgroup_local_id;
+ GLF_merged2_0_1_11_1_1_14virtual_gidworkgroup_size.x = virtual_gid;
+ uint next_virtual_gid = _GLF_struct_replacement_6._f0.workgroup_base + subgroup_id * _GLF_struct_replacement_22._f1._f3.subgroup_size + ((subgroup_local_id + 1) % _GLF_struct_replacement_22._f1._f3.subgroup_size);
+ buf = GLF_merged2_0_1_11_1_1_14virtual_gidworkgroup_size.x;
+ subgroupAllEqual(buf);
+}
+
+END
+
+BUFFER tester DATA_TYPE uint32 SIZE 8388096 FILL 0
+BUFFER expected DATA_TYPE uint32 SIZE 8388096 FILL 2
+BUFFER injection DATA_TYPE vec2<float> DATA
+ 0.0 1.0
+END
+
+PIPELINE compute test_pipe
+  ATTACH test
+  BIND BUFFER tester AS storage DESCRIPTOR_SET 0 BINDING 0 
+  BIND BUFFER injection AS uniform DESCRIPTOR_SET 0 BINDING 1 
+
+END
+
+RUN test_pipe 65532 1 1
+EXPECT tester EQ_BUFFER expected

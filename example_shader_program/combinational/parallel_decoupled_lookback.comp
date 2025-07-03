@@ -1,4 +1,4 @@
-#version 450
+#version 460
 #pragma scheduler(HSA)
 #extension GL_KHR_shader_subgroup_basic : enable
 #extension GL_KHR_memory_scope_semantics : enable

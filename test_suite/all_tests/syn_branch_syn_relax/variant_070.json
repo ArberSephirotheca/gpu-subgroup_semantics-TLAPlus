@@ -1,0 +1,28 @@
+{
+  "$compute": {
+    "num_groups": [
+      65532,
+      1,
+      1
+    ],
+    "buffer": {
+      "binding": 0,
+      "fields": [
+        {
+          "type": "uint",
+          "buf": [
+            0
+          ]
+        }
+      ]
+    }
+  },
+  "injectionSwitch": {
+    "func": "glUniform2f",
+    "args": [
+      0.0,
+      1.0
+    ],
+    "binding": 1
+  }
+}

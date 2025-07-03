@@ -1,0 +1,2622 @@
+Date and Time:
+11/04/2025 15:42:00
+Computer:
+eduroam-169-233-154-42.ucsc.edu
+
+No vulkaninfo on Android
+generating amber test for: 29.txt in results/output2
+running test: 29_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  29_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 15.txt in results/output2
+running test: 15_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  15_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 114.txt in results/output2
+running test: 114_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  114_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 100.txt in results/output2
+running test: 100_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  100_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 128.txt in results/output2
+running test: 128_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  128_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 129.txt in results/output2
+running test: 129_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  129_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 101.txt in results/output2
+running test: 101_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  101_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 115.txt in results/output2
+running test: 115_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  115_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 14.txt in results/output2
+running test: 14_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  14_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 28.txt in results/output2
+running test: 28_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  28_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 16.txt in results/output2
+running test: 16_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  16_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 103.txt in results/output2
+running test: 103_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  103_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 117.txt in results/output2
+running test: 117_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  117_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 116.txt in results/output2
+running test: 116_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  116_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 102.txt in results/output2
+running test: 102_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  102_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 17.txt in results/output2
+running test: 17_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  17_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 13.txt in results/output2
+running test: 13_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  13_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 106.txt in results/output2
+running test: 106_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  106_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 112.txt in results/output2
+running test: 112_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  112_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 113.txt in results/output2
+running test: 113_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  113_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 107.txt in results/output2
+running test: 107_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  107_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 12.txt in results/output2
+running test: 12_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  12_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 10.txt in results/output2
+running test: 10_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  10_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 38.txt in results/output2
+running test: 38_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  38_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 139.txt in results/output2
+running test: 139_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  139_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 111.txt in results/output2
+running test: 111_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  111_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 105.txt in results/output2
+running test: 105_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  105_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 104.txt in results/output2
+running test: 104_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  104_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 110.txt in results/output2
+running test: 110_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  110_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 138.txt in results/output2
+running test: 138_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  138_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 39.txt in results/output2
+running test: 39_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  39_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 11.txt in results/output2
+running test: 11_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  11_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 76.txt in results/output2
+running test: 76_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  76_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 62.txt in results/output2
+running test: 62_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  62_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 89.txt in results/output2
+running test: 89_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  89_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 163.txt in results/output2
+running test: 163_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  163_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 162.txt in results/output2
+running test: 162_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  162_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 88.txt in results/output2
+running test: 88_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  88_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 63.txt in results/output2
+running test: 63_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  63_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 77.txt in results/output2
+running test: 77_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  77_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 49.txt in results/output2
+running test: 49_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  49_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 61.txt in results/output2
+running test: 61_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  61_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 75.txt in results/output2
+running test: 75_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  75_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 160.txt in results/output2
+running test: 160_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  160_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 148.txt in results/output2
+running test: 148_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  148_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 149.txt in results/output2
+running test: 149_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  149_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 161.txt in results/output2
+running test: 161_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  161_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 74.txt in results/output2
+running test: 74_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  74_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 60.txt in results/output2
+running test: 60_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  60_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 48.txt in results/output2
+running test: 48_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  48_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 64.txt in results/output2
+running test: 64_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  64_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 70.txt in results/output2
+running test: 70_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  70_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 58.txt in results/output2
+running test: 58_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  58_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 159.txt in results/output2
+running test: 159_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  159_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 165.txt in results/output2
+running test: 165_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  165_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 171.txt in results/output2
+running test: 171_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  171_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 170.txt in results/output2
+running test: 170_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  170_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 164.txt in results/output2
+running test: 164_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  164_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 158.txt in results/output2
+running test: 158_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  158_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 59.txt in results/output2
+running test: 59_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  59_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 71.txt in results/output2
+running test: 71_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  71_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 65.txt in results/output2
+running test: 65_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  65_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 73.txt in results/output2
+running test: 73_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  73_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 67.txt in results/output2
+running test: 67_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  67_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 9.txt in results/output2
+running test: 9_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  9_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 172.txt in results/output2
+running test: 172_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  172_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 98.txt in results/output2
+running test: 98_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  98_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 166.txt in results/output2
+running test: 166_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  166_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 99.txt in results/output2
+running test: 99_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  99_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 167.txt in results/output2
+running test: 167_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  167_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 8.txt in results/output2
+running test: 8_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  8_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 66.txt in results/output2
+running test: 66_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  66_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 72.txt in results/output2
+running test: 72_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  72_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 57.txt in results/output2
+running test: 57_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  57_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 5.txt in results/output2
+running test: 5_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  5_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 43.txt in results/output2
+running test: 43_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  43_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 156.txt in results/output2
+running test: 156_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  156_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 142.txt in results/output2
+running test: 142_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  142_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 94.txt in results/output2
+running test: 94_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  94_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 80.txt in results/output2
+running test: 80_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  80_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 81.txt in results/output2
+running test: 81_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  81_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 95.txt in results/output2
+running test: 95_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  95_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 143.txt in results/output2
+running test: 143_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  143_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 157.txt in results/output2
+running test: 157_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  157_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 42.txt in results/output2
+running test: 42_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  42_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 56.txt in results/output2
+running test: 56_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  56_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 4.txt in results/output2
+running test: 4_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  4_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 68.txt in results/output2
+running test: 68_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  68_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 40.txt in results/output2
+running test: 40_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  40_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 6.txt in results/output2
+running test: 6_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  6_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 54.txt in results/output2
+running test: 54_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  54_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 141.txt in results/output2
+running test: 141_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  141_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 155.txt in results/output2
+running test: 155_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  155_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 83.txt in results/output2
+running test: 83_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  83_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 169.txt in results/output2
+running test: 169_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  169_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 97.txt in results/output2
+running test: 97_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  97_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 168.txt in results/output2
+running test: 168_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  168_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 96.txt in results/output2
+running test: 96_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  96_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 82.txt in results/output2
+running test: 82_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  82_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 154.txt in results/output2
+running test: 154_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  154_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 140.txt in results/output2
+running test: 140_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  140_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 7.txt in results/output2
+running test: 7_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  7_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 55.txt in results/output2
+running test: 55_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  55_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 41.txt in results/output2
+running test: 41_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  41_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 69.txt in results/output2
+running test: 69_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  69_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 45.txt in results/output2
+running test: 45_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  45_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 51.txt in results/output2
+running test: 51_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  51_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 3.txt in results/output2
+running test: 3_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  3_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 79.txt in results/output2
+running test: 79_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  79_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 86.txt in results/output2
+running test: 86_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  86_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 92.txt in results/output2
+running test: 92_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  92_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 144.txt in results/output2
+running test: 144_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  144_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 150.txt in results/output2
+running test: 150_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  150_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 151.txt in results/output2
+running test: 151_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  151_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 145.txt in results/output2
+running test: 145_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  145_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 93.txt in results/output2
+running test: 93_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  93_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 87.txt in results/output2
+running test: 87_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  87_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 78.txt in results/output2
+running test: 78_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  78_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 50.txt in results/output2
+running test: 50_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  50_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 2.txt in results/output2
+running test: 2_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  2_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 44.txt in results/output2
+running test: 44_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  44_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 0.txt in results/output2
+running test: 0_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  0_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 52.txt in results/output2
+running test: 52_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  52_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 46.txt in results/output2
+running test: 46_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  46_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 91.txt in results/output2
+running test: 91_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  91_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 85.txt in results/output2
+running test: 85_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  85_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 153.txt in results/output2
+running test: 153_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  153_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 147.txt in results/output2
+running test: 147_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  147_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 146.txt in results/output2
+running test: 146_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  146_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 152.txt in results/output2
+running test: 152_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  152_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 84.txt in results/output2
+running test: 84_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  84_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 90.txt in results/output2
+running test: 90_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  90_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 47.txt in results/output2
+running test: 47_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  47_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 1.txt in results/output2
+running test: 1_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  1_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 53.txt in results/output2
+running test: 53_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  53_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 34.txt in results/output2
+running test: 34_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  34_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 20.txt in results/output2
+running test: 20_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  20_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 135.txt in results/output2
+running test: 135_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  135_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 121.txt in results/output2
+running test: 121_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  121_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 109.txt in results/output2
+running test: 109_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  109_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 108.txt in results/output2
+running test: 108_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  108_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 120.txt in results/output2
+running test: 120_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  120_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 134.txt in results/output2
+running test: 134_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  134_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 21.txt in results/output2
+running test: 21_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  21_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 35.txt in results/output2
+running test: 35_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  35_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 23.txt in results/output2
+running test: 23_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  23_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 37.txt in results/output2
+running test: 37_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  37_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 122.txt in results/output2
+running test: 122_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  122_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 136.txt in results/output2
+running test: 136_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  136_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 137.txt in results/output2
+running test: 137_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  137_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 123.txt in results/output2
+running test: 123_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  123_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 36.txt in results/output2
+running test: 36_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  36_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 22.txt in results/output2
+running test: 22_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  22_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 26.txt in results/output2
+running test: 26_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  26_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 32.txt in results/output2
+running test: 32_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  32_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 127.txt in results/output2
+running test: 127_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  127_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 133.txt in results/output2
+running test: 133_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  133_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 132.txt in results/output2
+running test: 132_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  132_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 126.txt in results/output2
+running test: 126_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  126_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 33.txt in results/output2
+running test: 33_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  33_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 27.txt in results/output2
+running test: 27_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  27_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 31.txt in results/output2
+running test: 31_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  31_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 25.txt in results/output2
+running test: 25_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  25_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 19.txt in results/output2
+running test: 19_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  19_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 118.txt in results/output2
+running test: 118_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  118_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 130.txt in results/output2
+running test: 130_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  130_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 124.txt in results/output2
+running test: 124_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  124_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 125.txt in results/output2
+running test: 125_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  125_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 131.txt in results/output2
+running test: 131_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  131_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 119.txt in results/output2
+running test: 119_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  119_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 18.txt in results/output2
+running test: 18_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  18_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 24.txt in results/output2
+running test: 24_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  24_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 30.txt in results/output2
+running test: 30_txt_no_saturation_same_subgroup_128_threads_per_wg.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  30_txt_no_saturation_same_subgroup_128_threads_per_wg.amber' >> temp_results.txt
+P
+
+generating amber test for: 29.txt in results/output2
+running test: 29_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  29_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 15.txt in results/output2
+running test: 15_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  15_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 114.txt in results/output2
+running test: 114_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  114_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 100.txt in results/output2
+running test: 100_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  100_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 128.txt in results/output2
+running test: 128_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  128_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 129.txt in results/output2
+running test: 129_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  129_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 101.txt in results/output2
+running test: 101_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  101_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 115.txt in results/output2
+running test: 115_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  115_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 14.txt in results/output2
+running test: 14_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  14_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 28.txt in results/output2
+running test: 28_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  28_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 16.txt in results/output2
+running test: 16_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  16_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 103.txt in results/output2
+running test: 103_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  103_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 117.txt in results/output2
+running test: 117_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  117_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 116.txt in results/output2
+running test: 116_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  116_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 102.txt in results/output2
+running test: 102_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  102_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 17.txt in results/output2
+running test: 17_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  17_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 13.txt in results/output2
+running test: 13_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  13_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 106.txt in results/output2
+running test: 106_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  106_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 112.txt in results/output2
+running test: 112_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  112_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 113.txt in results/output2
+running test: 113_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  113_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 107.txt in results/output2
+running test: 107_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  107_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 12.txt in results/output2
+running test: 12_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  12_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 10.txt in results/output2
+running test: 10_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  10_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 38.txt in results/output2
+running test: 38_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  38_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 139.txt in results/output2
+running test: 139_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  139_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 111.txt in results/output2
+running test: 111_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  111_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 105.txt in results/output2
+running test: 105_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  105_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 104.txt in results/output2
+running test: 104_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  104_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 110.txt in results/output2
+running test: 110_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  110_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 138.txt in results/output2
+running test: 138_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  138_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 39.txt in results/output2
+running test: 39_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  39_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 11.txt in results/output2
+running test: 11_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  11_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 76.txt in results/output2
+running test: 76_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  76_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 62.txt in results/output2
+running test: 62_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  62_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 89.txt in results/output2
+running test: 89_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  89_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 163.txt in results/output2
+running test: 163_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  163_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 162.txt in results/output2
+running test: 162_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  162_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 88.txt in results/output2
+running test: 88_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  88_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 63.txt in results/output2
+running test: 63_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  63_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 77.txt in results/output2
+running test: 77_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  77_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 49.txt in results/output2
+running test: 49_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  49_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 61.txt in results/output2
+running test: 61_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  61_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 75.txt in results/output2
+running test: 75_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  75_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 160.txt in results/output2
+running test: 160_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  160_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 148.txt in results/output2
+running test: 148_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  148_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 149.txt in results/output2
+running test: 149_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  149_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 161.txt in results/output2
+running test: 161_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  161_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 74.txt in results/output2
+running test: 74_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  74_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 60.txt in results/output2
+running test: 60_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  60_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 48.txt in results/output2
+running test: 48_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  48_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 64.txt in results/output2
+running test: 64_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  64_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 70.txt in results/output2
+running test: 70_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  70_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 58.txt in results/output2
+running test: 58_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  58_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 159.txt in results/output2
+running test: 159_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  159_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 165.txt in results/output2
+running test: 165_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  165_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 171.txt in results/output2
+running test: 171_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  171_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 170.txt in results/output2
+running test: 170_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  170_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 164.txt in results/output2
+running test: 164_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  164_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 158.txt in results/output2
+running test: 158_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  158_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 59.txt in results/output2
+running test: 59_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  59_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 71.txt in results/output2
+running test: 71_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  71_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 65.txt in results/output2
+running test: 65_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  65_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 73.txt in results/output2
+running test: 73_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  73_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 67.txt in results/output2
+running test: 67_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  67_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 9.txt in results/output2
+running test: 9_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  9_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 172.txt in results/output2
+running test: 172_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  172_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 98.txt in results/output2
+running test: 98_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  98_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 166.txt in results/output2
+running test: 166_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  166_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 99.txt in results/output2
+running test: 99_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  99_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 167.txt in results/output2
+running test: 167_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  167_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 8.txt in results/output2
+running test: 8_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  8_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 66.txt in results/output2
+running test: 66_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  66_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 72.txt in results/output2
+running test: 72_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  72_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 57.txt in results/output2
+running test: 57_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  57_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 5.txt in results/output2
+running test: 5_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  5_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 43.txt in results/output2
+running test: 43_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  43_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 156.txt in results/output2
+running test: 156_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  156_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 142.txt in results/output2
+running test: 142_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  142_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 94.txt in results/output2
+running test: 94_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  94_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 80.txt in results/output2
+running test: 80_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  80_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 81.txt in results/output2
+running test: 81_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  81_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 95.txt in results/output2
+running test: 95_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  95_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 143.txt in results/output2
+running test: 143_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  143_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 157.txt in results/output2
+running test: 157_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  157_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 42.txt in results/output2
+running test: 42_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  42_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 56.txt in results/output2
+running test: 56_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  56_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 4.txt in results/output2
+running test: 4_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  4_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 68.txt in results/output2
+running test: 68_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  68_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 40.txt in results/output2
+running test: 40_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  40_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 6.txt in results/output2
+running test: 6_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  6_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 54.txt in results/output2
+running test: 54_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  54_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 141.txt in results/output2
+running test: 141_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  141_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 155.txt in results/output2
+running test: 155_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  155_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 83.txt in results/output2
+running test: 83_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  83_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 169.txt in results/output2
+running test: 169_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  169_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 97.txt in results/output2
+running test: 97_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  97_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 168.txt in results/output2
+running test: 168_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  168_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 96.txt in results/output2
+running test: 96_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  96_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 82.txt in results/output2
+running test: 82_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  82_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 154.txt in results/output2
+running test: 154_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  154_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 140.txt in results/output2
+running test: 140_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  140_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 7.txt in results/output2
+running test: 7_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  7_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 55.txt in results/output2
+running test: 55_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  55_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 41.txt in results/output2
+running test: 41_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  41_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 69.txt in results/output2
+running test: 69_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  69_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 45.txt in results/output2
+running test: 45_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  45_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 51.txt in results/output2
+running test: 51_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  51_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 3.txt in results/output2
+running test: 3_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  3_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 79.txt in results/output2
+running test: 79_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  79_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 86.txt in results/output2
+running test: 86_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  86_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 92.txt in results/output2
+running test: 92_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  92_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 144.txt in results/output2
+running test: 144_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  144_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 150.txt in results/output2
+running test: 150_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  150_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 151.txt in results/output2
+running test: 151_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  151_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 145.txt in results/output2
+running test: 145_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  145_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 93.txt in results/output2
+running test: 93_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  93_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 87.txt in results/output2
+running test: 87_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  87_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 78.txt in results/output2
+running test: 78_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  78_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 50.txt in results/output2
+running test: 50_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  50_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 2.txt in results/output2
+running test: 2_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  2_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 44.txt in results/output2
+running test: 44_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  44_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 0.txt in results/output2
+running test: 0_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  0_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 52.txt in results/output2
+running test: 52_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  52_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 46.txt in results/output2
+running test: 46_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  46_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 91.txt in results/output2
+running test: 91_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  91_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 85.txt in results/output2
+running test: 85_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  85_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 153.txt in results/output2
+running test: 153_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  153_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 147.txt in results/output2
+running test: 147_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  147_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 146.txt in results/output2
+running test: 146_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  146_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 152.txt in results/output2
+running test: 152_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  152_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 84.txt in results/output2
+running test: 84_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  84_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 90.txt in results/output2
+running test: 90_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  90_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 47.txt in results/output2
+running test: 47_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  47_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 1.txt in results/output2
+running test: 1_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  1_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 53.txt in results/output2
+running test: 53_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  53_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 34.txt in results/output2
+running test: 34_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  34_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 20.txt in results/output2
+running test: 20_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  20_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 135.txt in results/output2
+running test: 135_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  135_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 121.txt in results/output2
+running test: 121_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  121_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 109.txt in results/output2
+running test: 109_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  109_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 108.txt in results/output2
+running test: 108_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  108_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 120.txt in results/output2
+running test: 120_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  120_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 134.txt in results/output2
+running test: 134_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  134_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 21.txt in results/output2
+running test: 21_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  21_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 35.txt in results/output2
+running test: 35_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  35_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 23.txt in results/output2
+running test: 23_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  23_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 37.txt in results/output2
+running test: 37_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  37_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 122.txt in results/output2
+running test: 122_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  122_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 136.txt in results/output2
+running test: 136_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  136_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 137.txt in results/output2
+running test: 137_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  137_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 123.txt in results/output2
+running test: 123_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  123_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 36.txt in results/output2
+running test: 36_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  36_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 22.txt in results/output2
+running test: 22_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  22_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 26.txt in results/output2
+running test: 26_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  26_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 32.txt in results/output2
+running test: 32_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  32_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 127.txt in results/output2
+running test: 127_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  127_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 133.txt in results/output2
+running test: 133_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  133_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 132.txt in results/output2
+running test: 132_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  132_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 126.txt in results/output2
+running test: 126_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  126_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 33.txt in results/output2
+running test: 33_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  33_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 27.txt in results/output2
+running test: 27_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  27_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 31.txt in results/output2
+running test: 31_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  31_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 25.txt in results/output2
+running test: 25_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  25_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 19.txt in results/output2
+running test: 19_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  19_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 118.txt in results/output2
+running test: 118_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  118_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 130.txt in results/output2
+running test: 130_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  130_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 124.txt in results/output2
+running test: 124_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  124_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 125.txt in results/output2
+running test: 125_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  125_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 131.txt in results/output2
+running test: 131_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  131_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 119.txt in results/output2
+running test: 119_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  119_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 18.txt in results/output2
+running test: 18_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  18_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 24.txt in results/output2
+running test: 24_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  24_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 30.txt in results/output2
+running test: 30_txt_round_robin.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  30_txt_round_robin.amber' >> temp_results.txt
+P
+
+generating amber test for: 29.txt in results/output2
+running test: 29_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  29_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 15.txt in results/output2
+running test: 15_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  15_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 114.txt in results/output2
+running test: 114_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  114_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 100.txt in results/output2
+running test: 100_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  100_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 128.txt in results/output2
+running test: 128_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  128_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 129.txt in results/output2
+running test: 129_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  129_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 101.txt in results/output2
+running test: 101_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  101_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 115.txt in results/output2
+running test: 115_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  115_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 14.txt in results/output2
+running test: 14_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  14_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 28.txt in results/output2
+running test: 28_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  28_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 16.txt in results/output2
+running test: 16_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  16_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 103.txt in results/output2
+running test: 103_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  103_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 117.txt in results/output2
+running test: 117_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  117_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 116.txt in results/output2
+running test: 116_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  116_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 102.txt in results/output2
+running test: 102_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  102_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 17.txt in results/output2
+running test: 17_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  17_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 13.txt in results/output2
+running test: 13_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  13_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 106.txt in results/output2
+running test: 106_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  106_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 112.txt in results/output2
+running test: 112_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  112_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 113.txt in results/output2
+running test: 113_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  113_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 107.txt in results/output2
+running test: 107_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  107_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 12.txt in results/output2
+running test: 12_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  12_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 10.txt in results/output2
+running test: 10_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  10_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 38.txt in results/output2
+running test: 38_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  38_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 139.txt in results/output2
+running test: 139_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  139_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 111.txt in results/output2
+running test: 111_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  111_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 105.txt in results/output2
+running test: 105_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  105_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 104.txt in results/output2
+running test: 104_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  104_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 110.txt in results/output2
+running test: 110_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  110_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 138.txt in results/output2
+running test: 138_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  138_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 39.txt in results/output2
+running test: 39_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  39_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 11.txt in results/output2
+running test: 11_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  11_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 76.txt in results/output2
+running test: 76_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  76_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 62.txt in results/output2
+running test: 62_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  62_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 89.txt in results/output2
+running test: 89_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  89_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 163.txt in results/output2
+running test: 163_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  163_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 162.txt in results/output2
+running test: 162_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  162_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 88.txt in results/output2
+running test: 88_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  88_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 63.txt in results/output2
+running test: 63_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  63_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 77.txt in results/output2
+running test: 77_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  77_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 49.txt in results/output2
+running test: 49_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  49_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 61.txt in results/output2
+running test: 61_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  61_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 75.txt in results/output2
+running test: 75_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  75_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 160.txt in results/output2
+running test: 160_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  160_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 148.txt in results/output2
+running test: 148_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  148_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 149.txt in results/output2
+running test: 149_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  149_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 161.txt in results/output2
+running test: 161_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  161_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 74.txt in results/output2
+running test: 74_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  74_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 60.txt in results/output2
+running test: 60_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  60_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 48.txt in results/output2
+running test: 48_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  48_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 64.txt in results/output2
+running test: 64_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  64_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 70.txt in results/output2
+running test: 70_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  70_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 58.txt in results/output2
+running test: 58_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  58_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 159.txt in results/output2
+running test: 159_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  159_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 165.txt in results/output2
+running test: 165_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  165_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 171.txt in results/output2
+running test: 171_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  171_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 170.txt in results/output2
+running test: 170_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  170_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 164.txt in results/output2
+running test: 164_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  164_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 158.txt in results/output2
+running test: 158_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  158_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 59.txt in results/output2
+running test: 59_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  59_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 71.txt in results/output2
+running test: 71_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  71_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 65.txt in results/output2
+running test: 65_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  65_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 73.txt in results/output2
+running test: 73_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  73_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 67.txt in results/output2
+running test: 67_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  67_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 9.txt in results/output2
+running test: 9_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  9_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 172.txt in results/output2
+running test: 172_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  172_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 98.txt in results/output2
+running test: 98_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  98_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 166.txt in results/output2
+running test: 166_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  166_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 99.txt in results/output2
+running test: 99_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  99_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 167.txt in results/output2
+running test: 167_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  167_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 8.txt in results/output2
+running test: 8_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  8_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 66.txt in results/output2
+running test: 66_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  66_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 72.txt in results/output2
+running test: 72_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  72_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 57.txt in results/output2
+running test: 57_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  57_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 5.txt in results/output2
+running test: 5_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  5_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 43.txt in results/output2
+running test: 43_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  43_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 156.txt in results/output2
+running test: 156_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  156_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 142.txt in results/output2
+running test: 142_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  142_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 94.txt in results/output2
+running test: 94_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  94_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 80.txt in results/output2
+running test: 80_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  80_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 81.txt in results/output2
+running test: 81_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  81_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 95.txt in results/output2
+running test: 95_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  95_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 143.txt in results/output2
+running test: 143_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  143_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 157.txt in results/output2
+running test: 157_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  157_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 42.txt in results/output2
+running test: 42_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  42_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 56.txt in results/output2
+running test: 56_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  56_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 4.txt in results/output2
+running test: 4_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  4_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 68.txt in results/output2
+running test: 68_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  68_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 40.txt in results/output2
+running test: 40_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  40_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 6.txt in results/output2
+running test: 6_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  6_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 54.txt in results/output2
+running test: 54_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  54_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 141.txt in results/output2
+running test: 141_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  141_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 155.txt in results/output2
+running test: 155_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  155_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 83.txt in results/output2
+running test: 83_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  83_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 169.txt in results/output2
+running test: 169_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  169_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 97.txt in results/output2
+running test: 97_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  97_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 168.txt in results/output2
+running test: 168_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  168_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 96.txt in results/output2
+running test: 96_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  96_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 82.txt in results/output2
+running test: 82_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  82_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 154.txt in results/output2
+running test: 154_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  154_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 140.txt in results/output2
+running test: 140_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  140_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 7.txt in results/output2
+running test: 7_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  7_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 55.txt in results/output2
+running test: 55_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  55_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 41.txt in results/output2
+running test: 41_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  41_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 69.txt in results/output2
+running test: 69_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  69_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 45.txt in results/output2
+running test: 45_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  45_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 51.txt in results/output2
+running test: 51_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  51_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 3.txt in results/output2
+running test: 3_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  3_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 79.txt in results/output2
+running test: 79_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  79_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 86.txt in results/output2
+running test: 86_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  86_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 92.txt in results/output2
+running test: 92_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  92_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 144.txt in results/output2
+running test: 144_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  144_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 150.txt in results/output2
+running test: 150_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  150_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 151.txt in results/output2
+running test: 151_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  151_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 145.txt in results/output2
+running test: 145_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  145_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 93.txt in results/output2
+running test: 93_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  93_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 87.txt in results/output2
+running test: 87_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  87_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 78.txt in results/output2
+running test: 78_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  78_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 50.txt in results/output2
+running test: 50_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  50_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 2.txt in results/output2
+running test: 2_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  2_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 44.txt in results/output2
+running test: 44_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  44_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 0.txt in results/output2
+running test: 0_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  0_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 52.txt in results/output2
+running test: 52_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  52_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 46.txt in results/output2
+running test: 46_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  46_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 91.txt in results/output2
+running test: 91_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  91_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 85.txt in results/output2
+running test: 85_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  85_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 153.txt in results/output2
+running test: 153_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  153_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 147.txt in results/output2
+running test: 147_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  147_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 146.txt in results/output2
+running test: 146_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  146_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 152.txt in results/output2
+running test: 152_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  152_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 84.txt in results/output2
+running test: 84_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  84_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 90.txt in results/output2
+running test: 90_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  90_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 47.txt in results/output2
+running test: 47_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  47_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 1.txt in results/output2
+running test: 1_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  1_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 53.txt in results/output2
+running test: 53_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  53_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 34.txt in results/output2
+running test: 34_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  34_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 20.txt in results/output2
+running test: 20_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  20_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 135.txt in results/output2
+running test: 135_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  135_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 121.txt in results/output2
+running test: 121_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  121_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 109.txt in results/output2
+running test: 109_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  109_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 108.txt in results/output2
+running test: 108_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  108_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 120.txt in results/output2
+running test: 120_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  120_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 134.txt in results/output2
+running test: 134_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  134_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 21.txt in results/output2
+running test: 21_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  21_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 35.txt in results/output2
+running test: 35_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  35_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 23.txt in results/output2
+running test: 23_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  23_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 37.txt in results/output2
+running test: 37_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  37_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 122.txt in results/output2
+running test: 122_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  122_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 136.txt in results/output2
+running test: 136_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  136_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 137.txt in results/output2
+running test: 137_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  137_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 123.txt in results/output2
+running test: 123_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  123_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 36.txt in results/output2
+running test: 36_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  36_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 22.txt in results/output2
+running test: 22_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  22_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 26.txt in results/output2
+running test: 26_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  26_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 32.txt in results/output2
+running test: 32_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  32_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 127.txt in results/output2
+running test: 127_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  127_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 133.txt in results/output2
+running test: 133_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  133_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 132.txt in results/output2
+running test: 132_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  132_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 126.txt in results/output2
+running test: 126_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  126_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 33.txt in results/output2
+running test: 33_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  33_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 27.txt in results/output2
+running test: 27_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  27_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 31.txt in results/output2
+running test: 31_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  31_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 25.txt in results/output2
+running test: 25_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  25_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 19.txt in results/output2
+running test: 19_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  19_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 118.txt in results/output2
+running test: 118_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  118_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 130.txt in results/output2
+running test: 130_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  130_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 124.txt in results/output2
+running test: 124_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  124_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 125.txt in results/output2
+running test: 125_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  125_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 131.txt in results/output2
+running test: 131_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  131_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 119.txt in results/output2
+running test: 119_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  119_txt_chunking.amber' >> temp_results.txt
+P
+
+generating amber test for: 18.txt in results/output2
+running test: 18_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  18_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 24.txt in results/output2
+running test: 24_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  24_txt_chunking.amber' >> temp_results.txt
+F
+
+generating amber test for: 30.txt in results/output2
+running test: 30_txt_chunking.amber
+timeout -k 1 15 adb shell 'cd /data/local/tmp ; ./amber_ndk  -d -t spv1.5  30_txt_chunking.amber' >> temp_results.txt
+P
+
+
+Finished running tests!
+
+writing simple ascii table to:
+results/output2/simple_final_results-2025-04-11.txt
+
+writing iteration-based ascii table to:
+results/output2/iteration_based_final_results-2025-04-11.txt
+
+writing simple csv table to:
+results/output2/simple_final_results-2025-04-11.csv
+
+writing simple csv table to:
+results/output2/simple_final_results-2025-04-11.csv
+
+writing colored html table to:
+results/output2/html-colored-table2025-04-11.html
+
+
+Execution time (s):
+837.0576000213623

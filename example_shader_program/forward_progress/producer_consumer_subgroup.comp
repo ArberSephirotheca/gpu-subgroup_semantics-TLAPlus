@@ -1,11 +1,11 @@
 #version 450
-#pragma scheduler(OBE)
+#pragma scheduler(HSA)
 #extension GL_KHR_shader_subgroup_basic : enable
 #extension GL_KHR_memory_scope_semantics : enable
 #extension GL_KHR_shader_subgroup_vote : enable
-layout(local_size_x = 2) in;
-layout(tla_subgroup_size = 2) in;
-layout(tla_num_workgroups = 2) in;
+layout(local_size_x = 1) in;
+layout(tla_subgroup_size = 1) in;
+layout(tla_num_workgroups = 1) in;
 
 layout(std430, binding = 0) buffer Msg {
     uint msg;

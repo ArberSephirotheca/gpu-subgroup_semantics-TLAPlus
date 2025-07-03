@@ -1,0 +1,26 @@
+#version 450
+#pragma scheduler(HSA)
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+layout(local_size_x = 2) in;
+layout(tla_subgroup_size = 2) in;
+layout(tla_num_workgroups = 2) in;
+
+
+layout(std430, binding = 0) buffer Mem {
+    uint mem;
+};
+
+void main() {
+    if (gl_WorkGroupID.x == 0 && gl_LocalInvocationID.x == 0){ 
+        mem = 1;
+    } 
+    if (gl_LocalInvocationID.x == 1 && atomicExchange(mem, 1) == 0){
+
+    }
+    if (gl_LocalInvocationID.x == 0 && atomicExchange(mem, 0) == 1){
+        //...
+    }
+    
+}

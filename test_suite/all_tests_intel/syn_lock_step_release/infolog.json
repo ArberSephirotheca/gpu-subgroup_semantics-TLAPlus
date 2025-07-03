@@ -1,0 +1,5 @@
+{
+  "git_hash": "1cdffbdb3305b6a4ba696a89d464d6b9074e2be8-dirty",
+  "args": "/opt/graphicsfuzz/temp/./references/lock_step_release.json ./donors /output/syn_lock_step_release --seed 1763429643 --max-uniforms 0 --max-bytes 500000 --push-constant-probability 0.5 --vulkan --num-variants 100",
+  "seed": "RandomWrapper with seed: 1763429643"
+}

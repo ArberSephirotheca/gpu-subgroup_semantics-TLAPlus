@@ -1,0 +1,100 @@
+#version 460
+
+#ifndef REDUCER
+#define _GLF_ZERO(X, Y)                   (Y)
+#define _GLF_ONE(X, Y)                    (Y)
+#define _GLF_FALSE(X, Y)                  (Y)
+#define _GLF_TRUE(X, Y)                   (Y)
+#define _GLF_IDENTITY(X, Y)               (Y)
+#define _GLF_DEAD(X)                      (X)
+#define _GLF_FUZZED(X)                    (X)
+#define _GLF_WRAPPED_LOOP(X)              X
+#define _GLF_WRAPPED_IF_TRUE(X)           X
+#define _GLF_WRAPPED_IF_FALSE(X)          X
+#define _GLF_SWITCH(X)                    X
+#define _GLF_MAKE_IN_BOUNDS_INT(IDX, SZ)  clamp(IDX, 0, SZ - 1)
+#define _GLF_MAKE_IN_BOUNDS_UINT(IDX, SZ) clamp(IDX, 0u, SZ - 1u)
+#endif
+
+
+struct _GLF_struct_5 {
+ uint num_workgroup;
+ bvec4 _f0;
+} ;
+
+struct _GLF_struct_6 {
+ _GLF_struct_5 _f0;
+ mat3 _f1;
+} ;
+
+struct _GLF_struct_2 {
+ bool _f0;
+ bvec3 _f1;
+ ivec3 _f2;
+} ;
+
+struct _GLF_struct_3 {
+ mat4x3 _f0;
+ ivec3 _f1;
+ bool _f2;
+ _GLF_struct_2 _f3;
+} ;
+
+struct _GLF_struct_0 {
+ mat4 _f0;
+ mat3x4 _f1;
+ ivec4 _f2;
+ uvec3 _f3;
+ ivec3 _f4;
+ mat4x3 _f5;
+} ;
+
+struct _GLF_struct_1 {
+ mat3x2 _f0;
+ _GLF_struct_0 _f1;
+ uint subgroup_size;
+} ;
+
+struct _GLF_struct_4 {
+ int _f0;
+ _GLF_struct_1 _f1;
+ vec4 _f2;
+ bvec3 _f3;
+ _GLF_struct_3 _f4;
+ bvec2 _f5;
+} ;
+
+layout(set = 0, binding = 1) uniform buf1 {
+ vec2 injectionSwitch;
+};
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_shader_subgroup_ballot : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+layout(set = 0, binding = 0) buffer Buf {
+ uint buf;
+};
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+void main()
+{
+ uint subgroup_id = gl_SubgroupID;
+ _GLF_struct_4 _GLF_struct_replacement_4 = _GLF_struct_4(1, _GLF_struct_1(mat3x2(1.0), _GLF_struct_0(mat4(1.0), mat3x4(1.0), ivec4(1), uvec3(1u), ivec3(1), mat4x3(1.0)), 16), vec4(1.0), bvec3(true), _GLF_struct_3(mat4x3(1.0), ivec3(1), true, _GLF_struct_2(true, bvec3(true), ivec3(1))), bvec2(true));
+ if(_GLF_DEAD(false))
+  return;
+ uint subgroup_local_id = gl_SubgroupInvocationID;
+ _GLF_struct_6 _GLF_struct_replacement_6 = _GLF_struct_6(_GLF_struct_5(gl_NumWorkGroups.x, bvec4(true)), mat3(1.0));
+ if(_GLF_DEAD(false))
+  return;
+ uint workgroup_size = gl_WorkGroupSize.x;
+ if(_GLF_DEAD(false))
+  return;
+ uint workgroup_id = gl_WorkGroupID.x;
+ uint workgroup_base = workgroup_size * workgroup_id;
+ uint virtual_gid = workgroup_base + subgroup_id * _GLF_struct_replacement_4._f1.subgroup_size + subgroup_local_id;
+ if(_GLF_DEAD(false))
+  return;
+ uint next_virtual_gid = workgroup_base + subgroup_id * _GLF_struct_replacement_4._f1.subgroup_size + ((subgroup_local_id + 1) % _GLF_struct_replacement_4._f1.subgroup_size);
+ buf = virtual_gid;
+ subgroupAllEqual(buf);
+}

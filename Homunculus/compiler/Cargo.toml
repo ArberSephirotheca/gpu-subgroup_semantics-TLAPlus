@@ -1,0 +1,20 @@
+[package]
+name = "compiler"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+logos = "0.14.0"
+lazy_static = "1.4.0"
+rowan = "0.15.15"
+num-derive = "0.4.0"
+num-traits = "0.2.18"
+expect-test = "1.0.1"
+text-size = "1.0.0"
+eyre = "0.6.12"
+smallvec = "1.13.2"
+camino = "1.1.9"
+syn = "2.0"
+quote = "1.0"
+proc-macro2 = "1.0"
+syntax_node_derive = { path = "../syntax_node_derive" }

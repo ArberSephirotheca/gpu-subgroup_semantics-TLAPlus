@@ -1,0 +1,44 @@
+#version 460
+#pragma scheduler(OBE)
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+
+
+layout(std430, binding = 0) buffer Msg {
+    uint msg;
+};
+
+
+
+// Assume under 1 workgroup, 3 threads per workgroup, and subgroup size of 3
+// for lockstep: the program guarantee to termiante.
+// for branch synchronization: it may hangs because thread does not execute in lockstep for memory operations,
+// hence some thread may loop forever waiting for another thread to finish its memory operation.
+void main() {
+    // 3 
+    if (gl_LocalInvocationID.x == 0) {
+        // 9
+        msg = 0;
+    }
+    // 12
+    barrier();
+    if (gl_LocalInvocationID.x == 0) {
+        // 17
+        msg = 1;
+        // do some works..
+    } else {
+        // 20
+        uint localMsg = msg;
+        // 23
+        while (!subgroupAllEqual(localMsg)) { // 26 // 33
+            // 30
+            int i = 0;
+            // spin..
+        }
+        // 35
+    }
+    // 37
+    assert(msg == 0);
+}
+

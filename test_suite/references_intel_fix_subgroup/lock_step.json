@@ -1,0 +1,12 @@
+{
+"$compute": {
+    "num_groups": [ 65532, 1, 1 ],
+    "buffer": {
+      "binding": 0,
+      "fields":
+      [
+        { "type": "uint", "buf": [ 0 ] }
+      ]
+    }
+  }
+}

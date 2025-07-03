@@ -1,0 +1,5 @@
+{
+  "git_hash": "1cdffbdb3305b6a4ba696a89d464d6b9074e2be8-dirty",
+  "args": "/opt/graphicsfuzz/temp/./references/branch_syn_relax.json ./donors /output/syn_branch_syn_relax --seed 706710992 --max-uniforms 0 --max-bytes 500000 --push-constant-probability 0.5 --vulkan --num-variants 100",
+  "seed": "RandomWrapper with seed: 706710992"
+}

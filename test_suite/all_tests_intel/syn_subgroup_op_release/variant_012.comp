@@ -1,0 +1,48 @@
+#version 460
+layout(set = 0, binding = 1) uniform buf1 {
+ vec2 injectionSwitch;
+};
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_shader_subgroup_ballot : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+layout(set = 0, binding = 0) buffer Buf {
+ uint buf[];
+};
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+void main()
+{
+ uvec4 GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid;
+ uvec4 GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id;
+ uvec2 GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_id;
+ GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.xy = GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_id;
+ uint subgroup_id = gl_SubgroupID;
+ GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.xy.x = subgroup_id;
+ uint subgroup_size = 16;
+ GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.z = subgroup_size;
+ uint subgroup_local_id = gl_SubgroupInvocationID;
+ GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.y = subgroup_local_id;
+ uint num_workgroup = gl_NumWorkGroups.x;
+ GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.x = num_workgroup;
+ uint workgroup_size = gl_WorkGroupSize.x;
+ uint workgroup_id = gl_WorkGroupID.x;
+ GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.w = workgroup_id;
+ GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.xy.y = GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.w;
+ uint workgroup_base = workgroup_size * GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.xy.y;
+ uint virtual_gid = workgroup_base + GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.xy.x * GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.z + GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.y;
+ GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.w = virtual_gid;
+ uint next_virtual_gid = workgroup_base + GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.xy.x * GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.z + ((GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.y + 1) % GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.z);
+ GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.z = next_virtual_gid;
+ buf[GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.w] = 1;
+ if(GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.y + 1 < GLF_merged4_0_1_13_1_1_17_2_1_13_3_1_11num_workgroupsubgroup_local_idsubgroup_sizevirtual_gid.z)
+  {
+   atomicStore(buf[GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.z], uint(2), 4, 64, 4);
+   subgroupAll(false);
+  }
+ else
+  {
+   atomicStore(buf[GLF_merged3_0_2_48_2_1_16_3_1_12GLF_merged2_0_1_11_1_1_12subgroup_idworkgroup_idnext_virtual_gidworkgroup_id.z], uint(2), 4, 64, 4);
+   subgroupAll(true);
+  }
+}

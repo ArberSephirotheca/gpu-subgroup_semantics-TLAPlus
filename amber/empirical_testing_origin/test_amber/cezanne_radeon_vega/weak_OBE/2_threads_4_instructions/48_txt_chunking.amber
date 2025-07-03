@@ -1,0 +1,114 @@
+#!amber
+
+SET ENGINE_DATA fence_timeout_ms 2000
+
+SHADER compute test GLSL
+#version 430
+
+layout(set = 0, binding = 0) volatile buffer TEST {
+	uint counter;
+} test; 
+
+layout(set = 0, binding = 1) volatile buffer OUT_BUF_1 {
+	uint x[];
+} out_buf1; 
+layout(set = 0, binding = 2) volatile buffer OUT_BUF_2 {
+	uint y[];
+} out_buf2; 
+
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+
+void main()
+{
+	uint gid_x = gl_GlobalInvocationID.x;
+	int pc = 0;
+
+	int total_num_threads = 65532;
+	int num_testing_threads = 2;
+	int chunk_size =  total_num_threads / num_testing_threads;
+	uint index = gid_x % chunk_size;
+
+	if (gid_x / chunk_size == 0) { 
+	   int terminate = 0;
+
+	while (true) {
+	   if (terminate == 1) {
+	   break;
+	}
+	switch(pc) {
+
+	  case 0: 
+		atomicExchange(out_buf1.x[index], 1);
+		pc = pc + 1;
+		break;
+
+	  case 1:
+		terminate = 1;
+		break;
+
+	     }
+	   }
+	}
+
+	if (gid_x / chunk_size == 1) { 
+	   int terminate = 0;
+
+	while (true) {
+	   if (terminate == 1) {
+	   break;
+	}
+	switch(pc) {
+
+	  case 0: 
+		if (atomicAdd(out_buf1.x[index], 0) == 1 ) { 
+		   pc = 3;
+		}
+		else {
+		   pc = pc + 1;
+		}
+		break;
+
+	  case 1: 
+		if (atomicAdd(out_buf1.x[index], 0) == 1 ) { 
+		   pc = 3;
+		}
+		else {
+		   pc = pc + 1;
+		}
+		break;
+
+	  case 2: 
+		if (atomicAdd(out_buf1.x[index], 0) == 0 ) { 
+		   pc = 1;
+		}
+		else {
+		   pc = pc + 1;
+		}
+		break;
+
+	  case 3:
+		terminate = 1;
+		break;
+
+	     }
+	   }
+	}
+
+	atomicAdd(test.counter, 1);
+}
+END
+
+BUFFER tester DATA_TYPE uint32 SIZE 1 FILL 0
+BUFFER out1 DATA_TYPE uint32 SIZE 65535 FILL 0
+BUFFER out2 DATA_TYPE uint32 SIZE 65535 FILL 0
+
+PIPELINE compute test_pipe
+  ATTACH test
+  BIND BUFFER tester AS storage DESCRIPTOR_SET 0 BINDING 0 
+  BIND BUFFER out1 AS storage DESCRIPTOR_SET 0 BINDING 1 
+  BIND BUFFER out2 AS storage DESCRIPTOR_SET 0 BINDING 2 
+
+END
+
+RUN test_pipe 65532 1 1
+EXPECT tester IDX 0 EQ 65532

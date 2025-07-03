@@ -2,4 +2,7 @@
 /build
 *.mkv
 *.dot
-*.txt
+**/__pycache__
+*.tex
+*.pdf
+CLAUDE.md

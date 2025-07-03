@@ -1,4 +1,4 @@
-# gpu-forward-progress-TLAPlus
+# gpu-subgroup-semantics-TLAPlus
 
 ## Pre-requisites
 - [Docker](https://docs.docker.com/install/) or [Podman](https://github.com/containers/podman/blob/main/docs/tutorials/podman_tutorial.md)

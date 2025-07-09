@@ -13,6 +13,7 @@ pub fn fuzz(
     work_group_size: u32,
     num_workgroup: u32,
     scheduler: Scheduler,
+    synchronization_id: u32,
     path: &str,
 ) -> Result<()> {
     let (parse, tokens) = parse_save_tokens(spirv_code);
@@ -23,7 +24,7 @@ pub fn fuzz(
     // println!("{:?}",tokens);
     // println!("{:?}",op_func_end);
     // println!("{}",map[&op_func_end]);
-    let mut codegen_ctx = CodegenCx::new(sub_group_size, work_group_size, num_workgroup, scheduler);
+    let mut codegen_ctx = CodegenCx::new(sub_group_size, work_group_size, num_workgroup, scheduler, synchronization_id);
     let program = codegen_ctx.generate_code_with_origin_line_number(syntax, &map, &tokens);
     let symbol_table = codegen_ctx.get_variable_table();
     // for instruction in &program.instructions {

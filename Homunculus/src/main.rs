@@ -13,6 +13,7 @@ use std::{env, path};
 
 static DEFAULT_PROGRAM_FILE: &str = "./forward-progress/validation/MCProgram.tla";
 static DEFAULT_SCHEDULER: Scheduler = Scheduler::OBE;
+static DEFAULT_SYNCHRONIZATION_ID: u32 = 0; // Default synchronization ID
 static DEFAULT_WORKGROUP_SIZE: u32 = 1;
 static DEFAULT_SUBGROUP_SIZE: u32 = 1;
 static DEFAULT_NUM_WORKGROUPS: u32 = 2;
@@ -45,6 +46,7 @@ fn compile(
     work_group_size: u32,
     num_workgroup: u32,
     scheduler: Scheduler,
+    synchronization_id: u32,
     path: &str,
 ) -> Result<()> {
     let (parse, tokens) = parse_save_tokens(spirv_code);
@@ -55,7 +57,7 @@ fn compile(
     // println!("{:?}",tokens);
     // println!("{:?}",op_func_end);
     // println!("{}",map[&op_func_end]);
-    let mut codegen_ctx = CodegenCx::new(sub_group_size, work_group_size, num_workgroup, scheduler);
+    let mut codegen_ctx = CodegenCx::new(sub_group_size, work_group_size, num_workgroup, scheduler, synchronization_id);
     let program = codegen_ctx.generate_code_with_origin_line_number(syntax, &map, &tokens);
     // for instruction in &program.instructions {
     //     println!("{:?}", instruction);
@@ -93,6 +95,7 @@ fn main() {
                         DEFAULT_WORKGROUP_SIZE,
                         DEFAULT_NUM_WORKGROUPS,
                         DEFAULT_SCHEDULER.clone(),
+                        DEFAULT_SYNCHRONIZATION_ID,
                         path,
                     )
                     .unwrap();
@@ -108,6 +111,7 @@ fn main() {
                     DEFAULT_WORKGROUP_SIZE,
                     DEFAULT_NUM_WORKGROUPS,
                     DEFAULT_SCHEDULER.clone(),
+                    DEFAULT_SYNCHRONIZATION_ID,
                     &filename,
                 )
                 .unwrap();

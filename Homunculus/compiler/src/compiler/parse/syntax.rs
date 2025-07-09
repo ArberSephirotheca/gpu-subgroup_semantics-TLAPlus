@@ -65,10 +65,11 @@ pub(crate) static BUILT_IN_VARIABLE_SET: [TokenKind; 9] = [
     TokenKind::SubgroupId,
 ];
 
-pub(crate) static TLA_BUILTIN_SET: [TokenKind; 3] = [
+pub(crate) static TLA_BUILTIN_SET: [TokenKind; 4] = [
     TokenKind::Scheduler,
     TokenKind::TlaNumWorkgroups,
     TokenKind::TlaSubgroupSize,
+    TokenKind::TlaSynchronizationId,
 ];
 
 // fn instruction_not_supported(instruction: &str) -> bool {
@@ -191,6 +192,8 @@ pub enum TokenKind {
     SubgroupLocalInvocationId,
     #[regex("%scheduler")]
     Scheduler,
+    #[regex("%tla_synchronization_id")]
+    TlaSynchronizationId,
     #[regex("%tla_num_workgroups")]
     TlaNumWorkgroups,
     #[regex("%tla_subgroup_size")]

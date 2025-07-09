@@ -22,6 +22,7 @@ pub struct CodegenCx {
     work_group_size: u32,
     num_work_group: u32,
     scheduler: Scheduler,
+    synchronization_id: u32,
 }
 
 impl CodegenCx {
@@ -30,6 +31,7 @@ impl CodegenCx {
         work_group_size: u32,
         num_work_group: u32,
         scheduler: Scheduler,
+        synchronization_id: u32,
     ) -> Self {
         Self {
             type_table: SpirvTypeTable::new(),
@@ -40,6 +42,7 @@ impl CodegenCx {
             work_group_size,
             num_work_group,
             scheduler,
+            synchronization_id,
         }
     }
     pub(crate) fn increment_inst_position(&mut self) -> u32 {
@@ -1049,6 +1052,21 @@ impl CodegenCx {
                                     "DecorateStringStatement: TLA+ NumWorkgroups must be a number",
                                 );
                             self.num_work_group = num_workgroup;
+                        }
+                        TokenKind::TlaSynchronizationId => {
+                            let synchronization_id = decorate_string_stmt
+                                .string()
+                                .unwrap()
+                                .text()
+                                .trim_matches('"')
+                                .parse::<u32>()
+                                .expect(
+                                    "DecorateStringStatement: TLA+ SynchronizationId must be a number",
+                                );
+                            if synchronization_id  > 3 {
+                                panic!("DecorateStringStatement: TLA+ SynchronizationId must be smaller than 3");
+                            }
+                            self.synchronization_id = synchronization_id;
                         }
                         TokenKind::TlaSubgroupSize => {
                             let sub_group_size = decorate_string_stmt
@@ -3738,6 +3756,7 @@ impl CodegenCx {
             .subgroup_size(self.sub_group_size)
             .num_threads(self.num_work_group * self.work_group_size)
             .scheduler(self.scheduler.clone())
+            .synchronization_id(self.synchronization_id)
             .func_start_line(line)
             .build()
             .unwrap()
@@ -3771,12 +3790,12 @@ mod test {
 
     #[test]
     fn check_basic_type_symbol_table() {
-        CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let input = "%uint = OpTypeInt 32 0
          %uint_0 = OpVariable %uint Function
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::OBE);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::OBE, 0);
         let program = codegen_ctx.generate_code(syntax);
         // let basic_type = program.instructions.get(0).unwrap();
         let variable_decl = program.instructions.get(0).unwrap();
@@ -3799,7 +3818,7 @@ mod test {
 
     #[test]
     fn check_high_level_type_symbol_table() {
-        CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let input = "%uint = OpTypeInt 32 0
          %v3uint = OpTypeVector %uint 30
          %_ptr_Input_v3uint = OpTypePointer Input %v3uint
@@ -3808,7 +3827,7 @@ mod test {
 
         let syntax = parse(input).syntax();
         // let root = Root::cast(syntax).unwrap();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         // let basic_type = program.instructions.get(0).unwrap();
         let variable_decl = program.instructions.get(0).unwrap();
@@ -3835,7 +3854,7 @@ mod test {
         OpReturn
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let return_stmt = program.instructions.get(0).unwrap();
         assert_eq!(return_stmt.name, InstructionName::Return);
@@ -3847,7 +3866,7 @@ mod test {
         ";
 
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         codegen_ctx.generate_code(syntax);
         assert_ne!(codegen_ctx.lookup_variable("%11"), None);
         let const_val = codegen_ctx.lookup_variable("%11").unwrap();
@@ -3861,7 +3880,7 @@ mod test {
         ";
 
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         codegen_ctx.generate_code(syntax);
         assert_ne!(codegen_ctx.lookup_variable("%11"), None);
         let const_val = codegen_ctx.lookup_variable("%11").unwrap();
@@ -3875,7 +3894,7 @@ mod test {
         ";
 
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         codegen_ctx.generate_code(syntax);
         assert_ne!(codegen_ctx.lookup_variable("%11"), None);
         let const_val = codegen_ctx.lookup_variable("%11").unwrap();
@@ -3884,7 +3903,7 @@ mod test {
 
     #[test]
     fn check_built_in_load() {
-        CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let input = "OpDecorate %gl_SubgroupInvocationID BuiltIn SubgroupLocalInvocationId
          %uint = OpTypeInt 32 0
          %_ptr_Input_uint = OpTypePointer Input %uint
@@ -3894,7 +3913,7 @@ mod test {
 
         let syntax = parse(input).syntax();
         // let root = Root::cast(syntax).unwrap();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let builtin_variable_decl = program.instructions.get(0).unwrap();
 
@@ -3954,7 +3973,7 @@ mod test {
         OpStore %idx %11
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let store = program.instructions.get(1).unwrap();
         assert_eq!(store.arguments.num_args, 2);
@@ -3981,7 +4000,7 @@ mod test {
         OpStore %idx %uint_0
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let store = program.instructions.get(2).unwrap();
         assert_eq!(store.arguments.num_args, 2);
@@ -4007,7 +4026,7 @@ mod test {
          %11 = OpAccessChain %_ptr_Input_uint %v3uint_0 %10
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         codegen_ctx.generate_code(syntax);
         let var_info = codegen_ctx.lookup_variable("%11");
         assert_ne!(var_info, None);
@@ -4061,7 +4080,7 @@ mod test {
         ";
 
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let label = program.instructions.get(1).unwrap();
         assert_eq!(label.arguments.num_args, 1);
@@ -4079,7 +4098,7 @@ mod test {
         ";
 
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let branch = program.instructions.get(2).unwrap();
         assert_eq!(branch.arguments.num_args, 1);
@@ -4103,7 +4122,7 @@ mod test {
         ";
 
         let syntax = parse(intput).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let branch_conditional = program.instructions.get(2).unwrap();
         assert_eq!(branch_conditional.arguments.num_args, 3);
@@ -4157,7 +4176,7 @@ mod test {
         OpSelectionMerge %2 None
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let selection_merge = program.instructions.get(2).unwrap();
         assert_eq!(selection_merge.arguments.num_args, 1);
@@ -4184,7 +4203,7 @@ mod test {
         %sum = OpIAdd %int %3 %5
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let add = program.instructions.get(0).unwrap();
         assert_eq!(add.arguments.num_args, 3);
@@ -4206,7 +4225,7 @@ mod test {
         %sub = OpISub %int %3 %5
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let sub = program.instructions.get(0).unwrap();
         assert_eq!(sub.arguments.num_args, 3);
@@ -4228,7 +4247,7 @@ mod test {
         %mul = OpIMul %int %3 %5
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let mul = program.instructions.get(0).unwrap();
         assert_eq!(mul.arguments.num_args, 3);
@@ -4251,7 +4270,7 @@ mod test {
         %equal = OpIEqual %bool %3 %5
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let equal = program.instructions.get(0).unwrap();
         assert_eq!(equal.arguments.num_args, 3);
@@ -4274,7 +4293,7 @@ mod test {
         %not_equal = OpINotEqual %bool %3 %5
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let not_equal = program.instructions.get(0).unwrap();
         assert_eq!(not_equal.arguments.num_args, 3);
@@ -4306,7 +4325,7 @@ mod test {
         %less_than = OpSLessThan %bool %3 %5
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let less_than = program.instructions.get(0).unwrap();
         assert_eq!(less_than.arguments.num_args, 3);
@@ -4338,7 +4357,7 @@ mod test {
         %less_than_equal = OpSLessThanEqual %int %3 %5
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let less_than_equal = program.instructions.get(0).unwrap();
         assert_eq!(less_than_equal.arguments.num_args, 3);
@@ -4373,7 +4392,7 @@ mod test {
         %greater_than = OpSGreaterThan %int %3 %5
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let greater_than = program.instructions.get(0).unwrap();
         assert_eq!(greater_than.arguments.num_args, 3);
@@ -4405,7 +4424,7 @@ mod test {
         %greater_than_equal = OpSGreaterThanEqual %int %3 %5
         ";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let greater_than_equal = program.instructions.get(0).unwrap();
         assert_eq!(greater_than_equal.arguments.num_args, 3);
@@ -4437,7 +4456,7 @@ mod test {
   %16 = OpLabel
   %15 = OpLabel";
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let loop_merge = program.instructions.get(0).unwrap();
         assert_eq!(loop_merge.arguments.num_args, 2);
@@ -4466,7 +4485,7 @@ mod test {
        ";
 
         let syntax = parse(input).syntax();
-        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA);
+        let mut codegen_ctx = CodegenCx::new(1, 1, 1, Scheduler::HSA, 0);
         let program = codegen_ctx.generate_code(syntax);
         let atomic_exchange = program.instructions.get(1).unwrap();
         assert_eq!(atomic_exchange.arguments.num_args, 3);

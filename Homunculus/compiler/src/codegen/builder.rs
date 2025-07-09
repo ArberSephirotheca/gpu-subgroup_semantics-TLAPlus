@@ -237,6 +237,7 @@ pub struct ProgramBuilder {
     num_work_groups: Option<u32>,
     num_threads: Option<u32>,
     scheduler: Option<Scheduler>,
+    synchronization_id: Option<u32>,
     // thread: SmallVec<[Thread; 8]>,
     instructions: SmallVec<[Instruction; 10]>,
     constants: SmallVec<[Constant; 10]>,
@@ -274,6 +275,11 @@ impl ProgramBuilder {
         self
     }
 
+    pub fn synchronization_id(mut self, synchronization_id: u32) -> Self {
+        self.synchronization_id = Some(synchronization_id);
+        self
+    }
+
     pub fn push_instruction(mut self, instruction: Instruction) -> Self {
         self.instructions.push(instruction);
         self
@@ -307,6 +313,9 @@ impl ProgramBuilder {
             scheduler: self
                 .scheduler
                 .ok_or_else(|| eyre!("Scheduler is required"))?,
+            synchronization_id: self
+                .synchronization_id
+                .ok_or_else(|| eyre!("Synchronization ID is required"))?,
             instructions: self.instructions,
             constants: self.constants,
             func_start_line: self

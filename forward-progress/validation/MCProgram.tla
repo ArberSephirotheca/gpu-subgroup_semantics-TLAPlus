@@ -296,7 +296,7 @@ EntryLabel == Min({idx \in 1..Len(ThreadInstructions[1]) : ThreadInstructions[1]
 (* CFG *)
 
 
-Synchronization == "Branch"
+\* Synchronization == "Collective"
 INSTANCE ProgramConf
 
 (* Inovactions within a tangle are required to execute tangled instruction concurrently, examples or opGroup operations and opControlBarrier  *)

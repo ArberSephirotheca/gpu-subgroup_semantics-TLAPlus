@@ -1,0 +1,24 @@
+#version 460
+#pragma scheduler(OBE)
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+
+layout(local_size_x = 2) in;
+layout(tla_subgroup_size = 2) in;
+layout(tla_num_workgroups = 1) in;
+layout(tla_synchronization_id = 2) in;
+
+
+layout(std430, binding = 0) buffer Partition {
+    uint x;
+};
+
+void main() {
+   uint tid = gl_LocalInvocationID.x * 2;
+   uint next_tid = ((tid + 1) % gl_SubgroupSize) * 2;
+   atomicOr(x, 2u << next_tid, 4, 64, 0);
+   atomicAnd(x, 1u << tid, 4, 64, 0);
+   subgroupBarrier();
+   assert(x == 0u);
+}

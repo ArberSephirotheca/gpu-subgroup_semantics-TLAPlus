@@ -96,6 +96,8 @@ Step ==
                         /\  Execute(t)
                 ELSE
                     /\  Execute(runningThread)
+                    \* \E t \in ThreadsReady:
+                    \*     /\  Execute(t)
         
             ELSE
                 /\ UNCHANGED vars

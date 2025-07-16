@@ -532,7 +532,7 @@ impl Program {
         writeln!(writer, "NumThreads == {}", self.num_threads)?;
         writeln!(writer, "Scheduler == {}", self.scheduler)?;
         // writeln!(writer, "Synchronization == {}", syn_level)?;
-        writeln!(writer, "Synchronization == \"Collective\"")?;
+        writeln!(writer, "Synchronization == \"None\"")?;
         Ok(())
     }
     fn write_global_variables(&self, writer: &mut BufWriter<File>) -> Result<()> {

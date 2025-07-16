@@ -1,0 +1,66 @@
+#!amber
+
+DEVICE_FEATURE SubgroupSizeControl.subgroupSizeControl
+
+SET ENGINE_DATA fence_timeout_ms 10000
+
+SHADER compute test GLSL
+
+#version 460
+#extension GL_KHR_shader_subgroup_ballot : enable
+#extension GL_KHR_shader_subgroup_vote : enable
+#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_memory_scope_semantics : enable
+#extension GL_EXT_maximal_reconvergence : enable
+
+#define scope_invocation 4
+#define scope_subgroup 3
+#define scope_device 1
+#define storage_sem_buffer 64
+#define sem_relaxed 0
+#define sem_release 4
+#define sem_acquire 2
+
+layout(set = 0, binding = 0)  buffer Buf {
+	uint buf[];
+};
+
+layout(set = 0, binding = 2)  buffer WriteVal {
+    uint write_val;
+};
+
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+
+void main() {
+	uint subgroup_id = gl_SubgroupID;
+	uint subgroup_size = gl_SubgroupSize;
+    uint subgroup_local_id = gl_SubgroupInvocationID;
+    uint num_workgroup = gl_NumWorkGroups.x;
+    uint workgroup_size = gl_WorkGroupSize.x;
+    uint workgroup_id = gl_WorkGroupID.x;
+    uint workgroup_base = workgroup_size * workgroup_id;
+    uint subgroup_base = subgroup_id * subgroup_size;
+    uint virtual_gid = workgroup_base + subgroup_base + subgroup_local_id;
+    atomicStore(write_val, uint(virtual_gid), scope_device, storage_sem_buffer, sem_release);
+    uint read_val = atomicLoad(write_val, scope_device, storage_sem_buffer, sem_acquire);
+    buf[virtual_gid] = uint(subgroupAllEqual(read_val));
+}
+
+END
+
+BUFFER tester DATA_TYPE uint32 SIZE 8388096 FILL 0
+BUFFER expected DATA_TYPE uint32 SIZE 8388096 FILL 1
+BUFFER write DATA_TYPE uint32 SIZE 1 FILL 0
+
+PIPELINE compute test_pipe
+  ATTACH test
+  BIND BUFFER tester AS storage DESCRIPTOR_SET 0 BINDING 0 
+  BIND BUFFER write AS storage DESCRIPTOR_SET 0 BINDING 2 
+
+  SUBGROUP test
+	  VARYING_SIZE on
+  END
+END
+
+RUN test_pipe 65532 1 1
+EXPECT tester EQ_BUFFER expected

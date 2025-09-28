@@ -326,13 +326,7 @@ MaxInstructionIdx == Len(ThreadInstructions[1])
 
 EmptySIS == [wg \in 1..NumWorkGroups |-> [sg \in 1..NumSubgroups |-> [pc \in 1..MaxInstructionIdx |-> FALSE]]]
 
-WithSIS(db, sisVal) == [db EXCEPT !.sis = sisVal]
-
 SetSISFlag(db, wgid, sg, pc, val) == [db EXCEPT !.sis[wgid][sg][pc] = val]
-
-ResetSIS(db) == WithSIS(db, EmptySIS)
-
-WorkGroupIndex(tid) == WorkGroupId(tid) + 1
 
 SubgroupIndex(tid) == SubgroupId(tid) + 1
 

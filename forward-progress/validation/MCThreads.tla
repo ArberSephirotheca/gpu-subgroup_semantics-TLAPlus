@@ -32,7 +32,7 @@ newSnapShot(localPc, localState, localThreadLocals, localGlobalVars, (* dynamicN
         globalCounter |-> localCounter
     ]
 
-RemoveId(dynamicNode) == [dynamicNode EXCEPT !.id = 0, !.mergeStack = <<>>, !.children = {}]
+RemoveId(dynamicNode) == [dynamicNode EXCEPT !.id = 0, !.mergeStack = <<>>, !.children = {}, !.sis = EmptySIS]
 
 \* default that has no meaningful value
 \* InitSnapShotMap ==

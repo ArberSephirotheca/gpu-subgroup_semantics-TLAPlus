@@ -271,6 +271,16 @@ MemoryOperationSet == {"OpAtomicLoad", "OpAtomicStore", "OpAtomicIncrement" , "O
 IsMemoryOperation(inst) == 
     inst \in MemoryOperationSet
 
+MaxInstructionIdx == Len(ThreadInstructions[1])
+
+EmptySIS == [pc \in 1..MaxInstructionIdx |-> FALSE]
+
+WithSIS(db, sisVal) == [db EXCEPT !.sis = sisVal]
+
+SetSISFlag(db, pc, val) == [db EXCEPT !.sis[pc] = val]
+
+ResetSIS(db) == WithSIS(db, EmptySIS)
+
 \* order matters so we use sequence instead of set
 \* currentThreadSet is the set of threads that are currently executing the block
 \* executeSet is the set of blocks that have been executed by the threads
@@ -285,7 +295,8 @@ DynamicNode(currentThreadSet, executeSet, notExecuteSet, unknownSet, labelIdx, i
         labelIdx |-> labelIdx,
         id |-> id,
         mergeStack |-> mergeStack,
-        children |-> children
+        children |-> children,
+        sis |-> EmptySIS
     ]
 
 
@@ -1167,5 +1178,4 @@ UniquelabelIdxuence ==
     \A DB1, DB2 \in DynamicNodeSet:
         DB1.labelIdx = DB2.labelIdx => DB1 = DB2
 ====
-
 

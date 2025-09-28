@@ -268,6 +268,8 @@ ScopeOperand == {"workgroup", "subgroup", "tangle"}
 MemoryOperationSet == {"OpAtomicLoad", "OpAtomicStore", "OpAtomicIncrement" , "OpAtomicDecrement",
 "OpAtomicAdd" , "OpAtomicSub", "OpAtomicCompareExchange" ,"OpAtomicExchange", "OpAtomicOr", "OpAtomicAnd"}
 
+BranchInstructionSet == {"OpBranch", "OpBranchConditional", "OpSwitch"}
+
 IsMemoryOperation(inst) == 
     inst \in MemoryOperationSet
 
@@ -350,7 +352,6 @@ INSTANCE ProgramConf
 TangledInstructionSet == {"OpControlBarrier, OpGroupAll", "OpGroupAny", "OpGroupNonUniformAll", "OpGroupNonUniformAllEqual", "OpGroupNonUniformAny", "OpGroupNonUniformBroadcast"}
 MergedInstructionSet == {"OpLoopMerge", "OpSelectionMerge"}
 BlockTerminationInstructionSet == {"OpBranch", "OpBranchConditional", "OpSwitch", "Terminate"}
-BranchInstructionSet == {"OpBranch", "OpBranchConditional", "OpSwitch"}
 ConstructTypeSet == {"Selection", "Loop", "Switch", "Continue", "Case"}
 \* Tangle: 
 Tangle(ts) == 

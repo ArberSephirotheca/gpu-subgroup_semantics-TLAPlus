@@ -57,25 +57,17 @@ layout(tla_synchronization_id = <id>) in;
 |------|-------|------------------------|--------------------------|--------------------------|
 | 0    | None  | Subgroup ops (`OpGroup*`) | — | All remaining instructions |
 | 1    | SSO   | Subgroup ops (`OpGroup*`) | — | All remaining instructions |
-| 2    | SCF   | Subgroup ops + control flow (`OpBranch`, `OpBranchConditional`, `OpSwitch`) | — | Others |
+| 2    | SCF   | Subgroup ops + control flow | — | Others |
 | 3    | SM    | Subgroup ops + control flow | `OpAtomicLoad`, `OpAtomicStore`, `OpAtomicOr` | Others |
 | 4    | CM    | Subgroup ops + control flow + all memory ops | — | Others |
 
 **Limitation.** At present, the synchronous semantics for SM are only modeled for `OpAtomicLoad`, `OpAtomicStore`, and `OpAtomicOr`. Other atomic opcodes (e.g., `OpAtomicAdd`, `OpAtomicSub`, `OpAtomicExchange`) still execute independently; extending the synchronous rules to them is future work.
 
 ## Example:
-`earthly -i +tlaplus-image --INPUT example_shader_program/producer_consumer.comp --OUT=all`
+`earthly -i +tlaplus-image --INPUT example_shader_program/synchronization/cm.comp --OUT=text`
 
 ## Command Line Option
 - *format*: text, dot, all
-
-## Litmus tests
-We also provides part of litmus tests implemented by Tyler Sorensens, available at https://github.com/tyler-utah/AlloyForwardProgress.
-For convenience, a special command is available to run all the litmus tests:
-```
-earthly +tlaplus-image --LITMUS_TESTS TRUE
-```
-This command will try to run all the litmus tests in the `litmus_tests` directories.
 
 
 ## List of supported SPIR-V Instructions

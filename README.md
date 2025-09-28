@@ -136,5 +136,5 @@ are behaving like `SequentiallyConsistent`.
 ```
 earthly +tlaplus-image --INPUT <shader.glsl> --OUT=<format>
 ```
-This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to produce TLA+ modules, and finally invokes TLC to model-check or produce the selected output format (`text`, `dot`, or `all`).
+This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to produce TLA+ modules, and finally invokes TLC to model-check.
 

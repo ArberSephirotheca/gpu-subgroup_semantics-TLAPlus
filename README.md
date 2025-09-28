@@ -46,6 +46,22 @@ Similarily, you can specify the number of workgroup for TLA+ model in shader pro
 layout(tla_num_workgroups = <num>) in;
 ```
 num must be a **non-zero positive integer**.
+### Synchronization Model
+Select the SIMT-Step model with:
+```glsl
+layout(tla_synchronization_id = <id>) in;
+```
+`0` → None, `1` → SSO, `2` → SCF, `3` → SM, `4` → CM.
+
+| `id` | Label | Collective instructions | Synchronous instructions | Independent instructions |
+|------|-------|------------------------|--------------------------|--------------------------|
+| 0    | None  | Subgroup ops (`OpGroup*`) | — | All remaining instructions |
+| 1    | SSO   | Subgroup ops (`OpGroup*`) | — | All remaining instructions |
+| 2    | SCF   | Subgroup ops + control flow (`OpBranch`, `OpBranchConditional`, `OpSwitch`) | — | Others |
+| 3    | SM    | Subgroup ops + control flow | `OpAtomicLoad`, `OpAtomicStore`, `OpAtomicOr` | Others |
+| 4    | CM    | Subgroup ops + control flow + all memory ops | — | Others |
+
+**Limitation.** At present, the synchronous semantics for SM are only modeled for `OpAtomicLoad`, `OpAtomicStore`, and `OpAtomicOr`. Other atomic opcodes (e.g., `OpAtomicAdd`, `OpAtomicSub`, `OpAtomicExchange`) still execute independently; extending the synchronous rules to them is future work.
 
 ## Example:
 `earthly -i +tlaplus-image --INPUT example_shader_program/producer_consumer.comp --OUT=all`
@@ -117,3 +133,17 @@ are behaving like `SequentiallyConsistent`.
 
 ## Reference
 - https://lamport.azurewebsites.net/tla/safety-liveness.pdf
+
+## Reviewers' Guide
+
+1. Start with `forward-progress/validation/MCProgram.tla` for the SIMT-Step partition definitions and configuration constants.
+2. Move to `forward-progress/validation/MCThreads.tla` to inspect the state transitions (dynamic blocks, synchronous Arrive/Execute logic, etc.).
+3. Reference `example_shader_program/` shaders to see how GLSL annotations map to the TLA+ configuration (e.g., `tla_synchronization_id`).
+
+### Workflow Overview
+
+```
+earthly +tlaplus-image --INPUT <shader.glsl> --OUT=<format>
+```
+This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to produce TLA+ modules, and finally invokes TLC to model-check or produce the selected output format (`text`, `dot`, or `all`).
+

@@ -273,8 +273,10 @@ BranchInstructionSet == {"OpBranch", "OpBranchConditional", "OpSwitch"}
 IsMemoryOperation(inst) == 
     inst \in MemoryOperationSet
 
+\* SIMT-Step subgroup collectives (always collective in every model).
 SubgroupInstructionSet == {"OpGroupAll", "OpGroupAny", "OpGroupNonUniformAll", "OpGroupNonUniformAllEqual", "OpGroupNonUniformAny", "OpGroupNonUniformBroadcast"}
 
+\* Per Table 1 in the paper: map the model label to its collective set.
 CollectiveInstructionSet ==
     LET base == SubgroupInstructionSet IN
         base \cup
@@ -284,6 +286,7 @@ CollectiveInstructionSet ==
              [] Synchronization = "SSO" -> {}
              [] OTHER -> {}
 
+\* Only SM maps memory ops to the Arrive/Execute semantics (§4.2).
 SynchronousInstructionSet ==
     CASE Synchronization = "CM" -> {}
          [] Synchronization = "SM" -> MemoryOperationSet
@@ -324,6 +327,7 @@ DynamicNode(sis, currentThreadSet, executeSet, notExecuteSet, unknownSet, labelI
 EntryLabel == Min({idx \in 1..Len(ThreadInstructions[1]) : ThreadInstructions[1][idx] = "OpLabel"})
 MaxInstructionIdx == Len(ThreadInstructions[1])
 
+\* SIS keeps the Arrive/Execute flag for each workgroup, subgroup, and instruction (§4.2).
 EmptySIS == [wg \in 1..NumWorkGroups |-> [sg \in 1..NumSubgroups |-> [pc \in 1..MaxInstructionIdx |-> FALSE]]]
 
 SetSISFlag(db, wgid, sg, pc, val) == [db EXCEPT !.sis[wgid][sg][pc] = val]
@@ -332,6 +336,7 @@ SubgroupIndex(tid) == SubgroupId(tid) + 1
 
 ReplaceDB(DBSet, oldDB, newDB) == (DBSet \ {oldDB}) \union {newDB}
 
+\* Helper: update the SIS flag for a particular workgroup/subgroup/pc entry.
 SetSISInDB(DBSet, oldDB, wgid, sg, pc, val) == ReplaceDB(DBSet, oldDB, SetSISFlag(oldDB, wgid, sg, pc, val))
 
 (* CFG *)

@@ -88,6 +88,7 @@ SnapShotUpdate(newDBSet, newState, t, localPc, newCounter) ==
         IN
             InsertMultipleSnapShots(snapShotMap, snapShots)
 
+\* Once the Arrive condition holds we release every waiting thread back to "ready".
 StateUpdateSubgroup(wgid, active_subgroup_threads, newDBSet) ==
     [thread \in Threads |->
         IF thread \in active_subgroup_threads THEN
@@ -321,6 +322,7 @@ OpAtomicOr(t, var, pointer, value) ==
                 /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
                 /\  UNCHANGED <<state, DynamicNodeSet, globalCounter, snapShotMap>>
 
+\* Atomics that emulate a slot update also use the synchronous Arrive/Execute flow.
 OpAtomicOrSync(t, var, pointer, value) ==
     LET mangledVar == Mangle(t, var)
         mangledPointer == Mangle(t, pointer)
@@ -646,6 +648,7 @@ GetGlobalId(t, result) ==
         /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
         /\  UNCHANGED <<state>>
 
+\* Arrive/Execute semantics for atomic loads (SIMT-Step §4.2).
 OpAtomicLoadSync(t, result, pointer) ==
     LET mangledResult == Mangle(t, result)
         mangledPointer == Mangle(t, pointer)
@@ -836,6 +839,7 @@ OpAtomicLoadCollective(t, result, pointer) ==
                                 ]
                             /\ UNCHANGED <<globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
 
+\* Arrive/Execute semantics for atomic stores (SIMT-Step §4.2).
 OpAtomicStoreSync(t, pointer, value) == 
     LET mangledPointer == Mangle(t, pointer)
         workGroupId == WorkGroupId(t) + 1
@@ -1538,7 +1542,8 @@ OpAtomicCompareExchange(t, result, pointer, value, comparator) ==
         /\  UNCHANGED <<state,  DynamicNodeSet, globalCounter, snapShotMap>>
 
 
-OpBranchSync(t, label) == 
+\* Collective branch step keeps dynamic blocks converged (SIMT-Step Def.1).
+OpBranchSync(t, label) ==
 /\  LET workGroupId == WorkGroupId(t) + 1
         sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
         currentDB == CurrentDynamicNode(workGroupId, t)
@@ -1611,6 +1616,7 @@ OpBranch(t, label) ==
     /\  UNCHANGED <<threadLocals, globalVars>>
 
 
+\* Conditional branch executed collectively; splits the dynamic block per SIMT-Step.
 OpBranchConditionalSync(t, condition, trueLabel, falseLabel) == 
     /\  IsLiteral(trueLabel)
     /\  IsLiteral(falseLabel)

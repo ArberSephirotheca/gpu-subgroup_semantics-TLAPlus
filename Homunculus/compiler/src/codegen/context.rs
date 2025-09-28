@@ -1063,8 +1063,8 @@ impl CodegenCx {
                                 .expect(
                                     "DecorateStringStatement: TLA+ SynchronizationId must be a number",
                                 );
-                            if synchronization_id  > 3 {
-                                panic!("DecorateStringStatement: TLA+ SynchronizationId must be smaller than 3");
+                            if synchronization_id  > 4 {
+                                panic!("DecorateStringStatement: TLA+ SynchronizationId must be smaller than 5");
                             }
                             self.synchronization_id = synchronization_id;
                         }

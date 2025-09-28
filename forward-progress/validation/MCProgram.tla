@@ -276,13 +276,17 @@ SubgroupInstructionSet == {"OpGroupAll", "OpGroupAny", "OpGroupNonUniformAll", "
 CollectiveInstructionSet ==
     LET base == SubgroupInstructionSet IN
         base \cup
-        CASE Synchronization = "Collective" -> MemoryOperationSet \cup BranchInstructionSet
-             [] Synchronization = "Lockstep" -> BranchInstructionSet
-             [] Synchronization = "Branch" -> BranchInstructionSet
+        CASE Synchronization = "CM" -> MemoryOperationSet \cup BranchInstructionSet
+             [] Synchronization = "SM" -> BranchInstructionSet
+             [] Synchronization = "SCF" -> BranchInstructionSet
+             [] Synchronization = "SSO" -> {}
              [] OTHER -> {}
 
 SynchronousInstructionSet ==
-    CASE Synchronization = "Lockstep" -> MemoryOperationSet
+    CASE Synchronization = "CM" -> {}
+         [] Synchronization = "SM" -> MemoryOperationSet
+         [] Synchronization = "SCF" -> {}
+         [] Synchronization = "SSO" -> {}
          [] OTHER -> {}
 
 IndependentInstructionSet == InstructionSet \ (CollectiveInstructionSet \cup SynchronousInstructionSet)

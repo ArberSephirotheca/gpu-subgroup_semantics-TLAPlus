@@ -522,17 +522,17 @@ impl Program {
             "NumSubgroups == {}",
             self.num_work_groups * self.work_group_size / self.subgroup_size
         )?;
-        // let syn_level = match self.synchronization_id {
-        //     0 => "\"None\"",
-        //     1 => "\"Branch\"",
-        //     2 => "\"Lockstep\"",
-        //     3 => "\"Collective\"",
-        //     _ => return Err(eyre!("Invalid synchronization level.")),
-        // };
+        let syn_level = match self.synchronization_id {
+            0 => "\"None\"",
+            1 => "\"SSO\"",
+            2 => "\"SCF\"",
+            3 => "\"SM\"",
+            4 => "\"CM\"",
+            _ => return Err(eyre!("Invalid synchronization level.")),
+        };
         writeln!(writer, "NumThreads == {}", self.num_threads)?;
         writeln!(writer, "Scheduler == {}", self.scheduler)?;
-        // writeln!(writer, "Synchronization == {}", syn_level)?;
-        writeln!(writer, "Synchronization == \"None\"")?;
+        writeln!(writer, "Synchronization == {}", syn_level)?;
         Ok(())
     }
     fn write_global_variables(&self, writer: &mut BufWriter<File>) -> Result<()> {

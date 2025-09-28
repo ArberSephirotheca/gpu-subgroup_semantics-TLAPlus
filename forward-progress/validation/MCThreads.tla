@@ -2016,107 +2016,110 @@ OpAssert(t, predicate) ==
 
 ExecuteInstruction(t) ==
     LET workGroupId == WorkGroupId(t)+1
+        currentInstr == ThreadInstructions[t][pc[t]]
     IN
         IF state[t] # "terminated" THEN
-            IF  ThreadInstructions[t][pc[t]] = "Terminate" THEN
+            IF  currentInstr = "Terminate" THEN
                 Terminate(t)
-            ELSE IF ThreadInstructions[t][pc[t]] = "Assignment" THEN
+            ELSE IF currentInstr = "Assignment" THEN
                 /\  Assignment(t, {Mangle(t,ThreadArguments[t][pc[t]][1])})
                 /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
                 /\  UNCHANGED <<state,  DynamicNodeSet, globalCounter, snapShotMap>>
-            ELSE IF ThreadInstructions[t][pc[t]] = "GetGlobalId" THEN
+            ELSE IF currentInstr = "GetGlobalId" THEN
                 GetGlobalId(t, ThreadArguments[t][pc[t]][1])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicIncrement" THEN
+            ELSE IF currentInstr = "OpAtomicIncrement" THEN
                 OpAtomicIncrement(t, ThreadArguments[t][pc[t]][1])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicDecrement" THEN
+            ELSE IF currentInstr = "OpAtomicDecrement" THEN
                 OpAtomicDecrement(t, ThreadArguments[t][pc[t]][1])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpLogicalOr" THEN 
+            ELSE IF currentInstr = "OpLogicalOr" THEN 
                 OpLogicalOr(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpLogicalAnd" THEN
+            ELSE IF currentInstr = "OpLogicalAnd" THEN
                 OpLogicalAnd(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpLogicalEqual" THEN
+            ELSE IF currentInstr = "OpLogicalEqual" THEN
                 OpLogicalEqual(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpLogicalNotEqual" THEN
+            ELSE IF currentInstr = "OpLogicalNotEqual" THEN
                 OpLogicalNotEqual(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpLogicalNot" THEN
+            ELSE IF currentInstr = "OpLogicalNot" THEN
                 OpLogicalNot(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpBitcast" THEN
+            ELSE IF currentInstr = "OpBitcast" THEN
                 OpBitcast(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpShiftLeftLogical" THEN
+            ELSE IF currentInstr = "OpShiftLeftLogical" THEN
                 OpShiftLeftLogical(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpShiftRightLogical" THEN
+            ELSE IF currentInstr = "OpShiftRightLogical" THEN
                 OpShiftRightLogical(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpEqual" THEN
+            ELSE IF currentInstr = "OpEqual" THEN
                 OpEqual(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpNotEqual" THEN
+            ELSE IF currentInstr = "OpNotEqual" THEN
                 OpNotEqual(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpLess" THEN
+            ELSE IF currentInstr = "OpLess" THEN
                 OpLess(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpLessOrEqual" THEN
+            ELSE IF currentInstr = "OpLessOrEqual" THEN
                 OpLessOrEqual(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpGreater" THEN
+            ELSE IF currentInstr = "OpGreater" THEN
                 OpGreater(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpGreaterOrEqual" THEN
+            ELSE IF currentInstr = "OpGreaterOrEqual" THEN
                 OpGreaterOrEqual(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpBitwiseOr" THEN
+            ELSE IF currentInstr = "OpBitwiseOr" THEN
                 OpBitwiseOr(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpBitwiseAnd" THEN
+            ELSE IF currentInstr = "OpBitwiseAnd" THEN
                 OpBitwiseAnd(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAdd" THEN
+            ELSE IF currentInstr = "OpAdd" THEN
                 OpAdd(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicAdd" THEN
+            ELSE IF currentInstr = "OpAtomicAdd" THEN
                 OpAtomicAdd(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpSub" THEN
+            ELSE IF currentInstr = "OpSub" THEN
                 OpSub(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicSub" THEN
+            ELSE IF currentInstr = "OpAtomicSub" THEN
                 OpAtomicSub(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicOr" THEN
-                IF Synchronization = "Lockstep" \/ Synchronization = "Collective" THEN
+            ELSE IF currentInstr = "OpAtomicOr" THEN
+                IF IsCollectiveInstruction(currentInstr) \/ IsSynchronousInstruction(currentInstr) THEN
                     OpAtomicOrSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
                 ELSE
                     OpAtomicOr(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicAnd" THEN
+            ELSE IF currentInstr = "OpAtomicAnd" THEN
                 OpAtomicAnd(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpMul" THEN
+            ELSE IF currentInstr = "OpMul" THEN
                 OpMul(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpMod" THEN
+            ELSE IF currentInstr = "OpMod" THEN
                 OpMod(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicExchange" THEN
+            ELSE IF currentInstr = "OpAtomicExchange" THEN
                 OpAtomicExchange(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicCompareExchange" THEN
+            ELSE IF currentInstr = "OpAtomicCompareExchange" THEN
                 OpAtomicCompareExchange(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicLoad" THEN
-                IF Synchronization = "Collective" THEN 
+            ELSE IF currentInstr = "OpAtomicLoad" THEN
+                IF IsCollectiveInstruction(currentInstr) THEN 
                     OpAtomicLoadCollective(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
-                ELSE IF Synchronization = "Lockstep" THEN 
+                ELSE IF IsSynchronousInstruction(currentInstr) THEN 
                     OpAtomicLoadSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
                 ELSE
                     OpAtomicLoad(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpAtomicStore" THEN
-                IF Synchronization = "Lockstep" THEN 
+            ELSE IF currentInstr = "OpAtomicStore" THEN
+                IF IsCollectiveInstruction(currentInstr) THEN
+                    OpAtomicStoreCollective(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
+                ELSE IF IsSynchronousInstruction(currentInstr) THEN 
                     OpAtomicStoreSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
                 ELSE
                     OpAtomicStore(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpBranch" THEN
-                IF Synchronization = "Branch" THEN 
+            ELSE IF currentInstr = "OpBranch" THEN
+                IF IsCollectiveInstruction(currentInstr) THEN 
                     OpBranchSync(t, ThreadArguments[t][pc[t]][1])
                 ELSE
                     OpBranch(t, ThreadArguments[t][pc[t]][1])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpBranchConditional" THEN
-                IF Synchronization = "Branch" \/ Synchronization = "Lockstep" \/ Synchronization = "Collective" THEN 
+            ELSE IF currentInstr = "OpBranchConditional" THEN
+                IF IsCollectiveInstruction(currentInstr) THEN 
                     OpBranchConditionalSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
                 ELSE
                     OpBranchConditional(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpSwitch" THEN
-                IF Synchronization = "Branch" THEN 
+            ELSE IF currentInstr = "OpSwitch" THEN
+                IF IsCollectiveInstruction(currentInstr) THEN 
                     OpSwitchSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
                 ELSE
                     OpSwitch(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpControlBarrier" THEN
+            ELSE IF currentInstr = "OpControlBarrier" THEN
                 OpControlBarrier(t, ThreadArguments[t][pc[t]][1])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpGroupAll" THEN
+            ELSE IF currentInstr = "OpGroupAll" THEN
                 OpGroupAll(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
-            ELSE IF ThreadInstructions[t][pc[t]] = "OpGroupAny" THEN
+            ELSE IF currentInstr = "OpGroupAny" THEN
                 OpGroupAny(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpGroupNonUniformAll" THEN
                 OpGroupNonUniformAll(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])

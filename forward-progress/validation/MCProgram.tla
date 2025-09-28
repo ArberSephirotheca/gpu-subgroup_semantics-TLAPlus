@@ -271,6 +271,27 @@ MemoryOperationSet == {"OpAtomicLoad", "OpAtomicStore", "OpAtomicIncrement" , "O
 IsMemoryOperation(inst) == 
     inst \in MemoryOperationSet
 
+SubgroupInstructionSet == {"OpGroupAll", "OpGroupAny", "OpGroupNonUniformAll", "OpGroupNonUniformAllEqual", "OpGroupNonUniformAny", "OpGroupNonUniformBroadcast"}
+
+CollectiveInstructionSet ==
+    LET base == SubgroupInstructionSet IN
+        base \cup
+        CASE Synchronization = "Collective" -> MemoryOperationSet \cup BranchInstructionSet
+             [] Synchronization = "Lockstep" -> BranchInstructionSet
+             [] Synchronization = "Branch" -> BranchInstructionSet
+             [] OTHER -> {}
+
+SynchronousInstructionSet ==
+    CASE Synchronization = "Lockstep" -> MemoryOperationSet
+         [] OTHER -> {}
+
+IndependentInstructionSet == InstructionSet \ (CollectiveInstructionSet \cup SynchronousInstructionSet)
+
+IsCollectiveInstruction(instr) == instr \in CollectiveInstructionSet
+
+IsSynchronousInstruction(instr) == instr \in SynchronousInstructionSet
+
+IsIndependentInstruction(instr) == instr \in IndependentInstructionSet
 
 \* order matters so we use sequence instead of set
 \* currentThreadSet is the set of threads that are currently executing the block

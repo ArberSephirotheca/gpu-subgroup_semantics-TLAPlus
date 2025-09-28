@@ -768,18 +768,18 @@ OpAtomicLoadSync(t, result, pointer) ==
         /\ (IsVariable(mangledResult) \/ IsIntermediate(mangledResult))
         /\ IsVariable(mangledPointer)
         /\ VarExists(workGroupId, mangledPointer)
-        /\ IF currentDB.sis[sgIdx][currentPc] = FALSE THEN
+        /\ IF currentDB.sis[workGroupId][sgIdx][currentPc] = FALSE THEN
                 IF ~aligned THEN
                     /\ state' = [state EXCEPT ![t] = "subgroup"]
                     /\ UNCHANGED <<pc, threadLocals, globalVars, DynamicNodeSet, globalCounter, snapShotMap>>
                 ELSE
-                    LET newDBSet == SetSISInDB(DynamicNodeSet, currentDB, sgIdx, currentPc, TRUE)
+                    LET newDBSet == SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, TRUE)
                     IN
                         /\ DynamicNodeSet' = newDBSet
                         /\ UNCHANGED <<pc, state, threadLocals, globalVars, globalCounter, snapShotMap>>
            ELSE
                 LET newDBSet == IF remaining = {}
-                                 THEN SetSISInDB(DynamicNodeSet, currentDB, sgIdx, currentPc, FALSE)
+                                 THEN SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, FALSE)
                                  ELSE DynamicNodeSet
                 IN
                     /\ Assignment(t, assignmentSet)

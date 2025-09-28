@@ -271,21 +271,6 @@ MemoryOperationSet == {"OpAtomicLoad", "OpAtomicStore", "OpAtomicIncrement" , "O
 IsMemoryOperation(inst) == 
     inst \in MemoryOperationSet
 
-MaxInstructionIdx == Len(ThreadInstructions[1])
-
-EmptySIS == [sg \in 1..NumSubgroups |-> [pc \in 1..MaxInstructionIdx |-> FALSE]]
-
-WithSIS(db, sisVal) == [db EXCEPT !.sis = sisVal]
-
-SetSISFlag(db, sg, pc, val) == [db EXCEPT !.sis[sg][pc] = val]
-
-ResetSIS(db) == WithSIS(db, EmptySIS)
-
-SubgroupIndex(tid) == SubgroupId(tid) + 1
-
-ReplaceDB(DBSet, oldDB, newDB) == (DBSet \ {oldDB}) \union {newDB}
-
-SetSISInDB(DBSet, oldDB, sg, pc, val) == ReplaceDB(DBSet, oldDB, SetSISFlag(oldDB, sg, pc, val))
 
 \* order matters so we use sequence instead of set
 \* currentThreadSet is the set of threads that are currently executing the block
@@ -310,11 +295,31 @@ DynamicNode(sis, currentThreadSet, executeSet, notExecuteSet, unknownSet, labelI
 
 
 EntryLabel == Min({idx \in 1..Len(ThreadInstructions[1]) : ThreadInstructions[1][idx] = "OpLabel"})
+MaxInstructionIdx == Len(ThreadInstructions[1])
+
+EmptySIS == [wg \in 1..NumWorkGroups |-> [sg \in 1..NumSubgroups |-> [pc \in 1..MaxInstructionIdx |-> FALSE]]]
+
+WithSIS(db, sisVal) == [db EXCEPT !.sis = sisVal]
+
+SetSISFlag(db, wgid, sg, pc, val) == [db EXCEPT !.sis[wgid][sg][pc] = val]
+
+ResetSIS(db) == WithSIS(db, EmptySIS)
+
+WorkGroupIndex(tid) == WorkGroupId(tid) + 1
+
+SubgroupIndex(tid) == SubgroupId(tid) + 1
+
+ReplaceDB(DBSet, oldDB, newDB) == (DBSet \ {oldDB}) \union {newDB}
+
+SetSISInDB(DBSet, oldDB, wgid, sg, pc, val) == ReplaceDB(DBSet, oldDB, SetSISFlag(oldDB, wgid, sg, pc, val))
+
 (* CFG *)
 
 
 \* Synchronization == "Collective"
 INSTANCE ProgramConf
+
+
 
 (* Inovactions within a tangle are required to execute tangled instruction concurrently, examples or opGroup operations and opControlBarrier  *)
 TangledInstructionSet == {"OpControlBarrier, OpGroupAll", "OpGroupAny", "OpGroupNonUniformAll", "OpGroupNonUniformAllEqual", "OpGroupNonUniformAny", "OpGroupNonUniformBroadcast"}

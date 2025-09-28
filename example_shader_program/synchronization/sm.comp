@@ -2,23 +2,44 @@
 #pragma scheduler(OBE)
 #extension GL_KHR_shader_subgroup_basic : enable
 #extension GL_KHR_memory_scope_semantics : enable
-#extension GL_KHR_shader_subgroup_vote : enable
 
 layout(local_size_x = 2) in;
 layout(tla_subgroup_size = 2) in;
 layout(tla_num_workgroups = 1) in;
-layout(tla_synchronization_id = 3) in;
-
+layout(tla_synchronization_id = 3) in;   // 0=None, 1=SSO, 2=SCF, 3=SM, 4=CM
 
 layout(std430, binding = 0) buffer Partition {
-    uint x;
+    uint slots;
 };
 
 void main() {
-   uint tid = gl_LocalInvocationID.x * 2;
-   uint next_tid = ((tid + 1) % gl_SubgroupSize) * 2;
-   atomicOr(x, 2u << next_tid, 4, 64, 0);
-   atomicAnd(x, 1u << tid, 4, 64, 0);
-   subgroupBarrier();
-   assert(x == 0u);
+    const uint SLOT_WIDTH = 4u;
+    const uint SLOT_MASK  = (1u << SLOT_WIDTH) - 1u;      // 0xF
+    const uint FULL_MASK  = (1u << (SLOT_WIDTH * 2u)) - 1u; // 0xFF (two slots)
+    uint tid        = gl_LocalInvocationID.x;
+    uint firstSlot  = 0u;
+    if (tid == 0u)
+        firstSlot = 0u; // Clear slots at the beginning.
+    else
+        firstSlot = 1u;
+    uint secondSlot = 1u - firstSlot;
+
+    // Store value 1 into firstSlot.
+    uint shift0     = firstSlot * SLOT_WIDTH;
+    uint clearMask0 = FULL_MASK - (SLOT_MASK << shift0);
+    atomicAnd(slots, clearMask0, 4, 64, 0);
+    atomicOr(slots, (1u << shift0), 4, 64, 0);
+
+    // Store value 2 into secondSlot.
+    uint shift1     = secondSlot * SLOT_WIDTH;
+    uint clearMask1 = FULL_MASK - (SLOT_MASK << shift1);
+    atomicAnd(slots, clearMask1, 4, 64, 0);
+    atomicOr(slots, (2u << shift1), 4, 64, 0);
+
+    subgroupBarrier();
+
+    uint xVal = (slots >> (0u * SLOT_WIDTH)) & SLOT_MASK;
+    uint yVal = (slots >> (1u * SLOT_WIDTH)) & SLOT_MASK;
+
+    assert(xVal == 2u && yVal == 2u);
 }

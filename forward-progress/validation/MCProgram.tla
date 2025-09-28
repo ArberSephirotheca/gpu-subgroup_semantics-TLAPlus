@@ -286,8 +286,9 @@ ResetSIS(db) == WithSIS(db, EmptySIS)
 \* executeSet is the set of blocks that have been executed by the threads
 \* currentThreadSet != {} => executeSet != {}
 \* executeSet = {} => currentThreadSet = {}
-DynamicNode(currentThreadSet, executeSet, notExecuteSet, unknownSet, labelIdx, id, mergeStack, children) ==
+DynamicNode(sis, currentThreadSet, executeSet, notExecuteSet, unknownSet, labelIdx, id, mergeStack, children) ==
     [
+        sis |-> sis,
         currentThreadSet |-> currentThreadSet,
         executeSet |-> executeSet,
         notExecuteSet |-> notExecuteSet,
@@ -295,8 +296,7 @@ DynamicNode(currentThreadSet, executeSet, notExecuteSet, unknownSet, labelIdx, i
         labelIdx |-> labelIdx,
         id |-> id,
         mergeStack |-> mergeStack,
-        children |-> children,
-        sis |-> EmptySIS
+        children |-> children
     ]
 
 
@@ -676,7 +676,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
             \* if the constructUpdate is not empty, it means we are exiting a construct, all the dynamic blocks in that construct should be properly updated
             \* remove current thread from all set as it is not partcipating in the construct anymore
             IF DB.labelIdx \in constructUpdate /\ SameMergeStack(DB.mergeStack, currentMergeStack) THEN
-                DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ {t}],
+                DynamicNode(DB.sis,
+                    [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ {t}],
                     [ DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \ {t}],
                     [ DB.notExecuteSet EXCEPT ![wgid] = DB.notExecuteSet[wgid] \ {t}],
                     [ DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ {t}],
@@ -693,7 +694,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
                     DB.children)
             \* if encounter current dynamic block
             ELSE IF DB.labelIdx = currentDB.labelIdx /\ DB.id = currentDB.id THEN
-                DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ {t}],
+                DynamicNode(DB.sis,
+                    [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ {t}],
                     DB.executeSet,
                     DB.notExecuteSet,
                     DB.unknownSet,
@@ -707,7 +709,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
             ELSE IF DB.labelIdx = chosenBranchIdx 
                     /\ \E child \in updatedChildren: child.blockIdx = DB.labelIdx /\ child.counter = DB.id
             THEN
-                DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union {t}],
+                DynamicNode(DB.sis,
+                    [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union {t}],
                     [DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \union {t}],
                     DB.notExecuteSet,
                     [DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ {t}],
@@ -720,9 +723,10 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
             ELSE IF DB.labelIdx \in falseLabelIdxSet
                 /\ IsMergeBlock(DB.labelIdx) = FALSE
                 /\ \E child \in updatedChildren: child.blockIdx = DB.labelIdx /\ child.counter = DB.id
-            
+           
             THEN
-                DynamicNode(DB.currentThreadSet,
+                DynamicNode(DB.sis,
+                    DB.currentThreadSet,
                     DB.executeSet,
                     [DB.notExecuteSet EXCEPT ![wgid] = DB.notExecuteSet[wgid] \union {t}],
                     [DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ {t}],
@@ -745,7 +749,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
             ELSE
                 \* zheyuan: is this even possible to happen? constructUpdate is non-empty only if we choose to exit the construct, try to test it
                 IF chosenBranchIdx \in constructUpdate THEN
-                    {DynamicNode([wg \in 1..NumWorkGroups |-> {}],
+                    {DynamicNode(EmptySIS,
+                                [wg \in 1..NumWorkGroups |-> {}],
                                 [wg \in 1..NumWorkGroups |-> {}],
                                 [wg \in 1..NumWorkGroups |-> {}],
                                 [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN unionSet[wgid] \ {t}  ELSE unionSet[wg]],
@@ -759,7 +764,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
                 \* if the choosen block is a merge block , we need to pop the merge stack of current DB.
                 ELSE IF IsMergeBlock(chosenBranchIdx) THEN 
                     {
-                        DynamicNode([wg \in 1..NumWorkGroups |-> IF wg = wgid THEN {t} ELSE {}],
+                        DynamicNode(EmptySIS,
+                                    [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN {t} ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN {t} ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> {}],
                                     \* [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN ThreadsWithinWorkGroupNonTerminated(wgid-1) \ {t}  ELSE ThreadsWithinWorkGroupNonTerminated(wg-1)],
@@ -774,7 +780,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
                     }
                 ELSE
                     {
-                        DynamicNode([wg \in 1..NumWorkGroups |-> IF wg = wgid THEN {t} ELSE {}],
+                        DynamicNode(EmptySIS,
+                                    [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN {t} ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN {t} ELSE {}],
                                     \* [wg \in 1..NumWorkGroups |-> DB.notExecuteSet[wg]],
                                     [wg \in 1..NumWorkGroups |-> {}],
@@ -793,7 +800,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
         {   
             \* thread is exiting the construct, we also need to create a new dynamic block for false label and remove current thread from all sets of new block.
             IF falselabelIdx \in constructUpdate THEN 
-                DynamicNode([wg \in 1..NumWorkGroups |-> {}],
+                DynamicNode(EmptySIS,
+                            [wg \in 1..NumWorkGroups |-> {}],
                             [wg \in 1..NumWorkGroups |-> {}],
                             [wg \in 1..NumWorkGroups |-> {}],
                             [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN unionSet[wgid] \ {t}  ELSE unionSet[wg]],
@@ -805,7 +813,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
                             {})
             \* if new false branch is merge block, we need to pop the merge stack of current DB.
             ELSE IF IsMergeBlock(falselabelIdx) = TRUE THEN 
-                DynamicNode([wg \in 1..NumWorkGroups |-> {}], \* currently no thread is executing the false block
+                DynamicNode(EmptySIS,
+                            [wg \in 1..NumWorkGroups |-> {}], \* currently no thread is executing the false block
                             [wg \in 1..NumWorkGroups |-> {}], \* currently no thread has executed the false block
                             \* We don't know if the threads executed in precedessor DB will execute the block or not
                             [wg \in 1..NumWorkGroups |-> {}],
@@ -819,7 +828,8 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
                             PopUntilBlock(updatedMergeStack, falselabelIdx),
                             {})
             ELSE 
-                DynamicNode([wg \in 1..NumWorkGroups |-> {}], \* currently no thread is executing the false block
+                DynamicNode(EmptySIS,
+                            [wg \in 1..NumWorkGroups |-> {}], \* currently no thread is executing the false block
                             [wg \in 1..NumWorkGroups |-> {}], \* currently no thread has executed the false block
                             \* current thread is not executed in the false block, but we don't know if the threads executed in precedessor DB will execute the block or not
                             [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN {t} ELSE {}],
@@ -937,7 +947,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
         {
             \* if the constructUpdate is not empty for true branch, remove true threads from construct blocks
             IF DB.labelIdx \in constructUpdateTrue /\ SameMergeStack(DB.mergeStack, currentMergeStack) THEN
-                DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ trueThreads],
+                DynamicNode(DB.sis,
+                    [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ trueThreads],
                     [ DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \ trueThreads],
                     [ DB.notExecuteSet EXCEPT ![wgid] = DB.notExecuteSet[wgid] \ trueThreads],
                     [ DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ trueThreads],
@@ -953,7 +964,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                         DB.children)
             \* if the constructUpdate is not empty for false branch, remove false threads from construct blocks
             ELSE IF DB.labelIdx \in constructUpdateFalse /\ SameMergeStack(DB.mergeStack, currentMergeStack) THEN
-                DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ falseThreads],
+                DynamicNode(DB.sis,
+                    [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ falseThreads],
                     [ DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \ falseThreads],
                     [ DB.notExecuteSet EXCEPT ![wgid] = DB.notExecuteSet[wgid] \ falseThreads],
                     [ DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ falseThreads],
@@ -969,7 +981,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                         DB.children)
             \* if encounter current dynamic block, remove all active threads
             ELSE IF DB.labelIdx = currentDB.labelIdx /\ DB.id = currentDB.id THEN
-                DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ active_subgroup_threads],
+                DynamicNode(DB.sis,
+                    [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ active_subgroup_threads],
                     [DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \ active_subgroup_threads],
                     [DB.notExecuteSet EXCEPT ![wgid] = DB.notExecuteSet[wgid] \ active_subgroup_threads],
                     [DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ active_subgroup_threads],
@@ -983,7 +996,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                     /\ \E child \in updatedChildren: child.blockIdx = DB.labelIdx /\ child.counter = DB.id
             THEN
                 IF IsMergeBlock(trueLabelVal) THEN
-                    DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union trueThreads],
+                    DynamicNode(DB.sis,
+                        [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union trueThreads],
                         [DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \union trueThreads],
                         DB.notExecuteSet,
                         [DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ trueThreads],
@@ -992,7 +1006,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                         DB.mergeStack,
                         DB.children)
                 ELSE
-                    DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union trueThreads],
+                    DynamicNode(DB.sis,
+                        [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union trueThreads],
                         [DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \union trueThreads],
                         [DB.notExecuteSet EXCEPT ![wgid] = DB.notExecuteSet[wgid] \union falseThreads],
                         [DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ active_subgroup_threads],
@@ -1006,7 +1021,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                     /\ \E child \in updatedChildren: child.blockIdx = DB.labelIdx /\ child.counter = DB.id
             THEN
                 IF IsMergeBlock(falseLabelVal) THEN
-                    DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union falseThreads],
+                    DynamicNode(DB.sis,
+                        [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union falseThreads],
                         [DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \union falseThreads],
                         DB.notExecuteSet,
                         [DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ falseThreads],
@@ -1015,7 +1031,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                         DB.mergeStack,
                         DB.children)
                 ELSE
-                    DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union falseThreads],
+                    DynamicNode(DB.sis,
+                        [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \union falseThreads],
                         [DB.executeSet EXCEPT ![wgid] = DB.executeSet[wgid] \union falseThreads],
                         [DB.notExecuteSet EXCEPT ![wgid] = DB.notExecuteSet[wgid] \union trueThreads],
                         [DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ active_subgroup_threads],
@@ -1038,7 +1055,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
             ELSE
                 \* Check if true branch is exiting a construct
                 IF trueLabelVal \in constructUpdateTrue THEN
-                    {DynamicNode([wg \in 1..NumWorkGroups |-> {}],
+                    {DynamicNode(EmptySIS,
+                                [wg \in 1..NumWorkGroups |-> {}],
                                 [wg \in 1..NumWorkGroups |-> {}],
                                 [wg \in 1..NumWorkGroups |-> {}],
                                 [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN unionSet[wgid] \ active_subgroup_threads ELSE unionSet[wg]],
@@ -1052,7 +1070,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                 \* Check if true branch is a merge block 
                 ELSE IF IsMergeBlock(trueLabelVal) THEN 
                     {
-                        DynamicNode([wg \in 1..NumWorkGroups |-> IF wg = wgid THEN trueThreads ELSE {}],
+                        DynamicNode(EmptySIS,
+                                    [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN trueThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN trueThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> {}],
                                     \* [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN unionSet[wgid] \ active_subgroup_threads ELSE unionSet[wg]],
@@ -1068,7 +1087,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                 \* Default case for regular blocks
                 ELSE
                     {
-                        DynamicNode([wg \in 1..NumWorkGroups |-> IF wg = wgid THEN trueThreads ELSE {}],
+                        DynamicNode(EmptySIS,
+                                    [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN trueThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN trueThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN falseThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN unionSet[wgid] \ active_subgroup_threads ELSE unionSet[wg]],
@@ -1091,7 +1111,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
             ELSE
                 \* Check if false branch is exiting a construct
                 IF falseLabelVal \in constructUpdateFalse THEN
-                    {DynamicNode([wg \in 1..NumWorkGroups |-> {}],
+                    {DynamicNode(EmptySIS,
+                                [wg \in 1..NumWorkGroups |-> {}],
                                 [wg \in 1..NumWorkGroups |-> {}],
                                 [wg \in 1..NumWorkGroups |-> {}],
                                 \* [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN unionSet[wgid] \ active_subgroup_threads ELSE unionSet[wg]],
@@ -1106,7 +1127,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                 \* Check if false branch is a merge block 
                 ELSE IF IsMergeBlock(falseLabelVal) THEN 
                     {
-                        DynamicNode([wg \in 1..NumWorkGroups |-> IF wg = wgid THEN falseThreads ELSE {}],
+                        DynamicNode(EmptySIS,
+                                    [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN falseThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN falseThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> {}],
                                     \* [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN unionSet[wgid] \ active_subgroup_threads ELSE unionSet[wg]],
@@ -1122,7 +1144,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
                 \* Default case for regular blocks
                 ELSE
                     {
-                        DynamicNode([wg \in 1..NumWorkGroups |-> IF wg = wgid THEN falseThreads ELSE {}],
+                        DynamicNode(EmptySIS,
+                                    [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN falseThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN falseThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN trueThreads ELSE {}],
                                     [wg \in 1..NumWorkGroups |-> IF wg = wgid THEN unionSet[wgid] \ active_subgroup_threads ELSE unionSet[wg]],
@@ -1139,7 +1162,8 @@ BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet
 
 TerminateUpdate(wgid, t) ==
     {
-        DynamicNode([DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ {t}],
+        DynamicNode(DB.sis,
+            [DB.currentThreadSet EXCEPT ![wgid] = DB.currentThreadSet[wgid] \ {t}],
             DB.executeSet,
             DB.notExecuteSet,
             [DB.unknownSet EXCEPT ![wgid] = DB.unknownSet[wgid] \ {t}],
@@ -1178,4 +1202,3 @@ UniquelabelIdxuence ==
     \A DB1, DB2 \in DynamicNodeSet:
         DB1.labelIdx = DB2.labelIdx => DB1 = DB2
 ====
-

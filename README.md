@@ -51,11 +51,10 @@ Select the SIMT-Step model with:
 ```glsl
 layout(tla_synchronization_id = <id>) in;
 ```
-`0` → None, `1` → SSO, `2` → SCF, `3` → SM, `4` → CM.
+`1` → SSO, `2` → SCF, `3` → SM, `4` → CM.
 
 | `id` | Label | Collective instructions | Synchronous instructions | Independent instructions |
 |------|-------|------------------------|--------------------------|--------------------------|
-| 0    | None  | Subgroup ops (`OpGroup*`) | — | All remaining instructions |
 | 1    | SSO   | Subgroup ops (`OpGroup*`) | — | All remaining instructions |
 | 2    | SCF   | Subgroup ops + control flow | — | Others |
 | 3    | SM    | Subgroup ops + control flow | `OpAtomicLoad`, `OpAtomicStore`, `OpAtomicOr` | Others |

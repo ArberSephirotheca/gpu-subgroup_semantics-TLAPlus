@@ -93,7 +93,6 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
     # perform the necessary index computation to update SSBO for "round robin" saturation
     if saturation_level == 1:
         total_threads = workgroups * threads_per_workgroup
-        # zheyuan: maybe add a check to ensure that total_threads is divisible by num_testing_subgroups
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         total_subgroups = workgroups * num_subgroup_per_workgroup
         output.write("\n")

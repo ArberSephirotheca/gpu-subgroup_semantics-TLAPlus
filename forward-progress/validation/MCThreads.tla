@@ -2,7 +2,6 @@
 LOCAL INSTANCE Integers
 LOCAL INSTANCE Naturals
 LOCAL INSTANCE Sequences
-\* LOCAL INSTANCE MCLayout
 LOCAL INSTANCE TLC
 VARIABLES pc, state, threadLocals, globalVars, DynamicNodeSet, globalCounter, snapShotMap
 
@@ -10,7 +9,6 @@ VARIABLES pc, state, threadLocals, globalVars, DynamicNodeSet, globalCounter, sn
 INSTANCE  MCProgram
 
 ThreadState == {"ready", "workgroup", "subgroup", "terminated"}
-(* Thread variables and functions start here *)
 threadVars == <<pc, state>>
 
 InitThreadVars ==
@@ -21,7 +19,7 @@ InitThreadVars ==
 InitThreads == 
     /\  InitThreadVars
 
-newSnapShot(localPc, localState, localThreadLocals, localGlobalVars, (* dynamicNode,*) dynamicNodeSet, localCounter) ==
+newSnapShot(localPc, localState, localThreadLocals, localGlobalVars, dynamicNodeSet, localCounter) ==
     [
         pc |-> localPc,
         state |-> localState,
@@ -34,18 +32,12 @@ newSnapShot(localPc, localState, localThreadLocals, localGlobalVars, (* dynamicN
 
 RemoveId(dynamicNode) == [dynamicNode EXCEPT !.id = 0, !.mergeStack = <<>>, !.children = {}, !.sis = EmptySIS]
 
-\* default that has no meaningful value
-\* InitSnapShotMap ==
-\*     LET newDBIds == {db.labelIdx : db \in DynamicNodeSet} IN
-\*         snapShotMap = [ id \in newDBIds |-> newSnapShot(<<>>, <<>>, <<>>, {})]
+
 
 InitSnapShotMap ==
-     LET newDBIds == {db.labelIdx : db \in DynamicNodeSet} IN
-         snapShotMap = { newSnapShot(<<>>, <<>>, <<>>, {}, (*RemoveId(db),*) DynamicNodeSet, 1) : db \in DynamicNodeSet}
+    LET newDBIds == {db.labelIdx : db \in DynamicNodeSet} IN
+         snapShotMap = { newSnapShot(<<>>, <<>>, <<>>, {}, DynamicNodeSet, 1) : db \in DynamicNodeSet}
 
-\* ThreadsWithinWorkGroup(wgid) ==  {tid \in Threads : WorkGroupId(tid) = wgid}
-
-\* ThreadsWithinSubgroup(sid, wgid) == {tid \in Threads : SubgroupId(tid) = sid} \intersect ThreadsWithinWorkGroup(wgid)
 
 LowestPcWithinSubgroup(sid, wgid) == Min({pc[tid]: tid \in ThreadsWithinSubgroup(sid, wgid)})
 
@@ -64,25 +56,6 @@ cleanIntermediateVar(t) ==
  UpdateState(tid, State) ==
      /\  state' = [state EXCEPT ![tid] = State]
     
-\* Update the state of the thread when there is an update in the tangle, especially if a thread is removed from the tangle
-\* This function tries to update the state of the thread to "ready" if it is waiting at tangled instruction and all threads within the subgroup have reached the same block
-\* within the tangle are having the same pc number. Otherwise, it keeps the state as it is.
-\* StateUpdate(wgid, t, newBlocks) ==
-\*     [thread \in Threads |-> 
-\*         IF \E i \in 1..Len(newBlocks) : 
-\*             /\ state[thread] # "terminated"
-\*             /\ state[thread] # "ready"
-\*             /\ thread \in newBlocks[i].tangle[wgid] 
-\*             /\ \A tid \in newBlocks[i].tangle[wgid] : pc[tid] = pc[thread] /\ ThreadInstructions[1][pc[tid]] \in TangledInstructionSet /\ state[tid] = state[thread]
-\*         THEN 
-\*             "ready"
-\*         ELSE
-\*             state[thread]
-\*     ]
-
-\* Update the state of the thread when there is an update in the tangle, especially if a thread is removed from the tangle
-\* This function tries to update the state of the thread to "ready" if it is waiting at tangled instruction and all threads within the subgroup have reached the same block
-\* within the tangle are having the same pc number. Otherwise, it keeps the state as it is.
 StateUpdate(wgid, t, newDBSet) ==
     [thread \in Threads |-> 
         IF \E DB \in newDBSet :
@@ -97,11 +70,6 @@ StateUpdate(wgid, t, newDBSet) ==
             state[thread]
     ]
 
-\* InsertMultipleSnapShots(map, snapshots) ==
-\*     [blockIdx \in DOMAIN map \cup DOMAIN snapshots |-> 
-\*         IF blockIdx \in DOMAIN snapshots 
-\*         THEN snapshots[blockIdx] 
-\*         ELSE map[blockIdx]]
 
 Basic(s) ==
   [ pc           |-> s.pc,
@@ -113,23 +81,10 @@ Basic(s) ==
 InsertMultipleSnapShots(map, snapshots) ==
     map \cup snapshots
 
-\* InsertMultipleSnapShots(map, snapshots) ==
-\*     map \union {ns \in snapShotMap: ~\E s \in map: Basic(s) = Basic(ns)}
-
-
-\* SnapShotUpdate(newDBSet, newState, t, localPc) ==
-\*         \* get set of newly created DBs
-\*         LET newDBs == newDBSet \ DynamicNodeSet
-\*             newDBIds == {db.labelIdx : db \in newDBs}
-\*             snapShots == [id \in newDBIds |-> newSnapShot(localPc, newState, threadLocals, globalVars)]
-\*         IN
-\*             InsertMultipleSnapShots(snapShotMap, snapShots)
-
 SnapShotUpdate(newDBSet, newState, t, localPc, newCounter) ==
-        \* get set of newly created DBs
         LET newDBs == newDBSet \ DynamicNodeSet
             newDBIds == {db.labelIdx : db \in newDBs}
-            snapShots == {newSnapShot(localPc, newState, threadLocals, globalVars,(* RemoveId(db),*) newDBSet, newCounter)}
+            snapShots == {newSnapShot(localPc, newState, threadLocals, globalVars, newDBSet, newCounter)}
         IN
             InsertMultipleSnapShots(snapShotMap, snapShots)
 
@@ -142,37 +97,11 @@ StateUpdateSubgroup(wgid, active_subgroup_threads, newDBSet) ==
     ]
 
 SnapShotUpdateSubgroup(newDBSet, newState, active_subgroup_threads, localPc, newCounter) ==
-        \* get set of newly created DBs
         LET newDBs == newDBSet \ DynamicNodeSet
             newDBIds == {db.labelIdx : db \in newDBs}
             snapShots == {newSnapShot(localPc, newState, threadLocals, globalVars, newDBSet, newCounter)}
         IN
             InsertMultipleSnapShots(snapShotMap, snapShots)
-
-\* MeaningfulUpdate(newSnapShotMap, oldSnapShotMap) ==
-\*     /\ \E blockIdx \in DOMAIN newSnapShotMap : oldSnapShotMap[blockIdx] /= newSnapShotMap[blockIdx]
-
-\* MeaningfulUpdate(localPc, newState, oldSnapShotMap, newDBSet) ==
-\*     \A db \in newDBSet \ DynamicNodeSet:
-\*         IF \E snapshot \in oldSnapShotMap : 
-\*             /\ snapshot["pc"] = localPc
-\*             /\ snapshot["state"] = newState
-\*             /\ snapshot["threadLocals"] = threadLocals
-\*             /\ snapshot["globalVars"] = globalVars
-\*             /\ snapshot["dynamicNode"] = RemoveId(db)
-\*         THEN 
-\*             FALSE
-\*         ELSE
-
-\* MeaningfulUpdate(localPc, newState, oldSnapShotMap, newDBSet) ==
-\*         { db \in (newDBSet \ DynamicNodeSet) :
-\*             \E snapshot \in oldSnapShotMap :
-\*                 /\ snapshot["pc"] = localPc
-\*                 /\ snapshot["state"] = newState
-\*                 /\ snapshot["threadLocals"] = threadLocals
-\*                 /\ snapshot["globalVars"] = globalVars
-\*                 /\ snapshot["dynamicNode"] = RemoveId(db)
-\*         }
 
 MeaningfulUpdate(localPc, newState, oldSnapShotMap, newDBSet) ==
     LET newDBs == newDBSet \ DynamicNodeSet
@@ -193,20 +122,6 @@ GetBackState(localPc, newState, oldSnapShotMap, newDBSet) ==
         /\ snapshot["dynamicNode"] = RemoveId(CHOOSE db \in (newDBSet \ DynamicNodeSet): TRUE)
 
     
-\* StateUpdate(wgid, t, newBlocks) ==
-\*     {thread \in Threads:
-\*         IF \E i \in 1..Len(newBlocks.node) : 
-\*             /\ thread \in newBlocks.node[i].tangle[wgid] 
-\*             /\ \A tid \in newBlocks.node[i].tangle[wgid] : pc[tid] = pc[thread] /\ ThreadInstructions[1][pc[tid]] \in TangledInstructionSet /\ state[tid] = state[thread]
-\*             /\ state[thread] # "terminated" 
-\*             /\ state[thread] # "ready"
-\*         THEN 
-\*             TRUE
-\*         ELSE
-\*             FALSE
-\*     }
-
-
 
 \* https://en.wikipedia.org/wiki/Bitwise_operation#Mathematical_equivalents
 RECURSIVE And(_,_,_,_)
@@ -1131,7 +1046,6 @@ OpControlBarrier(t, scope) ==
 
 
 
-\* zheyuan: add assertion to check if the all threads within subgroup converge at current block because it is UB if not
 OpGroupAll(t, result, scope, predicate) ==
     LET mangledResult == Mangle(t, result)
     IN
@@ -1624,30 +1538,6 @@ OpAtomicCompareExchange(t, result, pointer, value, comparator) ==
         /\  UNCHANGED <<state,  DynamicNodeSet, globalCounter, snapShotMap>>
 
 
-(* zheyuan chen: invocation is escaped from reconvergence if: 
-1. The invocation executes OpTerminateInvocation or OpKill.
-2. The last non-demoted, non-terminated invocation in the invocation's quad executes OpDemoteToHelperInvocation, OpTerminateInvocation, or OpKill.
-3. The invocation executes OpReturn or OpReturnValue. Escaping in this manner only affects relations in the current function.
-4. Executing OpBranch or OpBranchConditional causes an invocation to branch to the Merge Block or Continue Target for a merge instruction instance that strictly dominates I.
-*)
-\* Block with OpBranch as termination instruction is not part of construct
-\* Hence, we do not need to update the Blocks and state
-\* OpBranch(t, label) ==
-\*     /\  LET curBlock == FindCurrentBlock( pc[t])
-\*             targetBlock == FindBlockbyOpLabelIdx( GetVal(-1, label))
-\*             labelVal == GetVal(-1, label)
-\*             workGroupId == WorkGroupId(t)+1
-\*         IN
-\*             LET newBlocks == BranchUpdate(workGroupId, t, curBlock, curBlock.tangle[workGroupId], {labelVal}, labelVal)
-\*                 newState == StateUpdate(workGroupId, t, newBlocks)
-\*                 newDBSet == BranchUpdateDynamicExecutionGraph(workGroupId, t, {labelVal}, labelVal)
-\*             IN 
-\*                 /\  Blocks' = newBlocks
-\*                 /\  state' = newState  
-\*                 /\  DynamicNodeSet' = newDBSet 
-\*     /\ pc' = [pc EXCEPT ![t] = GetVal(-1, label)]
-\*     /\  UNCHANGED <<threadLocals, globalVars>>
-
 OpBranchSync(t, label) == 
 /\  LET workGroupId == WorkGroupId(t) + 1
         sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
@@ -1741,7 +1631,6 @@ OpBranchConditionalSync(t, condition, trueLabel, falseLabel) ==
                         \* Evaluate condition for each thread in the active subgroup
                         trueThreads == {thread \in active_subgroup_threads : EvalExpr(thread, WorkGroupId(thread)+1, condition) = TRUE}
                         falseThreads == active_subgroup_threads \ trueThreads
-                        \* Update program counter for all threads based on their condition evaluation
                         newPc == [thread \in Threads |-> 
                             IF thread \in trueThreads THEN 
                                 trueLabelVal
@@ -1774,7 +1663,6 @@ OpBranchConditionalSync(t, condition, trueLabel, falseLabel) ==
                 /\  UNCHANGED <<threadLocals, globalVars>>
 
 
-(* condition is an expression, trueLabel and falseLabel are integer representing pc *)
 OpBranchConditional(t, condition, trueLabel, falseLabel) ==
     /\  IsLiteral(trueLabel)
     /\  IsLiteral(falseLabel)
@@ -1907,9 +1795,6 @@ OpSwitchSync(t, selector, default, literals, ids) ==
             /\  UNCHANGED <<threadLocals, globalVars>>
 
 
-\* zheyuan: need more tests
-\* need to update it
-\* make the false label sets to be the block that is post domianted by the choosen label
 OpSwitch(t, selector, default, literals, ids) ==
     /\  LET defaultVal == GetVal(-1, default)
             literalsVal == [idx \in 1..Len(literals) |-> GetVal(-1, literals[idx])]
@@ -1979,14 +1864,9 @@ OpLabel(t, label) ==
 (* structured loop, must immediately precede block termination instruction, which means it must be second-to-last instruction in its block *)
 OpLoopMerge(t, mergeLabel, continueTarget) ==
     \* because the merge instruction must be the second to last instruction in the block, we can find the currren block by looking at the termination instruction
-    \* /\  LET workGroupId == WorkGroupId(t) + 1
-    \*         newDBSet == LoopMergeUpdate(workGroupId, t, FindCurrentBlock(Blocks, pc[t]).opLabelIdx, mergeLabel)
-    \*     IN
-    \*         /\  DynamicNodeSet' = newDBSet
     /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
     /\  UNCHANGED <<state, threadLocals, globalVars, DynamicNodeSet, globalCounter, snapShotMap>>
 
-(* structured switch/if, must immediately precede block termination instruction, which means it must be second-to-last instruction in its block  *)
 OpSelectionMerge(t, mergeLabel) ==
     \* because the merge instruction must be the second to last instruction in the block, we can find the currren block by looking at the termination instruction
     /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]

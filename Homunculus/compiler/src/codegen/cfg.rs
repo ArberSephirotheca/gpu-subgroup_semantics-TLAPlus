@@ -481,7 +481,6 @@ impl CFG {
     fn identify_loop_construct(&mut self, header: u32, merge_block: u32, continue_target: u32) {
         let mut loop_blocks = HashSet::new();
 
-        // zheyuan: for now we are not considering explicit continue instruction, so the back edge block is the continue target
         if let Some(dominated_blocks) = self.dominated.get(&header) {
             for &block in dominated_blocks {
                 if !self

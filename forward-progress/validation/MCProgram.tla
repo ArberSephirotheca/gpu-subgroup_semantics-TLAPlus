@@ -273,11 +273,11 @@ IsMemoryOperation(inst) ==
 
 MaxInstructionIdx == Len(ThreadInstructions[1])
 
-EmptySIS == [pc \in 1..MaxInstructionIdx |-> FALSE]
+EmptySIS == [sg \in 1..NumSubgroups |-> [pc \in 1..MaxInstructionIdx |-> FALSE]]
 
 WithSIS(db, sisVal) == [db EXCEPT !.sis = sisVal]
 
-SetSISFlag(db, pc, val) == [db EXCEPT !.sis[pc] = val]
+SetSISFlag(db, sg, pc, val) == [db EXCEPT !.sis[sg][pc] = val]
 
 ResetSIS(db) == WithSIS(db, EmptySIS)
 

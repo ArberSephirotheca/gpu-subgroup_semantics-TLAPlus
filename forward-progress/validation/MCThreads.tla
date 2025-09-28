@@ -441,7 +441,7 @@ OpAtomicOrSync(t, var, pointer, value) ==
                     LET newDBSet == SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, TRUE)
                     IN
                         /\ DynamicNodeSet' = newDBSet
-                        /\ UNCHANGED <<pc, state, globalCounter, snapShotMap>>
+                        /\ UNCHANGED <<pc, state, threadLocals, globalVars, globalCounter, snapShotMap>>
            ELSE
                 LET newDBSet == IF remaining = {}
                                  THEN SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, FALSE)
@@ -451,7 +451,7 @@ OpAtomicOrSync(t, var, pointer, value) ==
                     /\ pc' = [pc EXCEPT ![t] = pc[t] + 1]
                     /\ DynamicNodeSet' = newDBSet
                     /\ state' = [state EXCEPT ![t] = "ready"]
-                    /\ UNCHANGED <<globalCounter, snapShotMap>>
+                    /\ UNCHANGED <<threadLocals, globalVars, globalCounter, snapShotMap>>
 
 
 OpAtomicAnd(t, var, pointer, value) ==
@@ -789,7 +789,7 @@ OpAtomicLoadSync(t, result, pointer) ==
                     /\ pc' = [pc EXCEPT ![t] = pc[t] + 1]
                     /\ DynamicNodeSet' = newDBSet
                     /\ state' = [state EXCEPT ![t] = "ready"]
-                    /\ UNCHANGED <<globalCounter, snapShotMap>>
+                    /\ UNCHANGED <<threadLocals, globalVars, globalCounter, snapShotMap>>
 
 
 \* It does not handle the situation where result is an index to array

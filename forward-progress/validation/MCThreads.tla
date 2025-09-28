@@ -134,14 +134,8 @@ SnapShotUpdate(newDBSet, newState, t, localPc, newCounter) ==
             InsertMultipleSnapShots(snapShotMap, snapShots)
 
 StateUpdateSubgroup(wgid, active_subgroup_threads, newDBSet) ==
-    [thread \in Threads |-> 
-        IF \E DB \in newDBSet :
-            /\ state[thread] # "terminated"
-            /\ state[thread] # "ready"
-            /\ thread \in DB.currentThreadSet[wgid]
-            /\ \A tid \in DB.currentThreadSet[wgid] : pc[tid] = pc[thread] (* /\ ThreadInstructions[1][pc[tid]] \in TangledInstructionSet *) /\ state[tid] = state[thread]
-            \* /\ (DB.unknownSet[wgid] = {} \/ )
-        THEN 
+    [thread \in Threads |->
+        IF thread \in active_subgroup_threads THEN
             "ready"
         ELSE
             state[thread]
@@ -441,7 +435,8 @@ OpAtomicOrSync(t, var, pointer, value) ==
                     LET newDBSet == SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, TRUE)
                     IN
                         /\ DynamicNodeSet' = newDBSet
-                        /\ UNCHANGED <<pc, state, threadLocals, globalVars, globalCounter, snapShotMap>>
+                        /\ state' = StateUpdateSubgroup(workGroupId, active_subgroup_threads, newDBSet)
+                        /\ UNCHANGED <<pc, threadLocals, globalVars, globalCounter, snapShotMap>>
            ELSE
                 LET newDBSet == IF remaining = {}
                                  THEN SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, FALSE)
@@ -451,7 +446,7 @@ OpAtomicOrSync(t, var, pointer, value) ==
                     /\ pc' = [pc EXCEPT ![t] = pc[t] + 1]
                     /\ DynamicNodeSet' = newDBSet
                     /\ state' = [state EXCEPT ![t] = "ready"]
-                    /\ UNCHANGED <<threadLocals, globalVars, globalCounter, snapShotMap>>
+                    /\ UNCHANGED <<globalCounter, snapShotMap>>
 
 
 OpAtomicAnd(t, var, pointer, value) ==
@@ -779,7 +774,8 @@ OpAtomicLoadSync(t, result, pointer) ==
                     LET newDBSet == SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, TRUE)
                     IN
                         /\ DynamicNodeSet' = newDBSet
-                        /\ UNCHANGED <<pc, state, threadLocals, globalVars, globalCounter, snapShotMap>>
+                        /\ state' = StateUpdateSubgroup(workGroupId, active_subgroup_threads, newDBSet)
+                        /\ UNCHANGED <<pc, threadLocals, globalVars, globalCounter, snapShotMap>>
            ELSE
                 LET newDBSet == IF remaining = {}
                                  THEN SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, FALSE)
@@ -789,7 +785,7 @@ OpAtomicLoadSync(t, result, pointer) ==
                     /\ pc' = [pc EXCEPT ![t] = pc[t] + 1]
                     /\ DynamicNodeSet' = newDBSet
                     /\ state' = [state EXCEPT ![t] = "ready"]
-                    /\ UNCHANGED <<threadLocals, globalVars, globalCounter, snapShotMap>>
+                    /\ UNCHANGED <<globalCounter, snapShotMap>>
 
 
 \* It does not handle the situation where result is an index to array
@@ -955,7 +951,8 @@ OpAtomicStoreSync(t, pointer, value) ==
                     LET newDBSet == SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, TRUE)
                     IN
                         /\ DynamicNodeSet' = newDBSet
-                        /\ UNCHANGED <<pc, state, threadLocals, globalVars, globalCounter, snapShotMap>>
+                        /\ state' = StateUpdateSubgroup(workGroupId, active_subgroup_threads, newDBSet)
+                        /\ UNCHANGED <<pc, threadLocals, globalVars, globalCounter, snapShotMap>>
            ELSE
                 LET newDBSet == IF remaining = {}
                                  THEN SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, FALSE)

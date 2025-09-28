@@ -281,6 +281,12 @@ SetSISFlag(db, sg, pc, val) == [db EXCEPT !.sis[sg][pc] = val]
 
 ResetSIS(db) == WithSIS(db, EmptySIS)
 
+SubgroupIndex(tid) == SubgroupId(tid) + 1
+
+ReplaceDB(DBSet, oldDB, newDB) == (DBSet \ {oldDB}) \union {newDB}
+
+SetSISInDB(DBSet, oldDB, sg, pc, val) == ReplaceDB(DBSet, oldDB, SetSISFlag(oldDB, sg, pc, val))
+
 \* order matters so we use sequence instead of set
 \* currentThreadSet is the set of threads that are currently executing the block
 \* executeSet is the set of blocks that have been executed by the threads

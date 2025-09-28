@@ -416,39 +416,42 @@ OpAtomicOrSync(t, var, pointer, value) ==
     LET mangledVar == Mangle(t, var)
         mangledPointer == Mangle(t, pointer)
         mangledValue == Mangle(t, value)
+        workGroupId == WorkGroupId(t) + 1
+        sgIdx == SubgroupIndex(t)
+        currentPc == pc[t]
+        sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+        currentDB == CurrentDynamicNode(workGroupId, t)
+        active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+        unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+        aligned == unknown_subgroup_threads = {} /\ \A sthread \in active_subgroup_threads: pc[sthread] = currentPc
+        pointerVal == GetVal(workGroupId, mangledPointer)
+        valueVal == GetVal(workGroupId, mangledValue)
+        assignmentSet == {Var(mangledVar.scope, mangledVar.name, pointerVal, Index(-1)),
+                          Var(mangledPointer.scope, mangledPointer.name, pointerVal | valueVal, Index(-1))}
+        remaining == {sthread \in active_subgroup_threads : sthread # t /\ pc[sthread] = currentPc}
     IN
-        LET workGroupId == WorkGroupId(t) + 1
-            sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
-            currentDB == CurrentDynamicNode(workGroupId, t)
-            active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
-            unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
-            pointerVar == GetVar(WorkGroupId(t)+1, mangledPointer)
-            pointerVal == GetVal(WorkGroupId(t)+1, mangledPointer)
-            valueVar == GetVar(WorkGroupId(t)+1, mangledValue)
-            valueVal == GetVal(WorkGroupId(t)+1, mangledValue)
-                    \* evaluatedPointerIndex == EvalExpr(t, WorkGroupId(t)+1, pointer.index)
-                    \* evaluatedResultIndex == EvalExpr(t, WorkGroupId(t)+1, result.index)
-        IN
-            /\
-                IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] < pc[t] THEN
-                    /\  state' = [state EXCEPT ![t] = "subgroup"]
-                    /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+        /\ (IsVariable(mangledVar) \/ IsIntermediate(mangledVar))
+        /\ IsVariable(mangledPointer)
+        /\ VarExists(workGroupId, mangledPointer)
+        /\ IF currentDB.sis[workGroupId][sgIdx][currentPc] = FALSE THEN
+                IF ~aligned THEN
+                    /\ state' = [state EXCEPT ![t] = "subgroup"]
+                    /\ UNCHANGED <<pc, threadLocals, globalVars, DynamicNodeSet, globalCounter, snapShotMap>>
                 ELSE
-                    \* /\  Print(pointerVar, TRUE)
-                    \* /\  Print(mangledValue, TRUE)
-                    \* /\  Print(pointerVal, TRUE)
-                    \* /\  Print(mangledVar, TRUE)
-                    /\  state' = [\* release all barrier in the subgroup, marking barrier as ready
-                            tid \in Threads |->
-                                IF tid \in active_subgroup_threads THEN 
-                                    "ready" 
-                                ELSE 
-                                    state[tid]
-                        ]
-                    /\  Assignment(t, {Var(mangledVar.scope, mangledVar.name, pointerVal, Index(-1)), Var(mangledPointer.scope, mangledPointer.name, pointerVal | valueVal, Index(-1))})
-                    \* /\  Assignment(t, {Var(mangledPointer.scope, mangledPointer.name, pointerVal | valueVal, Index(-1))})
-                    /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
-                    /\ UNCHANGED << DynamicNodeSet, globalCounter, snapShotMap>>
+                    LET newDBSet == SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, TRUE)
+                    IN
+                        /\ DynamicNodeSet' = newDBSet
+                        /\ UNCHANGED <<pc, state, globalCounter, snapShotMap>>
+           ELSE
+                LET newDBSet == IF remaining = {}
+                                 THEN SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, FALSE)
+                                 ELSE DynamicNodeSet
+                IN
+                    /\ Assignment(t, assignmentSet)
+                    /\ pc' = [pc EXCEPT ![t] = pc[t] + 1]
+                    /\ DynamicNodeSet' = newDBSet
+                    /\ state' = [state EXCEPT ![t] = "ready"]
+                    /\ UNCHANGED <<globalCounter, snapShotMap>>
 
 
 OpAtomicAnd(t, var, pointer, value) ==
@@ -785,7 +788,8 @@ OpAtomicLoadSync(t, result, pointer) ==
                     /\ Assignment(t, assignmentSet)
                     /\ pc' = [pc EXCEPT ![t] = pc[t] + 1]
                     /\ DynamicNodeSet' = newDBSet
-                    /\ UNCHANGED <<state, globalCounter, snapShotMap>>
+                    /\ state' = [state EXCEPT ![t] = "ready"]
+                    /\ UNCHANGED <<globalCounter, snapShotMap>>
 
 
 \* It does not handle the situation where result is an index to array
@@ -923,33 +927,45 @@ OpAtomicLoadCollective(t, result, pointer) ==
 
 OpAtomicStoreSync(t, pointer, value) == 
     LET mangledPointer == Mangle(t, pointer)
+        workGroupId == WorkGroupId(t) + 1
+        sgIdx == SubgroupIndex(t)
+        currentPc == pc[t]
+        sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+        currentDB == CurrentDynamicNode(workGroupId, t)
+        active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+        unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+        aligned == unknown_subgroup_threads = {} /\ \A sthread \in active_subgroup_threads: pc[sthread] = currentPc
+        pointerVar == GetVar(workGroupId, mangledPointer)
+        evaluatedPointerIndex == EvalExpr(t, workGroupId, pointer.index)
+        valueToStore == EvalExpr(t, workGroupId, value)
+        assignmentSet ==
+            IF evaluatedPointerIndex > 0 THEN
+                {ChangeElementAt(pointerVar, evaluatedPointerIndex, valueToStore)}
+            ELSE
+                {Var(pointerVar.scope, pointerVar.name, valueToStore, pointerVar.index)}
+        remaining == {sthread \in active_subgroup_threads : sthread # t /\ pc[sthread] = currentPc}
     IN
-        /\  IsVariable(mangledPointer)
-        /\  VarExists(WorkGroupId(t)+1, mangledPointer)
-        /\  LET pointerVar == GetVar(WorkGroupId(t)+1, mangledPointer)
-                evaluatedPointerIndex == EvalExpr(t, WorkGroupId(t)+1, pointer.index)
-                workGroupId == WorkGroupId(t) + 1
-                sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
-                currentDB == CurrentDynamicNode(workGroupId, t)
-                active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
-                unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
-                evaluatedIndex == EvalExpr(t, WorkGroupId(t)+1, pointer.index)
-            IN 
-                \* todo: fix the problem when we have loop
-                IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] < pc[t] THEN
-                    /\  state' = [state EXCEPT ![t] = "subgroup"]
-                    /\  UNCHANGED <<pc, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+        /\ IsVariable(mangledPointer)
+        /\ VarExists(workGroupId, mangledPointer)
+        /\ IF currentDB.sis[workGroupId][sgIdx][currentPc] = FALSE THEN
+                IF ~aligned THEN
+                    /\ state' = [state EXCEPT ![t] = "subgroup"]
+                    /\ UNCHANGED <<pc, threadLocals, globalVars, DynamicNodeSet, globalCounter, snapShotMap>>
                 ELSE
-                    /\  Assignment(t, {Var(pointerVar.scope, Mangle(t, pointer).name, EvalExpr(t, WorkGroupId(t)+1, value), pointerVar.index) })
-                            /\  state' = [\* release all barrier in the subgroup, marking barrier as ready
-                                    tid \in Threads |->
-                                        IF tid \in active_subgroup_threads THEN 
-                                            "ready" 
-                                        ELSE 
-                                            state[tid]
-                                ]
-                            /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
-        /\  UNCHANGED <<DynamicNodeSet, globalCounter, snapShotMap>>
+                    LET newDBSet == SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, TRUE)
+                    IN
+                        /\ DynamicNodeSet' = newDBSet
+                        /\ UNCHANGED <<pc, state, threadLocals, globalVars, globalCounter, snapShotMap>>
+           ELSE
+                LET newDBSet == IF remaining = {}
+                                 THEN SetSISInDB(DynamicNodeSet, currentDB, workGroupId, sgIdx, currentPc, FALSE)
+                                 ELSE DynamicNodeSet
+                IN
+                    /\ Assignment(t, assignmentSet)
+                    /\ pc' = [pc EXCEPT ![t] = pc[t] + 1]
+                    /\ DynamicNodeSet' = newDBSet
+                    /\ state' = [state EXCEPT ![t] = "ready"]
+                    /\ UNCHANGED <<globalCounter, snapShotMap>>
 
 
 OpAtomicStore(t, pointer, value) == 

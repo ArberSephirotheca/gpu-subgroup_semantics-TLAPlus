@@ -138,3 +138,12 @@ earthly +tlaplus-image --INPUT <shader.glsl> --OUT=<format>
 ```
 This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to produce TLA+ modules, and finally invokes TLC to model-check.
 
+
+## Code Map
+
+- `forward-progress/validation/MCProgram.tla` — Static SIMT-Step setup: instruction partitions, dynamic block definition, SIS tables (per SIMT-Step §3/Table 1).
+- `forward-progress/validation/MCThreads.tla` — Thread-level operational semantics: Arrive/Execute handlers, collective control flow, dynamic-block updates (SIMT-Step §4).
+- `forward-progress/validation/MCProgressModel.tla` — Scheduler, fairness, and top-level spec that instantiates program + threads.
+- `forward-progress/validation/ProgramConf.tla` — Auto-generated constants for a specific shader (thread instructions, arguments, etc.).
+- `Homunculus/src/main.rs` & `compiler/src/codegen/*` — Pipeline from SPIR-V to TLA+: parses SPIR-V from `glslang`, builds CFG/dynamic blocks, emits the TLA+ modules based on GLSL annotations.
+

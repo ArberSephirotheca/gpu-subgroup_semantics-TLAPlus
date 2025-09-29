@@ -73,9 +73,6 @@ IterationNotExceedsBound ==
         LET iterationStack == DB.iterationVec IN
             \A i \in 1..Len(iterationStack): iterationStack[i].iter <= 4
 
-\* PickAnyWorkGroupInFairExecutionSet ==
-\*            <>[] (\A wg \in fairExecutionSet:  selected = wg)
-
 PickAnyWorkGroupInFairExecutionSet ==
     \A wg \in UniverseOfAllWGs :
         [] ( wg \in fairExecutionSet => <> (selected = wg) )

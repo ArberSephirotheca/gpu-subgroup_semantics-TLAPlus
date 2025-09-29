@@ -31,7 +31,7 @@ Init ==
     /\  InitScheduler
     /\  InitState
     /\  InitSnapShotMap
-    \* /\  converge = FALSE
+
 
 OBEUpdateFairExecutionSet(t) ==
     \* get the workgroup id of thread t, and update fair execution set based on the workgroup id of t

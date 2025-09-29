@@ -155,3 +155,13 @@ This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to
 - `example_shader_program/` – Annotated GLSL compute shaders used as reviewer-friendly fixtures; pragmas encode scheduler/subgroup/synchronization settings.
 - `Homunculus/src/main.rs` & `compiler/src/codegen/*` – SPIR-V → TLA+ translation: parses `glslang` output, builds CFG/dynamic blocks, and emits the generated `MCProgram.tla` specialised to the shader while relying on the hand-authored `ProgramConf.tla` constant interface.
 - `build/output.txt` – Sample TLC output from the provided Earthly target (helpful for confirming end-to-end execution).
+
+### Specification Entry Points
+
+- **Initial state (`Init` in `MCProgressModel.tla`)**
+  - `InitProgram` (`MCProgram.tla`) = `InitDB` ∧ `InitGPU`.
+  - `InitThreads` (`MCThreads.tla`) set up per-thread PCs/states.
+  - `InitScheduler`, `InitState` (`MCProgressModel.tla`) choose the scheduler (HSA/OBE) and initialize scheduler state.
+- **Transition relation**
+  - `Step` / `Next` (`MCProgressModel.tla`) call `ExecuteInstruction` (`MCThreads.tla`) and `UpdateFairExecutionSet` to advance one ready thread while enforcing fairness.
+  - Instruction handlers in `MCThreads.tla` perform the primed assignments; when control flow branches they invoke `BranchUpdate`/`BranchConditionalUpdateSubgroup` from `MCProgram.tla` to evolve the dynamic blocks.

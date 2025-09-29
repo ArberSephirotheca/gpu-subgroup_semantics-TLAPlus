@@ -550,7 +550,7 @@ CanMergeSameIterationVector(curr, remaining) ==
 
 
 
-\* Branch evolution (SIMT-Step §4): updates dynamic blocks and reconvergence state on subgroup branches
+\* Branch evolution (SIMT-Step §4): updates dynamic blocks when a thread takes a branch.
 BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
     LET
         currentCounter == globalCounter

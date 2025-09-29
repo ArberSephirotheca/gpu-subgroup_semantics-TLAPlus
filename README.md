@@ -4,17 +4,17 @@
 
 This artifact accompanies *SIMT-Step Execution: A Flexible Operational Semantics for GPU Subgroup Behavior* and is meant to let POPL reviewers inspect the executable TLA+ model that realises the paper’s operational rules.
 
-- **Dynamic blocks (Sec. 3 / 4.1).** The `DynamicNode`  record in `forward-progress/validation/MCProgram.tla` (around line 300) mirrors the paper’s object: it stores the SIS tensor, thread partitions (`currentThreadSet`, `notExecuteSet`, `unknownSet`), block label (`labelIdx`), identifier (`id`), merge stack, and child dynamic blocks. The merge target is not a separate field—it is recovered from the merge stack/children during branch updates (see `BranchUpdate`).
-- **Instruction classes (Sec. 3/Tab.1).** The CM/SM/SCF/SSO partitions are encoded via `IsCollectiveInstruction` / `IsSynchronousInstruction` in `MCProgram.tla`, which show exactly which operations fall into each category.
-- **Dynamic-block evolution (Sec. 4).** Branch handling (`BranchUpdate`, `BranchConditionalUpdateSubgroup`) creates child dynamic blocks, maintains merge stacks, and updates the thread-status sets exactly as the Step–UBranch/Step–Conditional rules require.
-- **Thread-level semantics (Sec. 4.2).** `forward-progress/validation/MCThreads.tla` drives execution: `ExecuteInstruction` dispatches to Arrive/Execute handlers, collective control flow (`OpBranchCollective`, `OpLabelCollective`), and subgroup intrinsics while calling back into the branch helpers above.
+- **Dynamic blocks (Sec. 3).** The `DynamicBlock` record in `forward-progress/validation/MCProgram.tla` (around line 300) mirrors the paper’s object: it stores the SIS tensor, thread partitions (`currentThreadSet`, `notExecuteSet`, `unknownSet`), block label (`labelIdx`), identifier (`id`), merge stack, and child dynamic blocks. The merge target is not a separate field—it is recovered from the merge stack/children during branch updates (see `BranchUpdate` at line 554).
+- **Instruction classes (Sec. 3/Tab.1).** The CM/SM/SCF/SSO partitions are encoded via `IsCollectiveInstruction` / `IsSynchronousInstruction` in `MCProgram.tla` from line 264-305, which show exactly which operations fall into each category.
+- **Dynamic-block evolution (Sec. 4).** Branch handling connects directly to the rules: `BranchUpdate` (line 554 in `MCProgram.tla`), `OpBranch` (line 1589 in `MCThreads.tla`) and `OpBranchConditional` (line 1671 in `MCThreads.tla`) implements independent control flow (Sec. 4.4); `BranchConditionalUpdateSubgroup` (line 798 in `MCProgram.tla`), `OpBranchCollective` (line 1545 in  `MCThreads.tla`) and `OpBranchConditionalCollective` (line 1619 in  `MCThreads.tla`), and `OpLabelCollective` (line 1866 in  `MCThreads.tla`) implements collective control flow (Sec. 4.3)
+- **Thread-level semantics (Sec. 4.2).** `forward-progress/validation/MCThreads.tla` drives execution: `ExecuteInstruction` dispatches to memory operation, collective control flow, and subgroup operations.
 - **System-level spec (Sec. 5).** `forward-progress/validation/MCProgressModel.tla` assembles the program, threads, and scheduler, defining `Init` and `Next` so TLC checks the same fairness/liveness properties discussed in the paper.
 
 #### Direct code references
 
 | Paper notion | TLA+ location | Comment |
 |--------------|---------------|---------|
-| Dynamic block record (Def. 1) | `forward-progress/validation/MCProgram.tla:263-312` | `DynamicNode` fields (`currentThreadSet`, `notExecuteSet`, `unknownSet`, merge stack, SIS) mirror §3. |
+| Dynamic block record (Def. 1) | `forward-progress/validation/MCProgram.tla:263-312` | `DynamicBlock` fields (`currentThreadSet`, `notExecuteSet`, `unknownSet`, merge stack, SIS) mirror §3. |
 | Model instantiation (Table 1) | `forward-progress/validation/MCProgram.tla:282-303` | `CollectiveInstructionSet`, `IsCollectiveInstruction`, `IsSynchronousInstruction` encode CM/SM/SCF/SSO. |
 | Branch evolution rules | `forward-progress/validation/MCProgram.tla:558-824` | `BranchUpdate` / `BranchConditionalUpdateSubgroup` implement Step–UBranch / Step–Conditional with merge-stack management. |
 | Collective branch & label | `forward-progress/validation/MCThreads.tla:1546-1588`, `1867-1883` | `OpBranchCollective` and `OpLabelCollective` enforce Step–Label/Step–UBranch alignment before delegating to the branch helpers. |
@@ -167,7 +167,7 @@ This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to
 ## Code Map
 
 - `forward-progress/validation/MCProgram.tla`
-  - Declares the top-level `DynamicNodeSet` and the shape of each dynamic-block record (including its embedded SIS, merge stack, and thread set) mirroring Sec. 3.
+  - Declares the top-level `DynamicNodeSet` and the shape of each dynamic-block record (`DynamicBlock`, including its embedded SIS, merge stack, and thread set) mirroring Sec. 3.
   - Defines the instruction partitions used to instantiate the CM/SM/SCF/SSO variants (Table 1), together with helper predicates such as `IsCollectiveInstruction` and `IsSynchronousInstruction`.
   - Implements the dynamic-block evolution rules (e.g., `BranchUpdate`, `BranchConditionalUpdateSubgroup`, merge-stack helpers) that create child dynamic blocks and maintain the reconvergence rule described in SIMT-Step Sec. 4.
 - `forward-progress/validation/MCThreads.tla`

@@ -1541,7 +1541,7 @@ OpAtomicCompareExchange(t, result, pointer, value, comparator) ==
         /\  UNCHANGED <<state,  DynamicBlockSet, globalCounter, snapShotMap>>
 
 
-\* Collective branch step keeps dynamic blocks converged (SIMT-Step Def.1).
+
 OpBranchCollective(t, label) ==
 /\  LET workGroupId == WorkGroupId(t) + 1
         sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
@@ -1549,7 +1549,7 @@ OpBranchCollective(t, label) ==
         active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
         unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
     IN
-        \* if there are threads in tangle not reaching the instruction point,
+        \* if there are threads in set not reaching the instruction point,
         \* or there are threads in unknown set, make current thread waiting
         IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
             /\  state' = [state EXCEPT ![t] = "subgroup"]
@@ -1615,7 +1615,7 @@ OpBranch(t, label) ==
     /\  UNCHANGED <<threadLocals, globalVars>>
 
 
-\* Conditional branch executed collectively; splits the dynamic block per SIMT-Step.
+\* Conditional branch executed collectively
 OpBranchConditionalCollective(t, condition, trueLabel, falseLabel) == 
     /\  IsLiteral(trueLabel)
     /\  IsLiteral(falseLabel)
@@ -1861,8 +1861,8 @@ OpSwitch(t, selector, default, literals, ids) ==
                                 /\ UNCHANGED  <<threadLocals, globalVars, snapShotMap>>
     /\  UNCHANGED <<threadLocals, globalVars>>
 
+
 (* structured loop, must immediately precede block termination instruction, which means it must be second-to-last instruction in its block *)
-(* Label executes collectively to keep the dynamic block aligned. *)
 OpLabelCollective(t, label) ==
     LET workGroupId == WorkGroupId(t) + 1
         sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))

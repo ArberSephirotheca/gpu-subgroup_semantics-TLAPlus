@@ -1,5 +1,35 @@
 # gpu-subgroup-semantics-TLAPlus
 
+## Guide for Reviewers
+
+This artifact accompanies *SIMT-Step Execution: A Flexible Operational Semantics for GPU Subgroup Behavior* and is meant to let POPL reviewers inspect the executable TLA+ model that realises the paper’s operational rules.
+
+- **Dynamic blocks (Sec. 3 / 4.1).** The `DynamicNode`  record in `forward-progress/validation/MCProgram.tla` (around line 300) mirrors the paper’s object: it stores the SIS tensor, thread partitions (`currentThreadSet`, `notExecuteSet`, `unknownSet`), block label (`labelIdx`), identifier (`id`), merge stack, and child dynamic blocks. The merge target is not a separate field—it is recovered from the merge stack/children during branch updates (see `BranchUpdate`).
+- **Instruction classes (Sec. 3/Tab.1).** The CM/SM/SCF/SSO partitions are encoded via `IsCollectiveInstruction` / `IsSynchronousInstruction` in `MCProgram.tla`, which show exactly which operations fall into each category.
+- **Dynamic-block evolution (Sec. 4).** Branch handling (`BranchUpdate`, `BranchConditionalUpdateSubgroup`) creates child dynamic blocks, maintains merge stacks, and updates the thread-status sets exactly as the Step–UBranch/Step–Conditional rules require.
+- **Thread-level semantics (Sec. 4.2).** `forward-progress/validation/MCThreads.tla` drives execution: `ExecuteInstruction` dispatches to Arrive/Execute handlers, collective control flow (`OpBranchCollective`, `OpLabelCollective`), and subgroup intrinsics while calling back into the branch helpers above.
+- **System-level spec (Sec. 5).** `forward-progress/validation/MCProgressModel.tla` assembles the program, threads, and scheduler, defining `Init` and `Next` so TLC checks the same fairness/liveness properties discussed in the paper.
+
+#### Direct code references
+
+| Paper notion | TLA+ location | Comment |
+|--------------|---------------|---------|
+| Dynamic block record (Def. 1) | `forward-progress/validation/MCProgram.tla:263-312` | `DynamicNode` fields (`currentThreadSet`, `notExecuteSet`, `unknownSet`, merge stack, SIS) mirror §3. |
+| Model instantiation (Table 1) | `forward-progress/validation/MCProgram.tla:282-303` | `CollectiveInstructionSet`, `IsCollectiveInstruction`, `IsSynchronousInstruction` encode CM/SM/SCF/SSO. |
+| Branch evolution rules | `forward-progress/validation/MCProgram.tla:558-824` | `BranchUpdate` / `BranchConditionalUpdateSubgroup` implement Step–UBranch / Step–Conditional with merge-stack management. |
+| Collective branch & label | `forward-progress/validation/MCThreads.tla:1546-1588`, `1867-1883` | `OpBranchCollective` and `OpLabelCollective` enforce Step–Label/Step–UBranch alignment before delegating to the branch helpers. |
+| Instruction dispatcher | `forward-progress/validation/MCThreads.tla:1985-2042` | `ExecuteInstruction` selects the correct handler based on the instruction partition. |
+| Initialisation / transition | `forward-progress/validation/MCProgressModel.tla:28-105` | `Init` combines `InitProgram`, `InitThreads`, `InitScheduler`; `Step`/`Next` advance the system and enforce fairness. |
+
+### Worked Example — Collective Control Flow
+
+Consider the Step–Label / Step–UBranch rules for CM/SM/SCF:
+
+1. `OpLabelCollective` (`MCThreads.tla`) waits until all threads in the dynamic block are aligned, then bumps their PCs together—mirroring Step–Label.
+2. `OpBranchCollective` calls `BranchConditionalUpdateSubgroup` (`MCProgram.tla`) which (a) records the active subgroup in the child dynamic block’s `currentThreadSet`, (b) pushes merge targets onto the merge stack, and (c) reuses existing children when reconverging at a merge block, as required by Step–UBranch and the reconvergence obligation.
+
+Reviewers who want to follow the execution end-to-end can run `earthly +tlaplus-image --INPUT example_shader_program/synchronization/cm.comp --OUT=text`, open the generated `build/MCProgram.tla`, and observe how the CFG emitted for that shader instantiates these operators.
+
 ## Pre-requisites
 - [Docker](https://docs.docker.com/install/) or [Podman](https://github.com/containers/podman/blob/main/docs/tutorials/podman_tutorial.md)
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)

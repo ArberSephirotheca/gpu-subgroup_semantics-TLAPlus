@@ -3,7 +3,7 @@ EXTENDS Integers, Naturals, Sequences, MCThreads, TLC, FiniteSets
 
 VARIABLES fairExecutionSet, selected, runningThread
 
-vars == <<fairExecutionSet, pc, state, selected, runningThread, threadLocals, globalVars, DynamicNodeSet, snapShotMap, globalCounter>>
+vars == <<fairExecutionSet, pc, state, selected, runningThread, threadLocals, globalVars, DynamicBlockSet, snapShotMap, globalCounter>>
 
 UniverseOfAllWGs == {0, 1}
 
@@ -69,7 +69,7 @@ GetMaxIterDifference(nodeSet) ==
         SetMax(nodeSet).iter - SetMin(nodeSet).iter
         
 IterationNotExceedsBound ==
-    \A DB \in DynamicNodeSet:
+    \A DB \in DynamicBlockSet:
         LET iterationStack == DB.iterationVec IN
             \A i \in 1..Len(iterationStack): iterationStack[i].iter <= 4
 
@@ -104,7 +104,7 @@ Step ==
 Next ==
     Step
 
-ViewFunction == <<pc, state, threadLocals, globalVars, DynamicNodeSet, selected, runningThread>>
+ViewFunction == <<pc, state, threadLocals, globalVars, DynamicBlockSet, selected, runningThread>>
 
 (* Fairness properties *)
 

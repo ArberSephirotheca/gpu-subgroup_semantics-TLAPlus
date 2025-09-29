@@ -38,10 +38,6 @@ Reviewers who want to follow the execution end-to-end can run `earthly +tlaplus-
 - [Earthly](https://earthly.dev/get-earthly)
 
 ## Get Started
-First, clone the repo including submodule
-```bash
-git clone --recurse-submodules git@github.com:ArberSephirotheca/gpu-forward-progress-TLAPlus.git
-```
 Make sure you've started the docker service
 ```bash
 systemctl service docker start

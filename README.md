@@ -28,7 +28,7 @@ This artifact accompanies *SIMT-Step Execution: A Flexible Operational Semantics
 Consider the Step–Label / Step–UBranch rules for CM/SM/SCF:
 
 1. `OpLabelCollective` (`MCThreads.tla:1866`) waits until all threads in the dynamic block are aligned, then bumps their PCs together—mirroring Step–Label.
-2. `OpBranchCollective` (`MCThreads.tla:1545`) calls `BranchConditionalUpdateSubgroup` (`MCProgram.tla:798`) which (a) records the active subgroup in the child dynamic block’s `currentThreadSet`, (b) pushes merge targets onto the merge stack, and (c) reuses existing children when reconverging at a merge block.
+2. `OpBranchCollective` (`MCThreads.tla:1545`) calls `BranchConditionalUpdateSubgroup` (`MCProgram.tla:798`) which (a) update the thread set in the child dynamic block, (b) pushes merge targets onto the merge stack, and (c) reuses existing children when reconverging at a merge block.
 
 Reviewers who want to follow the execution end-to-end can run `earthly +tlaplus-image --INPUT example_shader_program/synchronization/cm.comp --OUT=text`, open the generated `build/MCProgram.tla`, and observe how the CFG emitted for that shader instantiates these operators.
 

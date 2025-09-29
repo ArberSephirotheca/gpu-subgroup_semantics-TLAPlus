@@ -125,11 +125,6 @@ are behaving like `SequentiallyConsistent`.
 ## Reference
 - https://lamport.azurewebsites.net/tla/safety-liveness.pdf
 
-## Reviewers' Guide
-
-1. Start with `forward-progress/validation/MCProgram.tla` for the SIMT-Step partition definitions and configuration constants.
-2. Move to `forward-progress/validation/MCThreads.tla` to inspect the state transitions (dynamic blocks, synchronous Arrive/Execute logic, etc.).
-3. Reference `example_shader_program/` shaders to see how GLSL annotations map to the TLA+ configuration (e.g., `tla_synchronization_id`).
 
 ### Workflow Overview
 
@@ -141,9 +136,22 @@ This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to
 
 ## Code Map
 
-- `forward-progress/validation/MCProgram.tla` — Static SIMT-Step setup: instruction partitions, dynamic block definition, SIS tables (per SIMT-Step §3/Table 1).
-- `forward-progress/validation/MCThreads.tla` — Thread-level operational semantics: Arrive/Execute handlers, collective control flow, dynamic-block updates (SIMT-Step §4).
-- `forward-progress/validation/MCProgressModel.tla` — Scheduler, fairness, and top-level spec that instantiates program + threads.
-- `forward-progress/validation/ProgramConf.tla` — Auto-generated constants for a specific shader (thread instructions, arguments, etc.).
-- `Homunculus/src/main.rs` & `compiler/src/codegen/*` — Pipeline from SPIR-V to TLA+: parses SPIR-V from `glslang`, builds CFG/dynamic blocks, emits the TLA+ modules based on GLSL annotations.
+- `forward-progress/validation/MCProgram.tla`
+  - Declares the top-level `DynamicNodeSet` and the shape of each dynamic-block record (including its embedded SIS, merge stack, and thread set) mirroring Sec. 3.
+  - Defines the instruction partitions used to instantiate the CM/SM/SCF/SSO variants (Table 1), together with helper predicates such as `IsCollectiveInstruction` and `IsSynchronousInstruction`.
+  - Implements the dynamic-block evolution rules (e.g., `BranchUpdate`, `BranchConditionalUpdateSubgroup`, merge-stack helpers) that create child dynamic blocks and maintain the reconvergence rule described in SIMT-Step Sec. 4.
+- `forward-progress/validation/MCThreads.tla`
+  - Contains the thread-level state machine: `ExecuteInstruction` dispatches to instruction handlers for memory ops, collective control flow (`OpBranchCollective`, `OpLabelCollective`, etc.), and subgroup operations.
+  - Manages per-workgroup snapshots, updates SIS flags, and invokes the branch helpers in `MCProgram` (`BranchUpdate`, `BranchConditionalUpdateSubgroup`) whenever control flow advances so that `DynamicNodeSet` remains consistent with the SIMT-Step reconvergence rules.
+- `forward-progress/validation/MCProgressModel.tla`
+  - Instantiates `MCProgram`/`MCThreads`, adds the scheduler variables (`fairExecutionSet`, `selected`, `runningThread`), and defines `Step`/`Next` for TLC.
+  - Encodes fairness via the `Fairness` predicate and liveness goals such as `EventuallyAlwaysTerminated`.
+  - Serves as the entry point for TLC (`Spec`) referenced by `MCProgressModel.cfg`.
 
+**Generated per-program artifacts**
+- `forward-progress/validation/MCProgram.tla` – Overwritten by the pipeline with the program-specific instruction partitions, CFG, and dynamic-block metadata derived from the shader.
+
+**Frontend pipeline**
+- `example_shader_program/` – Annotated GLSL compute shaders used as reviewer-friendly fixtures; pragmas encode scheduler/subgroup/synchronization settings.
+- `Homunculus/src/main.rs` & `compiler/src/codegen/*` – SPIR-V → TLA+ translation: parses `glslang` output, builds CFG/dynamic blocks, and emits the generated `MCProgram.tla` specialised to the shader while relying on the hand-authored `ProgramConf.tla` constant interface.
+- `build/output.txt` – Sample TLC output from the provided Earthly target (helpful for confirming end-to-end execution).

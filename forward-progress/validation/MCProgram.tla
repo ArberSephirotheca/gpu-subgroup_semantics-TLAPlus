@@ -555,7 +555,7 @@ CanMergeSameIterationVector(curr, remaining) ==
 
 
 
-\* opLabelIdxSet is used to update the children of the current DB
+\* Independent control flow
 BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
     LET
         currentCounter == globalCounter
@@ -799,6 +799,7 @@ BranchUpdate(wgid, t, pc, opLabelIdxSet, chosenBranchIdx, falseLabels) ==
         )>>
 
 
+\* Collective control flow
 BranchConditionalUpdateSubgroup(wgid, active_subgroup_threads, pc, opLabelIdxSet, trueThreads, falseThreads, trueLabelVal, falseLabelVal) ==
     LET
         currentCounter == globalCounter

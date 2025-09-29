@@ -9,6 +9,14 @@ This artifact accompanies *SIMT-Step Execution: A Flexible Operational Semantics
 - **Dynamic-block evolution (Sec. 4).** Independent branching: `BranchUpdate` (`MCProgram.tla:554`), `OpBranch` (`MCThreads.tla:1590`), `OpBranchConditional` (`MCThreads.tla:1671`). Collective branching/labels: `BranchConditionalUpdateSubgroup` (`MCProgram.tla:798`), `OpBranchCollective` (`MCThreads.tla:1545`), `OpBranchConditionalCollective` (`MCThreads.tla:1619`), `OpLabelCollective` (`MCThreads.tla:1866`).
 - **Thread-level semantics (Sec. 4.2).** `MCThreads.tla:1918-2047` contains `ExecuteInstruction`, which dispatches to memory, collective control flow, and subgroup operations.
 - **System-level spec (Sec. 5).** `forward-progress/validation/MCProgressModel.tla` assembles the program, threads, and scheduler, defining `Init` and `Next` so TLC checks the same fairness/liveness properties discussed in the paper.
+- **Initial state (`Init` in `MCProgressModel.tla`)**
+  - `InitProgram` (`MCProgram.tla`) = `InitDB` ∧ `InitGPU`.
+  - `InitThreads` (`MCThreads.tla`) set up per-thread PCs/states.
+  - `InitScheduler`, `InitState` (`MCProgressModel.tla`) choose the scheduler (HSA/OBE) and initialize scheduler state.
+- **Transition relation**
+  - `Step` / `Next` (`MCProgressModel.tla`) call `ExecuteInstruction` (`MCThreads.tla`) and `UpdateFairExecutionSet` to advance one ready thread while enforcing fairness.
+  - Instruction handlers in `MCThreads.tla` perform the primed assignments; when control flow branches they invoke `BranchUpdate`/`BranchConditionalUpdateSubgroup` from `MCProgram.tla` to evolve the dynamic blocks.
+
 
 > Reviewer notes
 > - Primed variables (`pc'`, `state'`, `DynamicNodeSet'`, etc.) appear only inside action definitions. `ExecuteInstruction` (`MCThreads.tla:1985-2044`) routes to instruction-specific handlers (`OpBranchCollective`, `OpLabelCollective`, `OpAtomicLoadSync`, …), each of which returns the primed assignments it performs. At the system level, `Step` (`MCProgressModel.tla:86-105`) binds `selected'`/`runningThread'` and relies on those helpers for the rest, leaving untouched components under `UNCHANGED` clauses.
@@ -164,13 +172,3 @@ This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to
 - `example_shader_program/` – Annotated GLSL compute shaders used as reviewer-friendly fixtures; pragmas encode scheduler/subgroup/synchronization settings.
 - `Homunculus/src/main.rs` & `compiler/src/codegen/*` – SPIR-V → TLA+ translation: parses `glslang` output, builds CFG/dynamic blocks, and emits the generated `MCProgram.tla` specialised to the shader while relying on the hand-authored `ProgramConf.tla` constant interface.
 - `build/output.txt` – Sample TLC output from the provided Earthly target (helpful for confirming end-to-end execution).
-
-### Specification Entry Points
-
-- **Initial state (`Init` in `MCProgressModel.tla`)**
-  - `InitProgram` (`MCProgram.tla`) = `InitDB` ∧ `InitGPU`.
-  - `InitThreads` (`MCThreads.tla`) set up per-thread PCs/states.
-  - `InitScheduler`, `InitState` (`MCProgressModel.tla`) choose the scheduler (HSA/OBE) and initialize scheduler state.
-- **Transition relation**
-  - `Step` / `Next` (`MCProgressModel.tla`) call `ExecuteInstruction` (`MCThreads.tla`) and `UpdateFairExecutionSet` to advance one ready thread while enforcing fairness.
-  - Instruction handlers in `MCThreads.tla` perform the primed assignments; when control flow branches they invoke `BranchUpdate`/`BranchConditionalUpdateSubgroup` from `MCProgram.tla` to evolve the dynamic blocks.

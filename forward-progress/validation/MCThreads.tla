@@ -1543,7 +1543,7 @@ OpAtomicCompareExchange(t, result, pointer, value, comparator) ==
 
 
 \* Collective branch step keeps dynamic blocks converged (SIMT-Step Def.1).
-OpBranchSync(t, label) ==
+OpBranchCollective(t, label) ==
 /\  LET workGroupId == WorkGroupId(t) + 1
         sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
         currentDB == CurrentDynamicNode(workGroupId, t)
@@ -1617,7 +1617,7 @@ OpBranch(t, label) ==
 
 
 \* Conditional branch executed collectively; splits the dynamic block per SIMT-Step.
-OpBranchConditionalSync(t, condition, trueLabel, falseLabel) == 
+OpBranchConditionalCollective(t, condition, trueLabel, falseLabel) == 
     /\  IsLiteral(trueLabel)
     /\  IsLiteral(falseLabel)
     /\  LET workGroupId == WorkGroupId(t) + 1
@@ -1728,7 +1728,7 @@ OpBranchConditional(t, condition, trueLabel, falseLabel) ==
 
     
 
-OpSwitchSync(t, selector, default, literals, ids) == 
+OpSwitchCollective(t, selector, default, literals, ids) == 
 /\  LET workGroupId == WorkGroupId(t) + 1
         sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
         currentDB == CurrentDynamicNode(workGroupId, t)
@@ -1863,9 +1863,28 @@ OpSwitch(t, selector, default, literals, ids) ==
     /\  UNCHANGED <<threadLocals, globalVars>>
 
 (* structured loop, must immediately precede block termination instruction, which means it must be second-to-last instruction in its block *)
+(* Label executes collectively to keep the dynamic block aligned. *)
+OpLabelCollective(t, label) ==
+    LET workGroupId == WorkGroupId(t) + 1
+        sthreads == ThreadsWithinSubgroupNonTerminated(SubgroupId(t), WorkGroupId(t))
+        currentDB == CurrentDynamicNode(workGroupId, t)
+        active_subgroup_threads == currentDB.currentThreadSet[workGroupId] \intersect sthreads
+        unknown_subgroup_threads == currentDB.unknownSet[workGroupId] \intersect sthreads
+    IN
+        IF unknown_subgroup_threads # {} \/ \E sthread \in active_subgroup_threads: pc[sthread] # pc[t] THEN
+            /\  state' = [state EXCEPT ![t] = "subgroup"]
+            /\  UNCHANGED <<pc, threadLocals, globalVars, DynamicNodeSet, globalCounter, snapShotMap>>
+        ELSE
+            LET newPc == [thread \in Threads |-> IF thread \in active_subgroup_threads THEN pc[thread] + 1 ELSE pc[thread]]
+                newState == StateUpdateSubgroup(workGroupId, active_subgroup_threads, DynamicNodeSet)
+            IN
+                /\  pc' = newPc
+                /\  state' = newState
+                /\  UNCHANGED <<threadLocals, globalVars, DynamicNodeSet, globalCounter, snapShotMap>>
+
 OpLabel(t, label) ==
     /\  pc' = [pc EXCEPT ![t] = pc[t] + 1]
-    /\  UNCHANGED <<state, threadLocals, globalVars,  DynamicNodeSet, globalCounter, snapShotMap>>
+    /\  UNCHANGED <<state, threadLocals, globalVars, DynamicNodeSet, globalCounter, snapShotMap>>
 
 (* structured loop, must immediately precede block termination instruction, which means it must be second-to-last instruction in its block *)
 OpLoopMerge(t, mergeLabel, continueTarget) ==
@@ -1985,17 +2004,17 @@ ExecuteInstruction(t) ==
                     OpAtomicStore(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2])
             ELSE IF currentInstr = "OpBranch" THEN
                 IF IsCollectiveInstruction(currentInstr) THEN 
-                    OpBranchSync(t, ThreadArguments[t][pc[t]][1])
+                    OpBranchCollective(t, ThreadArguments[t][pc[t]][1])
                 ELSE
                     OpBranch(t, ThreadArguments[t][pc[t]][1])
             ELSE IF currentInstr = "OpBranchConditional" THEN
                 IF IsCollectiveInstruction(currentInstr) THEN 
-                    OpBranchConditionalSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
+                    OpBranchConditionalCollective(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
                 ELSE
                     OpBranchConditional(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3])
             ELSE IF currentInstr = "OpSwitch" THEN
                 IF IsCollectiveInstruction(currentInstr) THEN 
-                    OpSwitchSync(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
+                    OpSwitchCollective(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
                 ELSE
                     OpSwitch(t, ThreadArguments[t][pc[t]][1], ThreadArguments[t][pc[t]][2], ThreadArguments[t][pc[t]][3], ThreadArguments[t][pc[t]][4])
             ELSE IF currentInstr = "OpControlBarrier" THEN
@@ -2017,7 +2036,10 @@ ExecuteInstruction(t) ==
             ELSE IF ThreadInstructions[t][pc[t]] = "OpSelectionMerge" THEN
                 OpSelectionMerge(t, ThreadArguments[t][pc[t]][1])
             ELSE IF ThreadInstructions[t][pc[t]] = "OpLabel" THEN
-                OpLabel(t, ThreadArguments[t][pc[t]][1])
+                IF IsCollectiveInstruction(currentInstr) THEN
+                    OpLabelCollective(t, ThreadArguments[t][pc[t]][1])
+                ELSE
+                    OpLabel(t, ThreadArguments[t][pc[t]][1])
             ELSE IF ThreadInstructions[t][pc[t]] = "Assert" THEN
                 OpAssert(t, ThreadArguments[t][pc[t]][1])
             ELSE

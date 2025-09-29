@@ -282,12 +282,11 @@ SubgroupInstructionSet == {"OpGroupAll", "OpGroupAny", "OpGroupNonUniformAll", "
 \* Per Table 1 in the paper: map the model label to its collective set.
 CollectiveInstructionSet ==
     LET base == SubgroupInstructionSet IN
-        base \cup
-        CASE Synchronization = "CM" -> MemoryOperationSet \cup BranchInstructionSet
-             [] Synchronization = "SM" -> BranchInstructionSet
-             [] Synchronization = "SCF" -> BranchInstructionSet
-             [] Synchronization = "SSO" -> {}
-             [] OTHER -> {}
+        CASE Synchronization = "CM" -> base \cup MemoryOperationSet \cup BranchInstructionSet \cup {"OpLabel"}
+             [] Synchronization = "SM" -> base \cup BranchInstructionSet \cup {"OpLabel"}
+             [] Synchronization = "SCF" -> base \cup BranchInstructionSet \cup {"OpLabel"}
+             [] Synchronization = "SSO" -> base
+             [] OTHER -> base
 
 \* Only SM maps memory ops to the Arrive/Execute semantics (§4.2).
 SynchronousInstructionSet ==

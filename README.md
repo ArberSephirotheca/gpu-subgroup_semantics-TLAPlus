@@ -2,13 +2,13 @@
 
 ## Guide for Reviewers
 
-This artifact accompanies *SIMT-Step Execution: A Flexible Operational Semantics for GPU Subgroup Behavior* and is meant to let POPL reviewers inspect the executable TLA+ model that realises the paper’s operational rules.
+This artifact accompanies *SIMT-Step Execution: A Flexible Operational Semantics for GPU Subgroup Behavior* and is meant to let PLDI reviewers inspect the executable TLA+ model that realises the paper’s operational rules.
 
 - **Dynamic blocks (Sec. 3).** `DynamicBlock` in `forward-progress/validation/MCProgram.tla:307` stores the SIS, thread sets (`currentThreadSet`, `notExecuteSet`, `unknownSet`), block label (`labelIdx`), identifier (`id`), merge stack, and child blocks. The merge target is recovered on branching via `BranchUpdate` (`forward-progress/validation/MCProgram.tla:558`).
-- **Instruction classes (Sec. 3/Tab.1).** The CM/SM/SCF/SSO partitions are encoded via `IsCollectiveInstruction` / `IsSynchronousInstruction` in `forward-progress/validation/MCProgram.tla:264-303`.
+- **Instruction classes (Sec. 4/Tab.1).** The CM/SM/SCF/SSO partitions are encoded via `IsCollectiveInstruction` / `IsSynchronousInstruction` in `forward-progress/validation/MCProgram.tla:264-303`.
 - **Dynamic-block evolution (Sec. 4).** Independent branching: `BranchUpdate` (`MCProgram.tla:554`), `OpBranch` (`MCThreads.tla:1590`), `OpBranchConditional` (`MCThreads.tla:1671`). Collective branching/labels: `BranchConditionalUpdateSubgroup` (`MCProgram.tla:798`), `OpBranchCollective` (`MCThreads.tla:1545`), `OpBranchConditionalCollective` (`MCThreads.tla:1619`), `OpLabelCollective` (`MCThreads.tla:1866`).
-- **Thread-level semantics (Sec. 4.2).** `MCThreads.tla:1918-2047` contains `ExecuteInstruction`, which dispatches to memory, collective control flow, and subgroup operations.
-- **System-level spec (Sec. 5).** `forward-progress/validation/MCProgressModel.tla` assembles the program, threads, and scheduler, defining `Init` and `Next` so TLC checks the same fairness/liveness properties discussed in the paper.
+- **Thread-level semantics (Sec. 4).** `MCThreads.tla:1918-2047` contains `ExecuteInstruction`, which dispatches to memory, collective control flow, and subgroup operations.
+- **System-level spec (Sec. 4).** `forward-progress/validation/MCProgressModel.tla` assembles the program, threads, and scheduler, defining `Init` and `Next` so TLC checks the same fairness/liveness properties discussed in the paper.
 - **Initial state (`Init` in `MCProgressModel.tla`)**
   - `InitProgram` (`MCProgram.tla`) = `InitDB` ∧ `InitGPU`.
   - `InitThreads` (`MCThreads.tla`) set up per-thread PCs/states.
@@ -18,14 +18,9 @@ This artifact accompanies *SIMT-Step Execution: A Flexible Operational Semantics
   - Instruction handlers in `MCThreads.tla` perform the primed assignments; when control flow branches they invoke `BranchUpdate`/`BranchConditionalUpdateSubgroup` from `MCProgram.tla` to evolve the dynamic blocks.
 
 
-> Reviewer notes
-> - Primed variables (`pc'`, `state'`, `DynamicNodeSet'`, etc.) appear only inside action definitions. `ExecuteInstruction` (`MCThreads.tla:1985-2044`) routes to instruction-specific handlers (`OpBranchCollective`, `OpLabelCollective`, `OpAtomicLoadSync`, …), each of which returns the primed assignments it performs. At the system level, `Step` (`MCProgressModel.tla:86-105`) binds `selected'`/`runningThread'` and relies on those helpers for the rest, leaving untouched components under `UNCHANGED` clauses.
-> - Collective Control Flow follows the rule described at Fig. 8 and Sec 4.3: `OpBranchConditionalCollective` (`MCThreads.tla:1619`) calls `BranchConditionalUpdateSubgroup` (`MCProgram.tla:798`).
-> - The initial state combines `InitProgram`, `InitThreads`, `InitScheduler`, and `InitState` inside `MCProgressModel.tla:28-33`; the frontend emits `InitDB` (`MCProgram.tla:1005-1078`) so the initial dynamic block is placed at the entry label with an empty merge stack and all launched threads as `currentThreadSet`.
-
 ### Worked Example — Collective Control Flow
 
-Consider the Step–Label / Step–UBranch rules for CM/SM/SCF:
+Consider the T–Label / G–Collective-UBranch rules for CM/SM/SCF:
 
 1. `OpLabelCollective` (`MCThreads.tla:1866`) waits until all threads in the dynamic block are aligned, then bumps their PCs together—mirroring Step–Label.
 2. `OpBranchCollective` (`MCThreads.tla:1545`) calls `BranchConditionalUpdateSubgroup` (`MCProgram.tla:798`) which (a) update the thread set in the child dynamic block, (b) pushes merge targets onto the merge stack, and (c) reuses existing children when reconverging at a merge block.

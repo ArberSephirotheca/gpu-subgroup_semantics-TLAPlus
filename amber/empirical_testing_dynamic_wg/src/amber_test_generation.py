@@ -103,6 +103,8 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
         output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
+        output.write("\tif (num_workgroups < num_testing_subgroups) { return; }\n")
+        output.write("\tuint active_workgroups = num_workgroups - (num_workgroups % num_testing_subgroups);\n")
         output.write("\tuint index = workgroup_id / num_testing_subgroups;\n")
 
     # perform the necessary computations of "chunk" size and index to update SSBO for "chunking" saturation
@@ -111,6 +113,8 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
         output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
+        output.write("\tif (num_workgroups < num_testing_subgroups) { return; }\n")
+        output.write("\tuint active_workgroups = num_workgroups - (num_workgroups % num_testing_subgroups);\n")
         output.write("\tuint chunk_size =  num_workgroups / num_testing_subgroups;\n")
         output.write("\tuint index = workgroup_id % chunk_size;\n")
 
@@ -131,9 +135,9 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
             output.write("\tif (gl_SubgroupID == " + str(thread_number) + " && gl_SubgroupInvocationID == 0 &&"
                                                                           " gl_WorkGroupID.x == 0" + ") { \n")
     elif saturation_level == 1:
-        output.write("\tif (workgroup_id % num_testing_subgroups == " + str(thread_number) + " && subgroup_id == 0" + ") { \n")
+        output.write("\tif (workgroup_id < active_workgroups && workgroup_id % num_testing_subgroups == " + str(thread_number) + " && subgroup_id == 0" + ") { \n")
     elif saturation_level == 2:
-        output.write("\tif (workgroup_id / chunk_size == " + str(thread_number) + " && subgroup_id == 0" + ") { \n")
+        output.write("\tif (workgroup_id < active_workgroups && workgroup_id / chunk_size == " + str(thread_number) + " && subgroup_id == 0" + ") { \n")
     else:
         print("Saturation level can only be 0, 1, or 2", file=sys.stderr)
         exit(1)
@@ -338,12 +342,12 @@ def write_amber_epilogue(output, workgroups, threads_per_workgroup, saturation_l
     output.write("\n")
     output.write("END\n")
     output.write("\n")
-    output.write("RUN test_pipe " + str(workgroups) + " 1 1\n")
+    output.write("RUN test_pipe NUMWORKGROUPS 1 1\n")
 
     if saturation_level == 0:
-        output.write("EXPECT tester IDX 8 EQ " + str(total_threads) + "\n")
+        output.write("EXPECT tester IDX 8 EQ TOTALTHREADS\n")
     elif saturation_level == 1 or saturation_level == 2:
-        output.write("EXPECT tester IDX 0 EQ " + str(total_threads) + "\n")
+        output.write("EXPECT tester IDX 0 EQ TOTALTHREADS\n")
 
 
 # generate an Amber test with a provided input file, a desired output file name, and a Configuration object to set up

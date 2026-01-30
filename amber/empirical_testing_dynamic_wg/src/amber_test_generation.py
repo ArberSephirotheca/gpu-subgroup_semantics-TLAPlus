@@ -52,7 +52,7 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
     output.write("#extension GL_KHR_shader_subgroup_basic : enable\n")
     output.write("#extension GL_KHR_shader_subgroup_ballot : enable\n")
     output.write("#extension GL_KHR_shader_subgroup_vote : enable\n")
-    output.write("#extension GL_KHR_shader_subgroup_basic : enable\n")
+    output.write("#extension GL_KHR_shader_subgroup_shuffle : enable\n")
 
     # output.write("\n")
     # output.write("layout(set = 0, binding = 3) volatile buffer PICKTHREAD {\n")
@@ -167,7 +167,7 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
     output.write("\t     }\n")
     output.write("\t   }\n")
     output.write("\t   round_robin += 1u;\n")
-    output.write("\t   pc = subgroupBroadcast(pc, pick_thread);\n")
+    output.write("\t   pc = subgroupShuffle(pc, pick_thread);\n")
     output.write("\t}\n")
     output.write("\t}\n")
     output.write("\n")

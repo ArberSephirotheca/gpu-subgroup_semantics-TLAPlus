@@ -1,0 +1,76 @@
+Date and Time:
+30/01/2026 11:09:53
+Computer:
+archlinux
+
+storing vulkaninfo to: results/output0/vulkaninfo.txt
+
+generating amber test for: 0.txt in results/output0
+
+generating amber test for: 1.txt in results/output0
+
+generating amber test for: 2.txt in results/output0
+
+generating amber test for: 3.txt in results/output0
+
+generating amber test for: 4.txt in results/output0
+
+generating amber test for: 5.txt in results/output0
+
+generating amber test for: 6.txt in results/output0
+
+generating amber test for: 7.txt in results/output0
+
+generating amber test for: 0.txt in results/output0
+
+generating amber test for: 1.txt in results/output0
+
+generating amber test for: 2.txt in results/output0
+
+generating amber test for: 3.txt in results/output0
+
+generating amber test for: 4.txt in results/output0
+
+generating amber test for: 5.txt in results/output0
+
+generating amber test for: 6.txt in results/output0
+
+generating amber test for: 7.txt in results/output0
+
+generating amber test for: 0.txt in results/output0
+
+generating amber test for: 1.txt in results/output0
+
+generating amber test for: 2.txt in results/output0
+
+generating amber test for: 3.txt in results/output0
+
+generating amber test for: 4.txt in results/output0
+
+generating amber test for: 5.txt in results/output0
+
+generating amber test for: 6.txt in results/output0
+
+generating amber test for: 7.txt in results/output0
+
+
+Finished running tests!
+
+writing simple ascii table to:
+results/output0/simple_final_results-2026-01-30.txt
+
+writing iteration-based ascii table to:
+results/output0/iteration_based_final_results-2026-01-30.txt
+
+writing simple csv table to:
+results/output0/simple_final_results-2026-01-30.csv
+
+writing simple csv table to:
+results/output0/simple_final_results-2026-01-30.csv
+
+writing colored html table to:
+results/output0/html-colored-table2026-01-30.html
+
+
+Execution time (s):
+0.16009140014648438

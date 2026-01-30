@@ -48,7 +48,7 @@ def main() -> int:
         description=(
             "Instantiate an Amber template by replacing NUMWORKGROUPS and TOTALTHREADS, then run amber.\n"
             "Pass amber flags after '--', e.g.:\n"
-            "  amber_template_runner.py template.amber --workgroups 64 -- -d -t spv1.5"
+            "  amber_template_runner.py template.amber --workgroups 64 -- -v 1.2 -t spv1.5"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )

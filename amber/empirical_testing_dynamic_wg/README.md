@@ -15,7 +15,7 @@ From repo root:
 
 ```sh
 python3 amber/empirical_testing_dynamic_wg/src/amber_template_runner.py \
-  amber/empirical_testing_dynamic_wg/test_amber/template_test_suite/output0/0_txt_round_robin.amber \
+  amber/empirical_testing_dynamic_wg/test_amber/template_test_suite/2_threads_2_instructions/0_txt_round_robin.amber \
   --workgroups 32 \
   -- -v 1.2 -t spv1.5
 ```
@@ -27,6 +27,20 @@ Notes:
 - The runner writes an instantiated `.amber` to a temp file, runs `amber`, then deletes the temp file.
   Use `--keep-temp` if you want to inspect it.
 
+## Batch run templates
+
+Use `amber_batch_runner.py` to run many template tests (optionally sweeping multiple workgroup counts):
+
+```sh
+python3 amber/empirical_testing_dynamic_wg/src/amber_batch_runner.py \
+  amber/empirical_testing_dynamic_wg/test_amber/template_test_suite/2_threads_2_instructions \
+  --workgroups 64 \
+  --out-dir /tmp/dynwg_batch_run \
+  -- -v 1.2 -t spv1.5
+```
+
+If you omit `paths`, it defaults to the base suites under `test_amber/template_test_suite/`.
+
 ## Directory structure
 
 - `ALL_tests_flat/`: input tests in `.txt` format (one file per test).
@@ -36,6 +50,12 @@ Notes:
   - `configuration.py`: configuration object used by generators.
 - `test_amber/`: batch generation harness + pre-generated suites
   - `template_test_suite/`: pre-generated **template** `.amber` tests (contains `NUMWORKGROUPS`/`TOTALTHREADS`)
+    - Base suites (plus summary logs/tables):
+      - `2_threads_2_instructions/`
+      - `2_threads_3_instructions/`
+      - `2_threads_4_instructions/`
+      - `3_threads_3_instructions/`
+      - `3_threads_4_instructions/`
     - `weak_HSA/`, `weak_OBE/`, `weak_fair/`: filtered subsets based on CADP labels; each contains the same suite
       subdirectories (e.g. `weak_HSA/2_threads_3_instructions/`).
 

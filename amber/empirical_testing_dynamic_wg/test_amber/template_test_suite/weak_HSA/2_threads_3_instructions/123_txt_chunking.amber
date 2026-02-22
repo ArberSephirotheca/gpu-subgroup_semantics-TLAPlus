@@ -7,7 +7,7 @@ SHADER compute test GLSL
 #extension GL_KHR_shader_subgroup_basic : enable
 #extension GL_KHR_shader_subgroup_ballot : enable
 #extension GL_KHR_shader_subgroup_vote : enable
-#extension GL_KHR_shader_subgroup_basic : enable
+#extension GL_KHR_shader_subgroup_shuffle : enable
 layout(set = 0, binding = 0) volatile buffer TEST {
 	uint counter;
 } test; 
@@ -21,7 +21,6 @@ layout(set = 0, binding = 2) volatile buffer OUT_BUF_2 {
 
 layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
 
-shared uint pick_thread;
 void main()
 {
 	 uint subgroup_size = gl_SubgroupSize;
@@ -45,7 +44,7 @@ void main()
 	   if (subgroupAny(terminate == 1)) {
 	   break;
 	}
-	pick_thread = uint(round_robin % subgroup_size);
+	uint pick_thread = uint(round_robin % subgroup_size);
 	if (pick_thread == gl_SubgroupInvocationID) {
 	  switch(pc) {
 
@@ -65,7 +64,7 @@ void main()
 	     }
 	   }
 	   round_robin += 1u;
-	   pc = subgroupBroadcast(pc, pick_thread);
+	   pc = subgroupShuffle(pc, pick_thread);
 	}
 	}
 
@@ -76,7 +75,7 @@ void main()
 	   if (subgroupAny(terminate == 1)) {
 	   break;
 	}
-	pick_thread = uint(round_robin % subgroup_size);
+	uint pick_thread = uint(round_robin % subgroup_size);
 	if (pick_thread == gl_SubgroupInvocationID) {
 	  switch(pc) {
 
@@ -101,7 +100,7 @@ void main()
 	     }
 	   }
 	   round_robin += 1u;
-	   pc = subgroupBroadcast(pc, pick_thread);
+	   pc = subgroupShuffle(pc, pick_thread);
 	}
 	}
 

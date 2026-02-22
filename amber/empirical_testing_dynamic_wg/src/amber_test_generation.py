@@ -82,7 +82,7 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
 
     output.write("layout(local_size_x = " + str(threads_per_workgroup) + ", local_size_y = 1, local_size_z = 1) in;\n")
     output.write("\n")
-    output.write("shared uint pick_thread;\n")
+    # output.write("shared uint pick_thread;\n")
     output.write("void main()\n")
     output.write("{\n")
 
@@ -148,7 +148,7 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
     output.write("\t   if (subgroupAny(terminate == 1)) {\n")
     output.write("\t   break;\n")
     output.write("\t}\n")
-    output.write("\tpick_thread = uint(round_robin % subgroup_size);\n")
+    output.write("\tuint pick_thread = uint(round_robin % subgroup_size);\n")
     output.write("\tif (pick_thread == gl_SubgroupInvocationID) {\n")
     output.write("\t  switch(pc) {\n")
     output.write("\n")

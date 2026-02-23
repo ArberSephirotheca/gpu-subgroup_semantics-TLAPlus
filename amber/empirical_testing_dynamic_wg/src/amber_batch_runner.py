@@ -181,10 +181,11 @@ def _run_one(
         output = completed.stdout or ""
         passes, fails = _extract_pass_fail(output)
 
-        if completed.returncode != 0:
-            status = "ERROR"
-        elif fails is not None and fails > 0:
+        # Amber can return nonzero for expectation failures; classify those as FAIL, not ERROR.
+        if fails is not None and fails > 0:
             status = "FAIL"
+        elif completed.returncode != 0:
+            status = "ERROR"
         elif passes is not None and passes > 0 and (fails == 0 or fails is None):
             status = "PASS"
         else:

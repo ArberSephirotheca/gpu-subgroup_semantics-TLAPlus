@@ -32,7 +32,6 @@ void main()
 	uint round_robin = 0u;
 
 	uint num_testing_subgroups = 2;
-	if (num_workgroups < num_testing_subgroups) { return; }
 	uint active_workgroups = num_workgroups - (num_workgroups % num_testing_subgroups);
 	uint index = workgroup_id / num_testing_subgroups;
 

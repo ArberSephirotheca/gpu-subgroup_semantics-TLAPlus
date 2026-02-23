@@ -103,7 +103,6 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
         output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
-        output.write("\tif (num_workgroups < num_testing_subgroups) { return; }\n")
         output.write("\tuint active_workgroups = num_workgroups - (num_workgroups % num_testing_subgroups);\n")
         output.write("\tuint index = workgroup_id / num_testing_subgroups;\n")
 
@@ -113,9 +112,9 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
         output.write("\tuint num_testing_subgroups = " + str(num_testing_subgroups) + ";\n")
-        output.write("\tif (num_workgroups < num_testing_subgroups) { return; }\n")
         output.write("\tuint active_workgroups = num_workgroups - (num_workgroups % num_testing_subgroups);\n")
-        output.write("\tuint chunk_size =  num_workgroups / num_testing_subgroups;\n")
+        output.write("\tuint chunk_size = (num_workgroups >= num_testing_subgroups) ? "
+                     "(num_workgroups / num_testing_subgroups) : 1u;\n")
         output.write("\tuint index = workgroup_id % chunk_size;\n")
 
     output.write("\n")

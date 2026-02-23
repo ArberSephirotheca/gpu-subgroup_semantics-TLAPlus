@@ -15,7 +15,7 @@ From repo root:
 
 ```sh
 python3 amber/empirical_testing_dynamic_wg/src/amber_template_runner.py \
-  amber/empirical_testing_dynamic_wg/test_amber/template_test_suite/2_threads_2_instructions/0_txt_round_robin.amber \
+  amber/empirical_testing_dynamic_wg/test_amber/weak_fair/2_threads_2_instructions/2_txt_round_robin.amber \
   --workgroups 32 \
   -- -v 1.2 -t spv1.5
 ```

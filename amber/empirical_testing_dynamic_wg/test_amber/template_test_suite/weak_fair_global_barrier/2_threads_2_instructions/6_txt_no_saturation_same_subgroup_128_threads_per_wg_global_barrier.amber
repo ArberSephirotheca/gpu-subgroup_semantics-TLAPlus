@@ -103,17 +103,19 @@ void main()
 	}
 	}
 
-	if (subgroup_id == 0u && gl_SubgroupInvocationID == 0u) {
-		if (workgroup_id == 0u) {
-			for (uint peer = 1u; peer < num_workgroups; ++peer) {
-				while (atomicLoad(bar_state.flags[peer], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 0u) {
-				}
-			}
-			for (uint peer = 1u; peer < num_workgroups; ++peer) {
-				atomicStore(bar_state.flags[peer], 0u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);
+	barrier();
+	if (workgroup_id == 0u) {
+		for (uint peer = gl_LocalInvocationID.x + 1u; peer < num_workgroups; peer += gl_WorkGroupSize.x) {
+			while (atomicLoad(bar_state.flags[peer], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 0u) {
 			}
 		}
-		else {
+		barrier();
+		for (uint peer = gl_LocalInvocationID.x + 1u; peer < num_workgroups; peer += gl_WorkGroupSize.x) {
+			atomicStore(bar_state.flags[peer], 0u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);
+		}
+	}
+	else {
+		if (gl_LocalInvocationID.x == 0u) {
 			atomicStore(bar_state.flags[workgroup_id], 1u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);
 			while (atomicLoad(bar_state.flags[workgroup_id], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 1u) {
 			}

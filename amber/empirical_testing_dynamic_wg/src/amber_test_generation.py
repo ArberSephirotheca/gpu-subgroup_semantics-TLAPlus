@@ -336,21 +336,23 @@ def write_cross_workgroup_wait(output, saturation_level):
         output.write("\t}\n")
         output.write("\tbarrier();\n")
     elif saturation_level == 4:
-        output.write("\tif (subgroup_id == 0u && gl_SubgroupInvocationID == 0u) {\n")
-        output.write("\t\tif (workgroup_id == 0u) {\n")
-        output.write("\t\t\tfor (uint peer = 1u; peer < num_workgroups; ++peer) {\n")
+        output.write("\tbarrier();\n")
+        output.write("\tif (workgroup_id == 0u) {\n")
+        output.write("\t\tfor (uint peer = gl_LocalInvocationID.x + 1u; peer < num_workgroups; peer += gl_WorkGroupSize.x) {\n")
         output.write(
-            "\t\t\t\twhile (atomicLoad(bar_state.flags[peer], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 0u) {\n"
-        )
-        output.write("\t\t\t\t}\n")
-        output.write("\t\t\t}\n")
-        output.write("\t\t\tfor (uint peer = 1u; peer < num_workgroups; ++peer) {\n")
-        output.write(
-            "\t\t\t\tatomicStore(bar_state.flags[peer], 0u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);\n"
+            "\t\t\twhile (atomicLoad(bar_state.flags[peer], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 0u) {\n"
         )
         output.write("\t\t\t}\n")
         output.write("\t\t}\n")
-        output.write("\t\telse {\n")
+        output.write("\t\tbarrier();\n")
+        output.write("\t\tfor (uint peer = gl_LocalInvocationID.x + 1u; peer < num_workgroups; peer += gl_WorkGroupSize.x) {\n")
+        output.write(
+            "\t\t\tatomicStore(bar_state.flags[peer], 0u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);\n"
+        )
+        output.write("\t\t}\n")
+        output.write("\t}\n")
+        output.write("\telse {\n")
+        output.write("\t\tif (gl_LocalInvocationID.x == 0u) {\n")
         output.write(
             "\t\t\tatomicStore(bar_state.flags[workgroup_id], 1u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);\n"
         )

@@ -10,7 +10,7 @@ from configuration import Configuration
 
 # Notes: saturation_level describes the heuristic of running many
 # instances of the same test in the same kernel. Each instance of the
-# test operate on distinct memory. There are 3 options for saturation
+# test operate on distinct memory. There are 5 options for saturation
 # that dictate how threads are mapped to test instances. NOTE THAT
 # SATURATION IS NOT CURRENTLY CURRENTLY SUPPORTED FOR INTRA-WORKGROUP
 # AND INTRA-SUBGROUP TESTS:
@@ -23,6 +23,12 @@ from configuration import Configuration
 # 2 - Chunking: threads are assigned to test instances in a course
 # grained chunk (first N threads are assigned to testing thread 0,
 # second N threads are assigned to testing thread 1, etc.
+
+# 3 - Waterfall Queue: chunking + chain wait across workgroups
+# (workgroup 0 waits on 1, 1 waits on 2, ...).
+
+# 4 - Global Barrier: chunking + master/slave global barrier
+# (workgroup 0 is the master release workgroup).
 
 # Workgroups is the max supported number across a variety of GPUs
 # (65532). Timeout is how many milliseconds to wait until killing the
@@ -53,6 +59,8 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
     output.write("#extension GL_KHR_shader_subgroup_ballot : enable\n")
     output.write("#extension GL_KHR_shader_subgroup_vote : enable\n")
     output.write("#extension GL_KHR_shader_subgroup_shuffle : enable\n")
+    if saturation_level in [3, 4]:
+        output.write("#extension GL_KHR_memory_scope_semantics : enable\n")
 
     # output.write("\n")
     # output.write("layout(set = 0, binding = 3) volatile buffer PICKTHREAD {\n")
@@ -71,13 +79,19 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
     output.write("\n")
 
     # if GPU will be saturated, then ensure there is an SSBO with many locations to be accessed and updated
-    if saturation_level == 1 or saturation_level == 2:
+    if saturation_level in [1, 2, 3, 4]:
         output.write("layout(set = 0, binding = 1) volatile buffer OUT_BUF_1 {\n")
         output.write("\tuint x[];\n")
         output.write("} out_buf1; \n")
         output.write("layout(set = 0, binding = 2) volatile buffer OUT_BUF_2 {\n")
         output.write("\tuint y[];\n")
         output.write("} out_buf2; \n")
+        output.write("\n")
+
+    if saturation_level in [3, 4]:
+        output.write("layout(set = 0, binding = 3) volatile buffer BARRIER_STATE {\n")
+        output.write("\tuint flags[];\n")
+        output.write("} bar_state; \n")
         output.write("\n")
 
     output.write("layout(local_size_x = " + str(threads_per_workgroup) + ", local_size_y = 1, local_size_z = 1) in;\n")
@@ -107,7 +121,7 @@ def write_amber_prologue(output, timeout, threads_per_workgroup, workgroups, num
         output.write("\tuint index = workgroup_id / num_testing_subgroups;\n")
 
     # perform the necessary computations of "chunk" size and index to update SSBO for "chunking" saturation
-    elif saturation_level == 2:
+    elif saturation_level in [2, 3, 4]:
         total_threads = workgroups * threads_per_workgroup
         num_subgroup_per_workgroup = threads_per_workgroup // subgroup_size
         output.write("\n")
@@ -135,10 +149,10 @@ def write_amber_thread_program(output, thread_instructions, thread_number, numbe
                                                                           " gl_WorkGroupID.x == 0" + ") { \n")
     elif saturation_level == 1:
         output.write("\tif (workgroup_id < active_workgroups && workgroup_id % num_testing_subgroups == " + str(thread_number) + " && subgroup_id == 0" + ") { \n")
-    elif saturation_level == 2:
+    elif saturation_level in [2, 3, 4]:
         output.write("\tif (workgroup_id < active_workgroups && workgroup_id / chunk_size == " + str(thread_number) + " && subgroup_id == 0" + ") { \n")
     else:
-        print("Saturation level can only be 0, 1, or 2", file=sys.stderr)
+        print("Saturation level can only be 0, 1, 2, 3, or 4", file=sys.stderr)
         exit(1)
 
     output.write("\t   int terminate = 0;\n")
@@ -225,7 +239,7 @@ def handle_atomic_exchange_branch(output, check_value, exchange_value, instructi
         else:
             output.write("\t\tif (atomicExchange(test.y, " + exchange_value + ") == " + check_value + ") { \n")
 
-    elif saturation_level == 1 or saturation_level == 2:
+    elif saturation_level in [1, 2, 3, 4]:
         # determine whether to write to memory location x[] or memory location y[]
         if int(memory_location) == 0:
             output.write("\t\tif (atomicExchange(out_buf1.x[index], " + exchange_value + ") ==  " + check_value +
@@ -261,7 +275,7 @@ def handle_amber_check_branch(output, check_value, instruction_address, saturati
         else:
             output.write("\t\tif (atomicAdd(test.y, 0) == " + check_value + " ) { \n")
 
-    elif saturation_level == 1 or saturation_level == 2:
+    elif saturation_level in [1, 2, 3, 4]:
         # determine whether to write to memory location x[] or memory location y[]
         if int(memory_location) == 0:
             output.write("\t\tif (atomicAdd(out_buf1.x[index], 0) == " + check_value + " ) { \n")
@@ -294,7 +308,7 @@ def handle_atomic_store(output, write_value, saturation_level, memory_location):
         else:
             output.write("\t\tatomicExchange(test.y, " + write_value + ");\n")
 
-    elif saturation_level == 1 or saturation_level == 2:
+    elif saturation_level in [1, 2, 3, 4]:
         # determine whether to write to memory location x[] or memory location y[]
         if int(memory_location) == 0:
             output.write("\t\tatomicExchange(out_buf1.x[index], " + write_value + ");\n")
@@ -306,10 +320,55 @@ def handle_atomic_store(output, write_value, saturation_level, memory_location):
     output.write("\n")
 
 
+def write_cross_workgroup_wait(output, saturation_level):
+    # Cross-workgroup protocols are executed by a single representative lane per workgroup.
+    if saturation_level == 3:
+        output.write("\tif (subgroup_id == 0u && gl_SubgroupInvocationID == 0u) {\n")
+        output.write(
+            "\t\tatomicStore(bar_state.flags[workgroup_id], 1u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);\n"
+        )
+        output.write("\t\tif (workgroup_id + 1u < num_workgroups) {\n")
+        output.write(
+            "\t\t\twhile (atomicLoad(bar_state.flags[workgroup_id + 1u], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 0u) {\n"
+        )
+        output.write("\t\t\t}\n")
+        output.write("\t\t}\n")
+        output.write("\t}\n")
+        output.write("\tbarrier();\n")
+    elif saturation_level == 4:
+        output.write("\tif (subgroup_id == 0u && gl_SubgroupInvocationID == 0u) {\n")
+        output.write("\t\tif (workgroup_id == 0u) {\n")
+        output.write("\t\t\tfor (uint peer = 1u; peer < num_workgroups; ++peer) {\n")
+        output.write(
+            "\t\t\t\twhile (atomicLoad(bar_state.flags[peer], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 0u) {\n"
+        )
+        output.write("\t\t\t\t}\n")
+        output.write("\t\t\t}\n")
+        output.write("\t\t\tfor (uint peer = 1u; peer < num_workgroups; ++peer) {\n")
+        output.write(
+            "\t\t\t\tatomicStore(bar_state.flags[peer], 0u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);\n"
+        )
+        output.write("\t\t\t}\n")
+        output.write("\t\t}\n")
+        output.write("\t\telse {\n")
+        output.write(
+            "\t\t\tatomicStore(bar_state.flags[workgroup_id], 1u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);\n"
+        )
+        output.write(
+            "\t\t\twhile (atomicLoad(bar_state.flags[workgroup_id], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 1u) {\n"
+        )
+        output.write("\t\t\t}\n")
+        output.write("\t\t}\n")
+        output.write("\t}\n")
+        output.write("\tbarrier();\n")
+    else:
+        output.write("barrier();\n")
+
+
 # write the necessary "boiler plate" code to end the amber test, along with generating a desired number of threads
 def write_amber_epilogue(output, workgroups, threads_per_workgroup, saturation_level):
     total_threads = workgroups * threads_per_workgroup
-    output.write("barrier();\n")
+    write_cross_workgroup_wait(output, saturation_level)
     output.write("\tatomicAdd(test.counter, 1);\n")
     output.write("}\n")
     output.write("END\n")
@@ -319,13 +378,15 @@ def write_amber_epilogue(output, workgroups, threads_per_workgroup, saturation_l
     # fill the tester SSBO with 1 or 2 zeroes depending on the saturation level
     if saturation_level == 0:
         output.write("BUFFER tester DATA_TYPE uint32 SIZE 3 FILL 0\n")
-    elif saturation_level == 1 or saturation_level == 2:
+    elif saturation_level in [1, 2, 3, 4]:
         output.write("BUFFER tester DATA_TYPE uint32 SIZE 1 FILL 0\n")
 
     # if the GPU is to be saturated, then the second buffer must be filled with all 0s
-    if saturation_level == 1 or saturation_level == 2:
-        output.write("BUFFER out1 DATA_TYPE uint32 SIZE 65535 FILL 0\n")
-        output.write("BUFFER out2 DATA_TYPE uint32 SIZE 65535 FILL 0\n")
+    if saturation_level in [1, 2, 3, 4]:
+        output.write("BUFFER out1 DATA_TYPE uint32 SIZE NUMWORKGROUPS FILL 0\n")
+        output.write("BUFFER out2 DATA_TYPE uint32 SIZE NUMWORKGROUPS FILL 0\n")
+    if saturation_level in [3, 4]:
+        output.write("BUFFER bar_state DATA_TYPE uint32 SIZE NUMWORKGROUPS FILL 0\n")
 
     output.write("\n")
     output.write("PIPELINE compute test_pipe\n")
@@ -334,9 +395,11 @@ def write_amber_epilogue(output, workgroups, threads_per_workgroup, saturation_l
     output.write("  BIND BUFFER tester AS storage DESCRIPTOR_SET 0 BINDING 0 \n")
 
     # if the GPU is to be saturated, then the second buffer must be binded to the SSBO
-    if saturation_level == 1 or saturation_level == 2:
+    if saturation_level in [1, 2, 3, 4]:
         output.write("  BIND BUFFER out1 AS storage DESCRIPTOR_SET 0 BINDING 1 \n")
         output.write("  BIND BUFFER out2 AS storage DESCRIPTOR_SET 0 BINDING 2 \n")
+    if saturation_level in [3, 4]:
+        output.write("  BIND BUFFER bar_state AS storage DESCRIPTOR_SET 0 BINDING 3 \n")
 
     output.write("\n")
     output.write("END\n")
@@ -345,7 +408,7 @@ def write_amber_epilogue(output, workgroups, threads_per_workgroup, saturation_l
 
     if saturation_level == 0:
         output.write("EXPECT tester IDX 8 EQ TOTALTHREADS\n")
-    elif saturation_level == 1 or saturation_level == 2:
+    elif saturation_level in [1, 2, 3, 4]:
         output.write("EXPECT tester IDX 0 EQ TOTALTHREADS\n")
 
 
@@ -362,14 +425,14 @@ def generate_amber_test(inputted_file, output_file_name, config=default_config):
         print("Script will include the .amber extension, please provide a different output file name", file=sys.stderr)
         exit(1)
 
-    if saturation_level < 0 or saturation_level > 2:
+    if saturation_level < 0 or saturation_level > 4:
         print("Saturation level can only be 0 (no saturation), 1 (round robin saturation), "
-              "or 2 (chunking saturation)", file=sys.stderr)
+              "2 (chunking saturation), 3 (waterfall queue), or 4 (global barrier)", file=sys.stderr)
         exit(1)
 
         if subgroup_set < 0 or subgroup_set > 1:
             print("Saturation level can only be 0 (no saturation), 1 (round robin saturation), "
-                  "or 2 (chunking saturation)", file=sys.stderr)
+                  "2 (chunking saturation), 3 (waterfall queue), or 4 (global barrier)", file=sys.stderr)
             exit(1)
 
     with open(input_file, 'r') as file:
@@ -400,7 +463,7 @@ def generate_amber_test(inputted_file, output_file_name, config=default_config):
 
     total_number_threads = threads_per_workgroup * workgroups
 
-    if (saturation_level == 1 or saturation_level == 2) and (total_number_threads % num_of_testing_threads != 0):
+    if (saturation_level in [1, 2, 3, 4]) and (total_number_threads % num_of_testing_threads != 0):
         print("For saturation, total number of threads must be evenly divisble by number of testing threads",
               file=sys.stderr)
         exit(1)

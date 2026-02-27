@@ -52,6 +52,10 @@ def run_amber_test(input_dir, output_dir, each_cfg_option, amber_build_path, amb
         output_file_name_extension = "round_robin"
     elif saturation_level == 2:
         output_file_name_extension = "chunking"
+    elif saturation_level == 3:
+        output_file_name_extension = "waterfall_queue"
+    elif saturation_level == 4:
+        output_file_name_extension = "global_barrier"
     else:
         output_file_name_extension = "_" + str(saturation_level) + "level_saturation"
 
@@ -248,6 +252,10 @@ def format_output_results(final_simple_results, final_verbose_results, all_confi
             headers.append("Round Robin")
         elif current_saturation == 2:
             headers.append("Chunked")
+        elif current_saturation == 3:
+            headers.append("Waterfall Queue")
+        elif current_saturation == 4:
+            headers.append("Global Barrier")
         else:
             headers.append(str(current_saturation))
 
@@ -480,12 +488,14 @@ def main():
     default_cfg = Configuration(timeout=10000, workgroups=65532, threads_per_workgroup=128, saturation_level=0, subgroup=0, subgroup_size=32)
     round_r_cfg = Configuration(timeout=10000, workgroups=65532, threads_per_workgroup=128, saturation_level=1, subgroup=0, subgroup_size=32)
     chunk_cfg = Configuration(timeout=10000, workgroups=65532, threads_per_workgroup=128, saturation_level=2, subgroup=0, subgroup_size=32)
+    waterfall_cfg = Configuration(timeout=10000, workgroups=65532, threads_per_workgroup=128, saturation_level=3, subgroup=0, subgroup_size=32)
+    global_barrier_cfg = Configuration(timeout=10000, workgroups=65532, threads_per_workgroup=128, saturation_level=4, subgroup=0, subgroup_size=32)
     #diff_subgroup_cfg = Configuration(timeout=2000, workgroups=65532, threads_per_workgroup=256, saturation_level=0,
     #                                  subgroup=1)
     #diff_workgroup_cfg = Configuration(timeout=2000, workgroups=65532, threads_per_workgroup=4, saturation_level=0,
     #                                  subgroup=0)
 
-    all_config_variants = [default_cfg, round_r_cfg, chunk_cfg]
+    all_config_variants = [default_cfg, round_r_cfg, chunk_cfg, waterfall_cfg, global_barrier_cfg]
 
     # call the main driver function
     amber_driver(all_config_variants, input_dir, output_dir_path, amber_build_path, amber_build_flags, num_iterations,

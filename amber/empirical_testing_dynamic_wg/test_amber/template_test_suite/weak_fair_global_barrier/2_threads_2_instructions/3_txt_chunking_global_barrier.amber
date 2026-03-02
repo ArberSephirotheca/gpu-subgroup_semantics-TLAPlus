@@ -103,25 +103,39 @@ void main()
 	}
 	}
 
+	// global barrier starts, following the paper: Inter-Block GPU Communication via Fast Barrier Synchronization
 	barrier();
+
+	// Leader workgroup
 	if (workgroup_id == 0u) {
+        // waits for all other workgroups via a spin-wait
 		for (uint peer = gl_LocalInvocationID.x + 1u; peer < num_workgroups; peer += gl_WorkGroupSize.x) {
 			while (atomicLoad(bar_state.flags[peer], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 0u) {
 			}
 		}
+
+        // this releases the leader workgroup threads when all other workgroups have arrived (as known by the spin loop above)
 		barrier();
+
+        // the leader workgroup releases all other workgroups
 		for (uint peer = gl_LocalInvocationID.x + 1u; peer < num_workgroups; peer += gl_WorkGroupSize.x) {
 			atomicStore(bar_state.flags[peer], 0u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);
 		}
 	}
+
+    // follower workgroups
 	else {
 		if (gl_LocalInvocationID.x == 0u) {
+            // A representative marks that it has arrived
 			atomicStore(bar_state.flags[workgroup_id], 1u, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);
+
+            // Wait for the leader to release
 			while (atomicLoad(bar_state.flags[workgroup_id], gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) == 1u) {
 			}
 		}
 	}
-	barrier();
+	barrier(); // global barrier finishes.
+
 	atomicAdd(test.counter, 1);
 }
 END

@@ -54,14 +54,14 @@ def _parse_template_name(template: Path) -> tuple[str, str]:
 
 def _generate_variant(source_template: Path, out_root: Path, all_tests_flat: Path, cfg: Configuration) -> None:
     group_name = source_template.parent.name
-    test_id, source_variant = _parse_template_name(source_template)
+    test_id, _source_variant = _parse_template_name(source_template)
     input_txt = _build_input_path(all_tests_flat, group_name, test_id)
     if not input_txt.is_file():
         raise FileNotFoundError(f"Missing source txt: {input_txt}")
 
     output_dir = out_root / group_name
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_base = output_dir / f"{test_id}_txt_{source_variant}_{SUFFIX}"
+    output_base = output_dir / f"{test_id}_txt_{SUFFIX}"
     amber_test_generation.generate_amber_test(str(input_txt), str(output_base), cfg)
 
 
@@ -107,14 +107,28 @@ def main() -> int:
     if not templates:
         raise RuntimeError(f"No templates found under: {source_root}")
 
+    # weak_fair includes 3 naming variants per test_id (chunking/round_robin/no_saturation)
+    # but reverse-waterfall has only one queue topology, so emit one template per test_id.
+    unique_templates: dict[tuple[str, str], Path] = {}
+    for template in templates:
+        group_name = template.parent.name
+        test_id, _variant = _parse_template_name(template)
+        key = (group_name, test_id)
+        if key not in unique_templates:
+            unique_templates[key] = template
+
     if args.clean and out_root.exists():
         shutil.rmtree(out_root)
 
     cfg = _mk_config()
-    for template in templates:
+    for template in sorted(unique_templates.values()):
         _generate_variant(template, out_root, all_tests_flat, cfg)
 
-    print(f"Generated {len(templates)} reverse_waterfall_queue templates in: {out_root}")
+    print(
+        "Generated "
+        f"{len(unique_templates)} reverse_waterfall_queue templates in: {out_root} "
+        f"(from {len(templates)} weak_fair source templates)"
+    )
     return 0
 
 

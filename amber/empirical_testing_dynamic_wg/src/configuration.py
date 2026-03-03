@@ -23,6 +23,7 @@ class Configuration(object):
         # 2 means "chunking" saturation
         # 3 means "waterfall queue" (chunking + chain wait)
         # 4 means "global barrier" (chunking + master/slave release)
+        # 5 means "reverse waterfall queue" (chunking + reverse chain wait)
         self._saturation_level = saturation_level
         # subgroup usage: 0 means same subgroups, 1 means different subgroup and same workgroup
         self._subgroup = subgroup

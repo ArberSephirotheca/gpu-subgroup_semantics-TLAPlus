@@ -1,0 +1,47 @@
+#!amber
+
+SET ENGINE_DATA fence_timeout_ms 10000
+
+SHADER compute test GLSL
+#version 460
+#extension GL_KHR_memory_scope_semantics : enable
+
+layout(set = 0, binding = 0) volatile buffer TEST {
+	uint counter;
+} test;
+
+layout(set = 0, binding = 1) volatile buffer GLOBAL_WATERFALL_TOKEN {
+	uint token;
+} global_waterfall_token;
+
+layout(local_size_x = 128, local_size_y = 1, local_size_z = 1) in;
+
+void main()
+{
+	uint workgroup_id = gl_WorkGroupID.x;
+
+	// One representative thread per workgroup participates in the chain.
+	if (gl_LocalInvocationID.x == 0u) {
+		if (workgroup_id > 0u) {
+			while (atomicLoad(global_waterfall_token.token, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsAcquire) != workgroup_id - 1u) {
+			}
+		}
+		atomicStore(global_waterfall_token.token, workgroup_id, gl_ScopeDevice, gl_StorageSemanticsBuffer, gl_SemanticsRelease);
+	}
+
+	barrier();
+	atomicAdd(test.counter, 1u);
+}
+END
+
+BUFFER tester DATA_TYPE uint32 SIZE 1 FILL 0
+BUFFER global_waterfall_token DATA_TYPE uint32 SIZE 1 FILL 4294967295
+
+PIPELINE compute test_pipe
+  ATTACH test
+  BIND BUFFER tester AS storage DESCRIPTOR_SET 0 BINDING 0
+  BIND BUFFER global_waterfall_token AS storage DESCRIPTOR_SET 0 BINDING 1
+END
+
+RUN test_pipe NUMWORKGROUPS 1 1
+EXPECT tester IDX 0 EQ TOTALTHREADS

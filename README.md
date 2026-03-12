@@ -25,25 +25,33 @@ Consider the T–Label / G–Collective-UBranch rules for CM/SM/SCF:
 1. `OpLabelCollective` (`MCThreads.tla:1866`) waits until all threads in the dynamic block are aligned, then bumps their PCs together—mirroring Step–Label.
 2. `OpBranchCollective` (`MCThreads.tla:1545`) calls `BranchConditionalUpdateSubgroup` (`MCProgram.tla:798`) which (a) update the thread set in the child dynamic block, (b) pushes merge targets onto the merge stack, and (c) reuses existing children when reconverging at a merge block.
 
-Reviewers who want to follow the execution end-to-end can run `earthly +tlaplus-image --INPUT example_shader_program/synchronization/cm.comp --OUT=text`, open the generated `build/MCProgram.tla`, and observe how the CFG emitted for that shader instantiates these operators.
+Reviewers who want to follow the execution end-to-end can run `scripts/docker-run.sh --input example_shader_program/synchronization/cm.comp --out text`, open the generated `build/MCProgram.tla`, and observe how the CFG emitted for that shader instantiates these operators.
 
 ## Pre-requisites
 - [Docker](https://docs.docker.com/install/) or [Podman](https://github.com/containers/podman/blob/main/docs/tutorials/podman_tutorial.md)
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [Earthly](https://earthly.dev/get-earthly)
+- Bash shell
 
 ## Get Started
-Make sure you've started the docker service
+Run the end-to-end pipeline and collect outputs in `build/` (the helper script builds the image automatically unless `--skip-build` is set):
 ```bash
-systemctl service docker start
+scripts/docker-run.sh --input <glsl compute file> --out <format>
 ```
-And run earthly bootstrap (this step is only necessary the first time)
+
+Equivalent raw Docker command (without helper script):
 ```bash
-earthly bootstrap
+docker build -t gpu-subgroup-semantics-tlaplus .
+docker run --rm \
+  --network host \
+  -e INPUT=<glsl compute file> \
+  -e OUT=<format> \
+  -v "$(pwd)/build:/output" \
+  gpu-subgroup-semantics-tlaplus
 ```
-Then, run following to see the output
+
+If your environment blocks Docker bridge networking, use host networking:
 ```bash
-earthly +tlaplus-image --INPUT=<glsl compute file> --OUT=<format>
+scripts/docker-run.sh --network host --input <glsl compute file> --out <format>
 ```
 
 ## GLSL
@@ -86,7 +94,7 @@ layout(tla_synchronization_id = <id>) in;
 **Limitation.** At present, the synchronous semantics for SM are only modeled for `OpAtomicLoad`, `OpAtomicStore`, and `OpAtomicOr`. Other atomic opcodes (e.g., `OpAtomicAdd`, `OpAtomicSub`, `OpAtomicExchange`) still execute independently; extending the synchronous rules to them is future work.
 
 ## Example:
-`earthly -i +tlaplus-image --INPUT example_shader_program/synchronization/cm.comp --OUT=text`
+`scripts/docker-run.sh --input example_shader_program/synchronization/cm.comp --out text`
 
 ## Command Line Option
 - *format*: text, dot, all
@@ -152,7 +160,7 @@ are behaving like `SequentiallyConsistent`.
 ### Workflow Overview
 
 ```
-earthly +tlaplus-image --INPUT <shader.glsl> --OUT=<format>
+scripts/docker-run.sh --input <shader.glsl> --out <format>
 ```
 This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to produce TLA+ modules, and finally invokes TLC to model-check.
 
@@ -162,4 +170,4 @@ This runs `glslang` to generate SPIR-V, passes it to `Homunculus/src/main.rs` to
 **Frontend pipeline**
 - `example_shader_program/` – Annotated GLSL compute shaders used as reviewer-friendly fixtures; pragmas encode scheduler/subgroup/synchronization settings.
 - `Homunculus/src/main.rs` & `compiler/src/codegen/*` – SPIR-V → TLA+ translation: parses `glslang` output, builds CFG/dynamic blocks, and emits the generated `MCProgram.tla` specialised to the shader while relying on the hand-authored `ProgramConf.tla` constant interface.
-- `build/output.txt` – Sample TLC output from the provided Earthly target (helpful for confirming end-to-end execution).
+- `build/output.txt` – Sample TLC output from the Docker pipeline (helpful for confirming end-to-end execution).
